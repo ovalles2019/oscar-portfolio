@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Serverless E-commerce Platform",
+    "description": "Built a scalable e-commerce platform using AWS Lambda, DynamoDB, S3, API Gateway, and Amplify. Features include user authentication, product management, shopping cart, and payment processing with Stripe integration.",
+    "tags": ["AWS", "Serverless", "DynamoDB", "Lambda", "React"],
+    "link": "https://github.com/oscarvalles/ecommerce-platform"
+  },
+  {
+    "title": "AI-Powered Spam Detection System",
+    "description": "Developed a machine learning application using SVM, LSTM, and BERT models to classify spam emails with 95% accuracy. Built with Python, TensorFlow, and deployed on AWS SageMaker.",
+    "tags": ["Machine Learning", "Python", "TensorFlow", "AWS SageMaker", "NLP"],
+    "link": "https://github.com/oscarvalles/spam-detection"
+  },
+  {
+    "title": "Real-time Chat Application",
+    "description": "Created a real-time chat application using Flutter for mobile and web, with WebSocket connections, Firebase authentication, and cloud functions for backend services.",
+    "tags": ["Flutter", "WebSocket", "Firebase", "Real-time", "Mobile"],
+    "link": "https://github.com/oscarvalles/chat-app"
+  },
+  {
+    "title": "Infrastructure as Code with Terraform",
+    "description": "Designed and implemented infrastructure as code for multi-environment AWS deployments using Terraform, including VPC, EC2, RDS, and auto-scaling groups with CI/CD pipeline integration.",
+    "tags": ["Terraform", "AWS", "DevOps", "CI/CD", "Infrastructure"],
+    "link": "https://github.com/oscarvalles/terraform-aws"
+  },
+  {
+    "title": "Portfolio Website",
+    "description": "This very site, built with Flutter and modern web technologies. Features responsive design, dark/light theme support, and showcases my experience as a Cloud Engineer.",
+    "tags": ["Flutter", "Web", "Portfolio", "Responsive Design"],
+    "link": null
+  }
+]
