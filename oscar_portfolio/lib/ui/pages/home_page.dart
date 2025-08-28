@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _HeroSection(),
+            _HeroSection(onLaunchUrl: _launchUrl),
             const SizedBox(height: 120),
             _AboutSection(),
             const SizedBox(height: 120),
@@ -36,9 +36,64 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+  Future<void> _launchUrl(BuildContext context, String url) async {
+    if (url.contains('resume.pdf')) {
+      try {
+        // For web, try multiple approaches to download the resume
+        // First, try the direct asset path
+        final anchor = html.AnchorElement(href: 'assets/resume.pdf')
+          ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
+          ..click();
+        
+        // Wait a bit to see if download starts
+        await Future.delayed(Duration(milliseconds: 500));
+        
+        // If download didn't start, try opening in new tab
+        try {
+          await launchUrl(
+            Uri.parse('assets/resume.pdf'), 
+            mode: LaunchMode.externalApplication
+          );
+        } catch (e) {
+          // Show helpful message with alternative download method
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Resume download failed. Please right-click the button and select "Save as..."'),
+              duration: Duration(seconds: 5),
+              action: SnackBarAction(
+                label: 'Copy Link',
+                onPressed: () {
+                  // Copy the direct link to clipboard
+                  html.window.navigator.clipboard?.writeText('assets/resume.pdf');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Link copied to clipboard!')),
+                  );
+                },
+              ),
+            ),
+          );
+        }
+      } catch (e) {
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Resume download failed. Please try right-clicking and "Save as..."'),
+            duration: Duration(seconds: 4),
+          ),
+        );
+      }
+    } else if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    }
+  }
 }
 
 class _HeroSection extends StatelessWidget {
+  final Future<void> Function(BuildContext, String) onLaunchUrl;
+  
+  const _HeroSection({required this.onLaunchUrl});
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -161,7 +216,7 @@ class _HeroSection extends StatelessWidget {
                           child: SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: () => _launchUrl('assets/resume.pdf'),
+                              onPressed: () => onLaunchUrl(context, 'assets/resume.pdf'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF007AFF),
                                 foregroundColor: Colors.white,
@@ -240,7 +295,7 @@ class _HeroSection extends StatelessWidget {
                             ],
                           ),
                           child: ElevatedButton(
-                            onPressed: () => _launchUrl('assets/resume.pdf'),
+                            onPressed: () => onLaunchUrl(context, 'assets/resume.pdf'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF007AFF),
                               foregroundColor: Colors.white,
@@ -311,57 +366,6 @@ class _HeroSection extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Scrolling to $section section...')),
     );
-  }
-
-  Future<void> _launchUrl(String url) async {
-    if (url.contains('resume.pdf')) {
-      try {
-        // For web, try multiple approaches to download the resume
-        // First, try the direct asset path
-        final anchor = html.AnchorElement(href: 'assets/resume.pdf')
-          ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
-          ..click();
-        
-        // Wait a bit to see if download starts
-        await Future.delayed(Duration(milliseconds: 500));
-        
-        // If download didn't start, try opening in new tab
-        try {
-          await launchUrl(
-            Uri.parse('assets/resume.pdf'), 
-            mode: LaunchMode.externalApplication
-          );
-        } catch (e) {
-          // Show helpful message with alternative download method
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Resume download failed. Please right-click the button and select "Save as..."'),
-              duration: Duration(seconds: 5),
-              action: SnackBarAction(
-                label: 'Copy Link',
-                onPressed: () {
-                  // Copy the direct link to clipboard
-                  html.window.navigator.clipboard?.writeText('assets/resume.pdf');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Link copied to clipboard!')),
-                  );
-                },
-              ),
-            ),
-          );
-        }
-      } catch (e) {
-        // Show error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Resume download failed. Please try right-clicking and "Save as..."'),
-            duration: Duration(seconds: 4),
-          ),
-        );
-      }
-    } else if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    }
   }
 }
 
