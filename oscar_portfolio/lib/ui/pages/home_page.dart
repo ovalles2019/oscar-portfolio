@@ -844,26 +844,73 @@ class _ProjectsSectionState extends State<_ProjectsSection>
     Project(
       title: "Cloud Infrastructure Automation",
       description: "Designed and implemented automated cloud infrastructure using Terraform and AWS services, reducing deployment time by 80% and improving scalability.",
+      detailedDescription: "A comprehensive cloud automation solution that leverages Infrastructure as Code principles to create reproducible and scalable AWS environments. The project includes automated CI/CD pipelines, monitoring dashboards, and disaster recovery procedures.",
       tags: ["AWS", "Terraform", "DevOps", "Python"],
       link: "https://github.com/example/cloud-automation",
+      imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&crop=center",
+      demoUrl: "https://demo.cloud-automation.com",
+      features: [
+        "Automated infrastructure provisioning",
+        "CI/CD pipeline integration",
+        "Cost optimization strategies",
+        "Security compliance automation"
+      ],
+      technologies: ["AWS", "Terraform", "Python", "Docker", "Jenkins"],
+      githubUrl: "https://github.com/example/cloud-automation",
     ),
     Project(
       title: "Real-time Chat Application",
       description: "Built a scalable real-time chat application using Flutter and Firebase, supporting thousands of concurrent users with real-time messaging.",
+      detailedDescription: "A modern, cross-platform chat application that provides real-time messaging, file sharing, and group chat capabilities. Features include push notifications, offline support, and end-to-end encryption.",
       tags: ["Flutter", "Firebase", "Real-time", "Mobile"],
       link: "https://github.com/example/chat-app",
+      imageUrl: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=600&fit=crop&crop=center",
+      demoUrl: "https://chat-app-demo.firebaseapp.com",
+      features: [
+        "Real-time messaging",
+        "File sharing",
+        "Push notifications",
+        "Offline support",
+        "End-to-end encryption"
+      ],
+      technologies: ["Flutter", "Firebase", "Dart", "Cloud Firestore", "Firebase Auth"],
+      githubUrl: "https://github.com/example/chat-app",
     ),
     Project(
       title: "E-commerce Platform",
       description: "Developed a full-stack e-commerce solution with React frontend and Node.js backend, featuring payment integration and inventory management.",
+      detailedDescription: "A complete e-commerce solution with modern web technologies, featuring a responsive design, secure payment processing, inventory management, and admin dashboard for business operations.",
       tags: ["React", "Node.js", "MongoDB", "Stripe"],
       link: "https://github.com/example/ecommerce",
+      imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop&crop=center",
+      demoUrl: "https://ecommerce-demo.vercel.app",
+      features: [
+        "Responsive design",
+        "Secure payment processing",
+        "Inventory management",
+        "Admin dashboard",
+        "Order tracking"
+      ],
+      technologies: ["React", "Node.js", "MongoDB", "Stripe", "Express.js"],
+      githubUrl: "https://github.com/example/ecommerce",
     ),
     Project(
       title: "Infrastructure as Code with Terraform",
       description: "Created reusable Terraform modules for AWS infrastructure, enabling consistent deployments across multiple environments.",
+      detailedDescription: "A collection of modular Terraform configurations that enable teams to deploy consistent infrastructure across development, staging, and production environments with minimal configuration changes.",
       tags: ["Terraform", "AWS", "Infrastructure", "Automation"],
       link: "https://github.com/example/terraform-modules",
+      imageUrl: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&h=600&fit=crop&crop=center",
+      demoUrl: "https://terraform-modules-demo.com",
+      features: [
+        "Reusable modules",
+        "Environment-specific configurations",
+        "Security best practices",
+        "Cost optimization",
+        "Documentation and examples"
+      ],
+      technologies: ["Terraform", "AWS", "HCL", "GitHub Actions", "AWS CLI"],
+      githubUrl: "https://github.com/example/terraform-modules",
     ),
   ];
 
