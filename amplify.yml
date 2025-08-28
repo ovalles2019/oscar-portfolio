@@ -1,0 +1,32 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - set -euxo pipefail
+        - export RESOLVED_FLUTTER_VERSION="${FLUTTER_VERSION:-3.24.4}"
+        - export FLUTTER_TAG="${RESOLVED_FLUTTER_VERSION}-stable"
+        - rm -rf "$HOME/flutter"
+        - git clone --depth 1 --branch "$FLUTTER_TAG" https://github.com/flutter/flutter.git "$HOME/flutter"
+        - export PATH="$HOME/flutter/bin:$PATH"
+        - test -f pubspec.yaml || (echo "pubspec.yaml not found at repo root" && exit 2)
+        - flutter --version
+        - flutter config --enable-web
+        - flutter pub get
+        - flutter precache --web
+    build:
+      commands:
+        - set -euxo pipefail
+        - export PATH="$HOME/flutter/bin:$PATH"
+        - echo "Building Flutter web app..."
+        - flutter build web --release --no-tree-shake-icons
+        - '[ -f build/web/index.html ] || (echo "ERROR: build/web/index.html missing" && exit 3)'
+  artifacts:
+    baseDirectory: build/web
+    files:
+      - "**/*"
+  cache:
+    paths:
+      - $HOME/.pub-cache
+      - $HOME/flutter/bin/cache
+
