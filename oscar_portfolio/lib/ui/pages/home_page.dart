@@ -1406,13 +1406,13 @@ class _ContactSection extends StatelessWidget {
                   _ContactButton(
                     icon: Icons.email,
                     title: "Email",
-                    onTap: () => _launchUrl('mailto:oscar@example.com'),
+                    onTap: () => _launchUrl('mailto:oscar.valles@gmail.com'),
                   ),
                   const SizedBox(width: 20),
                   _ContactButton(
                     icon: Icons.link,
                     title: "LinkedIn",
-                    onTap: () => _launchUrl('https://linkedin.com/in/oscarvalles'),
+                    onTap: () => _launchUrl('https://www.linkedin.com/in/oscarvalles87/'),
                   ),
                   const SizedBox(width: 20),
                   _ContactButton(
