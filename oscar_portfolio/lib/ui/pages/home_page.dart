@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:math';
+import 'dart:html' as html;
 import '../widgets/nav_bar.dart';
 import '../widgets/section.dart';
 import '../widgets/project_card.dart';
@@ -226,7 +227,14 @@ class _HeroSection extends StatelessWidget {
   }
 
   Future<void> _launchUrl(String url) async {
-    print('Resume download requested for: $url');
+    if (url.contains('resume.pdf')) {
+      // For web, create a download link
+      final anchor = html.AnchorElement(href: 'assets/resume.pdf')
+        ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
+        ..click();
+    } else if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    }
   }
 }
 
@@ -959,7 +967,10 @@ class _SkillsSectionState extends State<_SkillsSection>
                             return Transform.translate(
                               offset: Offset(0, _floatAnimation.value * 0.8),
                               child: Container(
-                                height: 300,
+                                constraints: const BoxConstraints(
+                                  minHeight: 300,
+                                  maxHeight: 350,
+                                ),
                                 margin: const EdgeInsets.all(16),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).cardColor,
@@ -981,6 +992,7 @@ class _SkillsSectionState extends State<_SkillsSection>
                                   padding: const EdgeInsets.all(32),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Row(
                                         children: [
@@ -1055,7 +1067,10 @@ class _SkillsSectionState extends State<_SkillsSection>
                       // Top-right section - Programming
                       Expanded(
                         child: Container(
-                          height: 300,
+                          constraints: const BoxConstraints(
+                            minHeight: 300,
+                            maxHeight: 350,
+                          ),
                           margin: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: Theme.of(context).cardColor,
@@ -1076,6 +1091,7 @@ class _SkillsSectionState extends State<_SkillsSection>
                             padding: const EdgeInsets.all(32),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Row(
                                   children: [
@@ -1154,7 +1170,10 @@ class _SkillsSectionState extends State<_SkillsSection>
                       // Bottom-left section - Databases
                       Expanded(
                         child: Container(
-                          height: 300,
+                          constraints: const BoxConstraints(
+                            minHeight: 300,
+                            maxHeight: 350,
+                          ),
                           margin: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: Theme.of(context).cardColor,
@@ -1171,11 +1190,12 @@ class _SkillsSectionState extends State<_SkillsSection>
                               ),
                             ],
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(32),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                                                          child: Padding(
+                                  padding: const EdgeInsets.all(32),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
                                 Row(
                                   children: [
                                     Container(
@@ -1246,7 +1266,10 @@ class _SkillsSectionState extends State<_SkillsSection>
                       // Bottom-right section - Tools & Frameworks
                       Expanded(
                         child: Container(
-                          height: 300,
+                          constraints: const BoxConstraints(
+                            minHeight: 300,
+                            maxHeight: 350,
+                          ),
                           margin: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: Theme.of(context).cardColor,
@@ -1267,6 +1290,7 @@ class _SkillsSectionState extends State<_SkillsSection>
                             padding: const EdgeInsets.all(32),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Row(
                                   children: [
