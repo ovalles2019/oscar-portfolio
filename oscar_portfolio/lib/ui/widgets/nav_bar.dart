@@ -4,13 +4,15 @@ class NavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.8),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
       elevation: 0,
+      scrolledUnderElevation: 0,
       title: Text(
         "Oscar Valles",
         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
           color: Theme.of(context).colorScheme.primary,
+          letterSpacing: -0.5,
         ),
       ),
       actions: [
@@ -41,6 +43,10 @@ class NavBar extends StatelessWidget {
       SnackBar(
         content: Text('Scrolling to $section section...'),
         duration: const Duration(seconds: 1),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
     );
   }
@@ -60,13 +66,17 @@ class _NavButton extends StatelessWidget {
         onPressed: onTap,
         style: TextButton.styleFrom(
           foregroundColor: Theme.of(context).colorScheme.onSurface,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
         ),
         child: Text(
           label,
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
+            letterSpacing: -0.3,
           ),
         ),
       ),

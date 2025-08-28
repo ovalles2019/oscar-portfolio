@@ -13,7 +13,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: appTheme(Brightness.light),
       darkTheme: appTheme(Brightness.dark),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.dark, // Changed to dark theme to showcase the dark aesthetic
       home: const HomePage(),
     );
   }
