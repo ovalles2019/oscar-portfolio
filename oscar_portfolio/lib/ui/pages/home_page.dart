@@ -1418,7 +1418,7 @@ class _ContactSection extends StatelessWidget {
                   _ContactButton(
                     icon: Icons.code,
                     title: "GitHub",
-                    onTap: () => _launchUrl('https://github.com/oscarvalles'),
+                    onTap: () => _launchUrl('https://github.com/ovalles2019'),
                   ),
                 ],
               ),
