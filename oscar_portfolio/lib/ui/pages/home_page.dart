@@ -376,9 +376,8 @@ class _AboutSection extends StatelessWidget {
               Container(
                 constraints: const BoxConstraints(maxWidth: 700),
                 child: Text(
-                  "I'm a Cloud Engineer with a passion for building scalable, efficient solutions. "
-                  "My expertise lies in AWS cloud services, serverless architectures, and modern web development. "
-                  "I love tackling complex problems and turning ideas into reality through clean, maintainable code.",
+                  "I'm a Master's student in Computer Engineering at UTD building cloud-native, ML-powered, and automated systems.\n\n"
+                  "I'm targeting Cloud Engineering, DevOps, and AI infrastructure roles where I can ship scalable, reliable services.",
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     height: 1.6,
                     color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
