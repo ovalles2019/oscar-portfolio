@@ -43,7 +43,10 @@ class _HeroSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 120),
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width < 768 ? 20 : 40,
+        vertical: MediaQuery.of(context).size.width < 768 ? 80 : 120,
+      ),
       child: Stack(
         children: [
           // Dynamic background with elegant wave animations
@@ -137,81 +140,165 @@ class _HeroSection extends StatelessWidget {
               const SizedBox(height: 60),
               
               // Action buttons with Apple-style design
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Primary button - Download Resume
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF007AFF).withOpacity(0.4),
-                          blurRadius: 20,
-                          offset: const Offset(0, 8),
-                          spreadRadius: 2,
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth < 768) {
+                    // Mobile layout - stacked vertically
+                    return Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF007AFF).withOpacity(0.4),
+                                blurRadius: 20,
+                                offset: const Offset(0, 8),
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () => _launchUrl('assets/resume.pdf'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF007AFF),
+                                foregroundColor: Colors.white,
+                                elevation: 0,
+                                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                shadowColor: Colors.transparent,
+                              ),
+                              child: const Text(
+                                "Download Resume",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: -0.5,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF34C759).withOpacity(0.3),
+                                blurRadius: 15,
+                                offset: const Offset(0, 6),
+                                spreadRadius: 1,
+                              ),
+                            ],
+                          ),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton(
+                              onPressed: () => _scrollToSection(context, "contact"),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: const Color(0xFF34C759),
+                                side: const BorderSide(color: Color(0xFF34C759), width: 2),
+                                backgroundColor: const Color(0xFF34C759).withOpacity(0.1),
+                                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                              ),
+                              child: const Text(
+                                "Get In Touch",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: -0.5,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
-                    ),
-                    child: ElevatedButton(
-                      onPressed: () => _launchUrl('assets/resume.pdf'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF007AFF),
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
+                    );
+                  } else {
+                    // Desktop layout - side by side
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF007AFF).withOpacity(0.4),
+                                blurRadius: 20,
+                                offset: const Offset(0, 8),
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                          child: ElevatedButton(
+                            onPressed: () => _launchUrl('assets/resume.pdf'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF007AFF),
+                              foregroundColor: Colors.white,
+                              elevation: 0,
+                              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              shadowColor: Colors.transparent,
+                            ),
+                            child: const Text(
+                              "Download Resume",
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: -0.5,
+                                ),
+                            ),
+                          ),
                         ),
-                        shadowColor: Colors.transparent,
-                      ),
-                      child: const Text(
-                        "Download Resume",
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  
-                  // Secondary button - Get In Touch
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF34C759).withOpacity(0.3),
-                          blurRadius: 15,
-                          offset: const Offset(0, 6),
-                          spreadRadius: 1,
+                        const SizedBox(width: 20),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF34C759).withOpacity(0.3),
+                                blurRadius: 15,
+                                offset: const Offset(0, 6),
+                                spreadRadius: 1,
+                              ),
+                            ],
+                          ),
+                          child: OutlinedButton(
+                            onPressed: () => _scrollToSection(context, "contact"),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: const Color(0xFF34C759),
+                              side: const BorderSide(color: Color(0xFF34C759), width: 2),
+                              backgroundColor: const Color(0xFF34C759).withOpacity(0.1),
+                              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                            ),
+                            child: const Text(
+                              "Get In Touch",
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: -0.5,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
-                    ),
-                    child: OutlinedButton(
-                      onPressed: () => _scrollToSection(context, "contact"),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: const Color(0xFF34C759),
-                        side: const BorderSide(color: Color(0xFF34C759), width: 2),
-                        backgroundColor: const Color(0xFF34C759).withOpacity(0.1),
-                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                      ),
-                      child: const Text(
-                        "Get In Touch",
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                    );
+                  }
+                },
               ),
             ],
           ),
@@ -228,10 +315,50 @@ class _HeroSection extends StatelessWidget {
 
   Future<void> _launchUrl(String url) async {
     if (url.contains('resume.pdf')) {
-      // For web, create a download link
-      final anchor = html.AnchorElement(href: 'assets/resume.pdf')
-        ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
-        ..click();
+      try {
+        // For web, try multiple approaches to download the resume
+        // First, try the direct asset path
+        final anchor = html.AnchorElement(href: 'assets/resume.pdf')
+          ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
+          ..click();
+        
+        // Wait a bit to see if download starts
+        await Future.delayed(Duration(milliseconds: 500));
+        
+        // If download didn't start, try opening in new tab
+        try {
+          await launchUrl(
+            Uri.parse('assets/resume.pdf'), 
+            mode: LaunchMode.externalApplication
+          );
+        } catch (e) {
+          // Show helpful message with alternative download method
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Resume download failed. Please right-click the button and select "Save as..."'),
+              duration: Duration(seconds: 5),
+              action: SnackBarAction(
+                label: 'Copy Link',
+                onPressed: () {
+                  // Copy the direct link to clipboard
+                  html.window.navigator.clipboard?.writeText('assets/resume.pdf');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Link copied to clipboard!')),
+                  );
+                },
+              ),
+            ),
+          );
+        }
+      } catch (e) {
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Resume download failed. Please try right-clicking and "Save as..."'),
+            duration: Duration(seconds: 4),
+          ),
+        );
+      }
     } else if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     }
@@ -346,7 +473,9 @@ class _AboutSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width < 768 ? 20 : 40,
+      ),
       child: Stack(
         children: [
           // Subtle animated background
@@ -397,33 +526,63 @@ class _AboutSection extends StatelessWidget {
               ),
               const SizedBox(height: 80),
               
-              // Feature cards in a row
-              Row(
-                children: [
-                  Expanded(
-                    child: _FeatureCard(
-                      icon: Icons.cloud,
-                      title: "Cloud Solutions",
-                      description: "AWS, Serverless, Microservices",
-                    ),
-                  ),
-                  const SizedBox(width: 24),
-                  Expanded(
-                    child: _FeatureCard(
-                      icon: Icons.code,
-                      title: "Full-Stack Development",
-                      description: "Flutter, Web, Mobile Apps",
-                    ),
-                  ),
-                  const SizedBox(width: 24),
-                  Expanded(
-                    child: _FeatureCard(
-                      icon: Icons.architecture,
-                      title: "System Design",
-                      description: "Scalable, Reliable, Efficient",
-                    ),
-                  ),
-                ],
+              // Feature cards in responsive layout
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth < 768) {
+                    // Mobile layout - stacked vertically
+                    return Column(
+                      children: [
+                        _FeatureCard(
+                          icon: Icons.cloud,
+                          title: "Cloud Solutions",
+                          description: "AWS, Serverless, Microservices",
+                        ),
+                        const SizedBox(height: 24),
+                        _FeatureCard(
+                          icon: Icons.code,
+                          title: "Full-Stack Development",
+                          description: "Flutter, Web, Mobile Apps",
+                        ),
+                        const SizedBox(height: 24),
+                        _FeatureCard(
+                          icon: Icons.architecture,
+                          title: "System Design",
+                          description: "Scalable, Reliable, Efficient",
+                        ),
+                      ],
+                    );
+                  } else {
+                    // Desktop layout - side by side
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: _FeatureCard(
+                            icon: Icons.cloud,
+                            title: "Cloud Solutions",
+                            description: "AWS, Serverless, Microservices",
+                          ),
+                        ),
+                        const SizedBox(width: 24),
+                        Expanded(
+                          child: _FeatureCard(
+                            icon: Icons.code,
+                            title: "Full-Stack Development",
+                            description: "Flutter, Web, Mobile Apps",
+                          ),
+                        ),
+                        const SizedBox(width: 24),
+                        Expanded(
+                          child: _FeatureCard(
+                            icon: Icons.architecture,
+                            title: "System Design",
+                            description: "Scalable, Reliable, Efficient",
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                },
               ),
             ],
           ),
@@ -770,7 +929,9 @@ class _ProjectsSectionState extends State<_ProjectsSection>
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width < 768 ? 20 : 40,
+      ),
       child: Stack(
         children: [
           // Subtle animated background
@@ -805,7 +966,7 @@ class _ProjectsSectionState extends State<_ProjectsSection>
               
               // Projects Carousel
               Container(
-                height: 500,
+                height: MediaQuery.of(context).size.width < 768 ? 400 : 500,
                 child: PageView.builder(
                   controller: _pageController,
                   itemCount: _projects.length,
@@ -823,7 +984,9 @@ class _ProjectsSectionState extends State<_ProjectsSection>
                         return Transform.scale(
                           scale: Curves.easeOutCubic.transform(value),
                           child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            margin: EdgeInsets.symmetric(
+                              horizontal: MediaQuery.of(context).size.width < 768 ? 5 : 10,
+                            ),
                             child: ProjectCard(project: project),
                           ),
                         );
@@ -842,9 +1005,11 @@ class _ProjectsSectionState extends State<_ProjectsSection>
                   return GestureDetector(
                     onTap: () => _goToPage(index),
                     child: Container(
-                      width: 12,
-                      height: 12,
-                      margin: const EdgeInsets.symmetric(horizontal: 6),
+                      width: MediaQuery.of(context).size.width < 768 ? 10 : 12,
+                      height: MediaQuery.of(context).size.width < 768 ? 10 : 12,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width < 768 ? 4 : 6,
+                      ),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: _currentPage == index
@@ -892,6 +1057,116 @@ class _SkillsSectionState extends State<_SkillsSection>
   late AnimationController _animationController;
   late Animation<double> _floatAnimation;
 
+  // Helper method to build skill cards
+  Widget _buildSkillCard({
+    required IconData icon,
+    required Color iconColor,
+    required String title,
+    required String description,
+    required List<String> skills,
+    required Animation<double> animation,
+  }) {
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(0, animation.value * 0.8),
+          child: Container(
+            constraints: const BoxConstraints(
+              minHeight: 300,
+              maxHeight: 350,
+            ),
+            margin: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.06),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF6B7280).withOpacity(0.08),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
+                  spreadRadius: 0,
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: iconColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Icon(
+                          icon,
+                          size: 32,
+                          color: iconColor,
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).colorScheme.onSurface,
+                            letterSpacing: -0.5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    description,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                      height: 1.5,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 12,
+                    children: skills.map((skill) => Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: iconColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: iconColor.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Text(
+                        skill,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: iconColor,
+                        ),
+                      ),
+                    )).toList(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -920,7 +1195,9 @@ class _SkillsSectionState extends State<_SkillsSection>
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width < 768 ? 20 : 40,
+      ),
       child: Stack(
         children: [
           // Subtle animated background
@@ -940,7 +1217,7 @@ class _SkillsSectionState extends State<_SkillsSection>
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: MediaQuery.of(context).size.width < 768 ? 16 : 20),
               
               Text(
                 "Technologies I work with and areas of expertise",
@@ -951,417 +1228,117 @@ class _SkillsSectionState extends State<_SkillsSection>
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 80),
+              SizedBox(height: MediaQuery.of(context).size.width < 768 ? 60 : 80),
               
-              // Four large sections in 2x2 grid (Apple-style)
-              Column(
-                children: [
-                  // Top row - two large sections
-                  Row(
-                    children: [
-                      // Top-left section - Cloud & DevOps
-                      Expanded(
-                        child: AnimatedBuilder(
-                          animation: _animationController,
-                          builder: (context, child) {
-                            return Transform.translate(
-                              offset: Offset(0, _floatAnimation.value * 0.8),
-                              child: Container(
-                                constraints: const BoxConstraints(
-                                  minHeight: 300,
-                                  maxHeight: 350,
-                                ),
-                                margin: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).cardColor,
-                                  borderRadius: BorderRadius.circular(24),
-                                  border: Border.all(
-                                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.06),
-                                    width: 1,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0xFF6B7280).withOpacity(0.08), // Soft gray shadow
-                                      blurRadius: 24,
-                                      offset: const Offset(0, 8),
-                                      spreadRadius: 0,
-                                    ),
-                                  ],
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(32),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.all(16),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFF007AFF).withOpacity(0.1),
-                                              borderRadius: BorderRadius.circular(16),
-                                            ),
-                                            child: const Icon(
-                                              Icons.cloud,
-                                              size: 32,
-                                              color: Color(0xFF007AFF),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 20),
-                                          Expanded(
-                                            child: Text(
-                                              "Cloud & DevOps",
-                                              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                                fontWeight: FontWeight.w700,
-                                                color: Theme.of(context).colorScheme.onSurface,
-                                                letterSpacing: -0.5,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 24),
-                                      Text(
-                                        "Building scalable infrastructure with modern cloud technologies",
-                                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                                          height: 1.5,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 32),
-                                      Wrap(
-                                        spacing: 12,
-                                        runSpacing: 12,
-                                        children: ["AWS", "Docker", "Kubernetes", "CI/CD", "Terraform"]
-                                            .map((skill) => Container(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                                  decoration: BoxDecoration(
-                                                    color: const Color(0xFF007AFF).withOpacity(0.1),
-                                                    borderRadius: BorderRadius.circular(20),
-                                                    border: Border.all(
-                                                      color: const Color(0xFF007AFF).withOpacity(0.2),
-                                                      width: 1,
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    skill,
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight.w600,
-                                                      color: Color(0xFF007AFF),
-                                                    ),
-                                                  ),
-                                                ))
-                                            .toList(),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
+              // Four large sections in responsive grid (Apple-style)
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  // Use responsive layout based on screen width
+                  if (constraints.maxWidth < 768) {
+                    // Mobile layout - single column
+                    return Column(
+                      children: [
+                        _buildSkillCard(
+                          icon: Icons.cloud,
+                          iconColor: const Color(0xFF007AFF),
+                          title: "Cloud & DevOps",
+                          description: "Building scalable infrastructure with modern cloud technologies",
+                          skills: ["AWS", "Docker", "Kubernetes", "CI/CD", "Terraform"],
+                          animation: _floatAnimation,
                         ),
-                      ),
-                      
-                      // Top-right section - Programming
-                      Expanded(
-                        child: Container(
-                          constraints: const BoxConstraints(
-                            minHeight: 300,
-                            maxHeight: 350,
-                          ),
-                          margin: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
-                            borderRadius: BorderRadius.circular(24),
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.08),
-                              width: 1,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.05),
-                                blurRadius: 20,
-                                offset: const Offset(0, 10),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(32),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(16),
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFF34C759).withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      child: const Icon(
-                                        Icons.code,
-                                        size: 32,
-                                        color: Color(0xFF34C759),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 20),
-                                    Expanded(
-                                      child: Text(
-                                        "Programming",
-                                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: Theme.of(context).colorScheme.onSurface,
-                                          letterSpacing: -0.5,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 24),
-                                Text(
-                                  "Creating robust applications with modern programming languages",
-                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                                    height: 1.5,
-                                  ),
-                                ),
-                                const SizedBox(height: 32),
-                                Wrap(
-                                  spacing: 12,
-                                  runSpacing: 12,
-                                  children: ["Dart/Flutter", "Python", "JavaScript", "TypeScript", "Java"]
-                                      .map((skill) => Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFF34C759).withOpacity(0.1),
-                                              borderRadius: BorderRadius.circular(20),
-                                              border: Border.all(
-                                                color: const Color(0xFF34C759).withOpacity(0.2),
-                                                width: 1,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              skill,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0xFF34C759),
-                                              ),
-                                            ),
-                                          ))
-                                      .toList(),
-                                ),
-                              ],
-                            ),
-                          ),
+                        const SizedBox(height: 24),
+                        _buildSkillCard(
+                          icon: Icons.code,
+                          iconColor: const Color(0xFF34C759),
+                          title: "Programming",
+                          description: "Creating robust applications with modern programming languages",
+                          skills: ["Dart/Flutter", "Python", "JavaScript", "TypeScript", "Java"],
+                          animation: _floatAnimation,
                         ),
-                      ),
-                    ],
-                  ),
-                  
-                  const SizedBox(height: 32),
-                  
-                  // Bottom row - two large sections
-                  Row(
-                    children: [
-                      // Bottom-left section - Databases
-                      Expanded(
-                        child: Container(
-                          constraints: const BoxConstraints(
-                            minHeight: 300,
-                            maxHeight: 350,
-                          ),
-                          margin: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
-                            borderRadius: BorderRadius.circular(24),
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.08),
-                              width: 1,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.05),
-                                blurRadius: 20,
-                                offset: const Offset(0, 10),
-                              ),
-                            ],
-                          ),
-                                                          child: Padding(
-                                  padding: const EdgeInsets.all(32),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(16),
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFFFF9500).withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      child: const Icon(
-                                        Icons.storage,
-                                        size: 32,
-                                        color: Color(0xFFFF9500),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 20),
-                                    Expanded(
-                                      child: Text(
-                                        "Databases",
-                                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: Theme.of(context).colorScheme.onSurface,
-                                          letterSpacing: -0.5,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 24),
-                                Text(
-                                  "Designing efficient data storage and retrieval systems",
-                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                                    height: 1.5,
-                                  ),
-                                ),
-                                const SizedBox(height: 32),
-                                Wrap(
-                                  spacing: 12,
-                                  runSpacing: 12,
-                                  children: ["DynamoDB", "PostgreSQL", "MongoDB", "Redis"]
-                                      .map((skill) => Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFFFF9500).withOpacity(0.1),
-                                              borderRadius: BorderRadius.circular(20),
-                                              border: Border.all(
-                                                color: const Color(0xFFFF9500).withOpacity(0.2),
-                                                width: 1,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              skill,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0xFFFF9500),
-                                              ),
-                                            ),
-                                          ))
-                                      .toList(),
-                                ),
-                              ],
-                            ),
-                          ),
+                        const SizedBox(height: 24),
+                        _buildSkillCard(
+                          icon: Icons.storage,
+                          iconColor: const Color(0xFFFF9500),
+                          title: "Databases",
+                          description: "Designing efficient data storage and retrieval systems",
+                          skills: ["DynamoDB", "PostgreSQL", "MongoDB", "Redis"],
+                          animation: _floatAnimation,
                         ),
-                      ),
-                      
-                      // Bottom-right section - Tools & Frameworks
-                      Expanded(
-                        child: Container(
-                          constraints: const BoxConstraints(
-                            minHeight: 300,
-                            maxHeight: 350,
-                          ),
-                          margin: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
-                            borderRadius: BorderRadius.circular(24),
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.08),
-                              width: 1,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.05),
-                                blurRadius: 20,
-                                offset: const Offset(0, 10),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(32),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(16),
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFFAF52DE).withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      child: const Icon(
-                                        Icons.build,
-                                        size: 32,
-                                        color: Color(0xFFAF52DE),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 20),
-                                    Expanded(
-                                      child: Text(
-                                        "Tools & Frameworks",
-                                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: Theme.of(context).colorScheme.onSurface,
-                                          letterSpacing: -0.5,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 24),
-                                Text(
-                                  "Leveraging powerful tools for efficient development workflows",
-                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                                    height: 1.5,
-                                  ),
-                                ),
-                                const SizedBox(height: 32),
-                                Wrap(
-                                  spacing: 12,
-                                  runSpacing: 12,
-                                  children: ["Git", "VS Code", "Postman", "Jira", "Confluence"]
-                                      .map((skill) => Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFFAF52DE).withOpacity(0.1),
-                                              borderRadius: BorderRadius.circular(20),
-                                              border: Border.all(
-                                                color: const Color(0xFFAF52DE).withOpacity(0.2),
-                                                width: 1,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              skill,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0xFFAF52DE),
-                                              ),
-                                            ),
-                                          ))
-                                      .toList(),
-                                ),
-                              ],
-                            ),
-                          ),
+                        const SizedBox(height: 24),
+                        _buildSkillCard(
+                          icon: Icons.build,
+                          iconColor: const Color(0xFFAF52DE),
+                          title: "Tools & Frameworks",
+                          description: "Leveraging powerful tools for efficient development workflows",
+                          skills: ["Git", "VS Code", "Postman", "Jira", "Confluence"],
+                          animation: _floatAnimation,
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    );
+                  } else {
+                    // Desktop layout - 2x2 grid
+                    return Column(
+                      children: [
+                        // Top row - two large sections
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildSkillCard(
+                                icon: Icons.cloud,
+                                iconColor: const Color(0xFF007AFF),
+                                title: "Cloud & DevOps",
+                                description: "Building scalable infrastructure with modern cloud technologies",
+                                skills: ["AWS", "Docker", "Kubernetes", "CI/CD", "Terraform"],
+                                animation: _floatAnimation,
+                              ),
+                            ),
+                            const SizedBox(width: 32),
+                            Expanded(
+                              child: _buildSkillCard(
+                                icon: Icons.code,
+                                iconColor: const Color(0xFF34C759),
+                                title: "Programming",
+                                description: "Creating robust applications with modern programming languages",
+                                skills: ["Dart/Flutter", "Python", "JavaScript", "TypeScript", "Java"],
+                                animation: _floatAnimation,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 32),
+                        // Bottom row - two large sections
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildSkillCard(
+                                icon: Icons.storage,
+                                iconColor: const Color(0xFFFF9500),
+                                title: "Databases",
+                                description: "Designing efficient data storage and retrieval systems",
+                                skills: ["DynamoDB", "PostgreSQL", "MongoDB", "Redis"],
+                                animation: _floatAnimation,
+                              ),
+                            ),
+                            const SizedBox(width: 32),
+                            Expanded(
+                              child: _buildSkillCard(
+                                icon: Icons.build,
+                                iconColor: const Color(0xFFAF52DE),
+                                title: "Tools & Frameworks",
+                                description: "Leveraging powerful tools for efficient development workflows",
+                                skills: ["Git", "VS Code", "Postman", "Jira", "Confluence"],
+                                animation: _floatAnimation,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+                },
               ),
+                      
+                      
             ],
           ),
         ],
@@ -1374,7 +1351,9 @@ class _ContactSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width < 768 ? 20 : 40,
+      ),
       child: Stack(
         children: [
           // Subtle animated background
@@ -1423,27 +1402,57 @@ class _ContactSection extends StatelessWidget {
               ),
               const SizedBox(height: 60),
               
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _ContactButton(
-                    icon: Icons.email,
-                    title: "Email",
-                    onTap: () => _launchUrl('mailto:ovalles6845@gmail.com'),
-                  ),
-                  const SizedBox(width: 20),
-                  _ContactButton(
-                    icon: Icons.link,
-                    title: "LinkedIn",
-                    onTap: () => _launchUrl('https://www.linkedin.com/in/oscarvalles87/'),
-                  ),
-                  const SizedBox(width: 20),
-                  _ContactButton(
-                    icon: Icons.code,
-                    title: "GitHub",
-                    onTap: () => _launchUrl('https://github.com/ovalles2019'),
-                  ),
-                ],
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth < 768) {
+                    // Mobile layout - stacked vertically
+                    return Column(
+                      children: [
+                        _ContactButton(
+                          icon: Icons.email,
+                          title: "Email",
+                          onTap: () => _launchUrl('mailto:ovalles6845@gmail.com'),
+                        ),
+                        const SizedBox(height: 16),
+                        _ContactButton(
+                          icon: Icons.link,
+                          title: "LinkedIn",
+                          onTap: () => _launchUrl('https://www.linkedin.com/in/oscarvalles87/'),
+                        ),
+                        const SizedBox(height: 16),
+                        _ContactButton(
+                          icon: Icons.code,
+                          title: "GitHub",
+                          onTap: () => _launchUrl('https://github.com/ovalles2019'),
+                        ),
+                      ],
+                    );
+                  } else {
+                    // Desktop layout - side by side
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _ContactButton(
+                          icon: Icons.email,
+                          title: "Email",
+                          onTap: () => _launchUrl('mailto:ovalles6845@gmail.com'),
+                        ),
+                        const SizedBox(width: 20),
+                        _ContactButton(
+                          icon: Icons.link,
+                          title: "LinkedIn",
+                          onTap: () => _launchUrl('https://www.linkedin.com/in/oscarvalles87/'),
+                        ),
+                        const SizedBox(width: 20),
+                        _ContactButton(
+                          icon: Icons.code,
+                          title: "GitHub",
+                          onTap: () => _launchUrl('https://github.com/ovalles2019'),
+                        ),
+                      ],
+                    );
+                  }
+                },
               ),
             ],
           ),
