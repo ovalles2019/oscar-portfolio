@@ -1406,7 +1406,7 @@ class _ContactSection extends StatelessWidget {
                   _ContactButton(
                     icon: Icons.email,
                     title: "Email",
-                    onTap: () => _launchUrl('mailto:oscar.valles@gmail.com'),
+                    onTap: () => _launchUrl('mailto:ovalles6845@gmail.com'),
                   ),
                   const SizedBox(width: 20),
                   _ContactButton(
