@@ -7,9 +7,25 @@ import '../widgets/section.dart';
 import '../widgets/project_card.dart';
 import '../../models/project.dart';
 import '../../data/projects.dart';
+import '../../services/analytics_service.dart';
+import '../../services/download_counter_service.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    // Track page view when component mounts
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AnalyticsService().trackPageView('home');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +56,10 @@ class HomePage extends StatelessWidget {
   Future<void> _launchUrl(BuildContext context, String url) async {
     if (url.contains('resume.pdf')) {
       try {
+        // Track resume download
+        await AnalyticsService().trackResumeDownload();
+        DownloadCounterService().incrementDownloadCount();
+        
         // For web, try multiple approaches to download the resume
         // First, try the direct asset path
         final anchor = html.AnchorElement(href: 'assets/resume.pdf')
@@ -227,13 +247,28 @@ class _HeroSection extends StatelessWidget {
                                 ),
                                 shadowColor: Colors.transparent,
                               ),
-                              child: const Text(
-                                "Download Resume",
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: -0.5,
-                                ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Download Resume",
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: -0.5,
+                                    ),
+                                  ),
+                                  if (DownloadCounterService().hasDownloads) ...[
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      DownloadCounterService().downloadCountText,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white.withOpacity(0.8),
+                                      ),
+                                    ),
+                                  ],
+                                ],
                               ),
                             ),
                           ),
@@ -254,7 +289,10 @@ class _HeroSection extends StatelessWidget {
                           child: SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
-                              onPressed: () => _scrollToSection(context, "contact"),
+                              onPressed: () async {
+                                await AnalyticsService().trackContactClick();
+                                _scrollToSection(context, "contact");
+                              },
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: const Color(0xFF34C759),
                                 side: const BorderSide(color: Color(0xFF34C759), width: 2),
@@ -306,13 +344,28 @@ class _HeroSection extends StatelessWidget {
                               ),
                               shadowColor: Colors.transparent,
                             ),
-                            child: const Text(
-                              "Download Resume",
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: -0.5,
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Download Resume",
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: -0.5,
+                                  ),
                                 ),
+                                if (DownloadCounterService().hasDownloads) ...[
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    DownloadCounterService().downloadCountText,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white.withOpacity(0.8),
+                                    ),
+                                  ),
+                                ],
+                              ],
                             ),
                           ),
                         ),
@@ -330,7 +383,10 @@ class _HeroSection extends StatelessWidget {
                             ],
                           ),
                           child: OutlinedButton(
-                            onPressed: () => _scrollToSection(context, "contact"),
+                            onPressed: () async {
+                              await AnalyticsService().trackContactClick();
+                              _scrollToSection(context, "contact");
+                            },
                             style: OutlinedButton.styleFrom(
                               foregroundColor: const Color(0xFF34C759),
                               side: const BorderSide(color: Color(0xFF34C759), width: 2),
@@ -842,30 +898,49 @@ class _ProjectsSectionState extends State<_ProjectsSection>
   int _currentPage = 0;
   final List<Project> _projects = [
     Project(
-      title: "Cloud Infrastructure Automation",
-      description: "Designed and implemented automated cloud infrastructure using Terraform and AWS services, reducing deployment time by 80% and improving scalability.",
-      detailedDescription: "A comprehensive cloud automation solution that leverages Infrastructure as Code principles to create reproducible and scalable AWS environments. The project includes automated CI/CD pipelines, monitoring dashboards, and disaster recovery procedures.",
-      tags: ["AWS", "Terraform", "DevOps", "Python"],
-      link: "https://github.com/example/cloud-automation",
-      imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&crop=center",
+      title: "AI Fashion Stylist",
+      description: "An intelligent fashion recommendation system that uses computer vision and machine learning to suggest personalized outfit combinations.",
+      detailedDescription: "A sophisticated AI-powered fashion styling application that analyzes user preferences, body type, and current wardrobe to provide personalized fashion recommendations. The system uses computer vision to analyze clothing items and machine learning algorithms to suggest optimal outfit combinations based on style, occasion, and personal taste.",
+      tags: ["Python", "Machine Learning", "Computer Vision", "AI/ML", "Flask"],
+      link: "https://github.com/ovalles2019/ai-fashion-stylist",
+      imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop",
+      demoUrl: "https://ai-fashion-stylist-demo.herokuapp.com",
+      features: [
+        "Computer vision clothing analysis",
+        "Personalized style recommendations",
+        "Wardrobe management system",
+        "Style preference learning",
+        "Outfit combination suggestions"
+      ],
+      technologies: ["Python", "TensorFlow", "OpenCV", "Flask", "PostgreSQL", "Scikit-learn"],
+      githubUrl: "https://github.com/ovalles2019/ai-fashion-stylist",
+    ),
+    Project(
+      title: "Cloud Automation Platform",
+      description: "A comprehensive cloud automation solution that streamlines infrastructure deployment and management across multiple cloud providers.",
+      detailedDescription: "A sophisticated cloud automation platform that enables DevOps teams to deploy and manage infrastructure as code across AWS, Azure, and Google Cloud. Features include automated scaling, cost optimization, and compliance monitoring.",
+      tags: ["Python", "Terraform", "AWS", "DevOps"],
+      link: "https://github.com/ovalles2019/cloud-automation",
+      imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop",
       demoUrl: "https://demo.cloud-automation.com",
       features: [
-        "Automated infrastructure provisioning",
-        "CI/CD pipeline integration",
-        "Cost optimization strategies",
-        "Security compliance automation"
+        "Multi-cloud deployment",
+        "Infrastructure as Code",
+        "Automated scaling",
+        "Cost optimization",
+        "Compliance monitoring"
       ],
-      technologies: ["AWS", "Terraform", "Python", "Docker", "Jenkins"],
-      githubUrl: "https://github.com/example/cloud-automation",
+      technologies: ["Python", "Terraform", "AWS", "Docker", "Kubernetes"],
+      githubUrl: "https://github.com/ovalles2019/cloud-automation",
     ),
     Project(
       title: "Real-time Chat Application",
-      description: "Built a scalable real-time chat application using Flutter and Firebase, supporting thousands of concurrent users with real-time messaging.",
+      description: "A modern, cross-platform chat application with real-time messaging, file sharing, and group chat capabilities.",
       detailedDescription: "A modern, cross-platform chat application that provides real-time messaging, file sharing, and group chat capabilities. Features include push notifications, offline support, and end-to-end encryption.",
-      tags: ["Flutter", "Firebase", "Real-time", "Mobile"],
-      link: "https://github.com/example/chat-app",
-      imageUrl: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=600&fit=crop&crop=center",
-      demoUrl: "https://chat-app-demo.firebaseapp.com",
+      tags: ["Flutter", "Firebase", "Dart", "Real-time"],
+      link: "https://github.com/ovalles2019/chat-app",
+      imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop",
+      demoUrl: "https://chat-app-demo.web.app",
       features: [
         "Real-time messaging",
         "File sharing",
@@ -874,43 +949,43 @@ class _ProjectsSectionState extends State<_ProjectsSection>
         "End-to-end encryption"
       ],
       technologies: ["Flutter", "Firebase", "Dart", "Cloud Firestore", "Firebase Auth"],
-      githubUrl: "https://github.com/example/chat-app",
+      githubUrl: "https://github.com/ovalles2019/chat-app",
     ),
     Project(
       title: "E-commerce Platform",
-      description: "Developed a full-stack e-commerce solution with React frontend and Node.js backend, featuring payment integration and inventory management.",
-      detailedDescription: "A complete e-commerce solution with modern web technologies, featuring a responsive design, secure payment processing, inventory management, and admin dashboard for business operations.",
-      tags: ["React", "Node.js", "MongoDB", "Stripe"],
-      link: "https://github.com/example/ecommerce",
-      imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop&crop=center",
+      description: "A full-stack e-commerce solution with advanced features like AI-powered recommendations and real-time inventory management.",
+      detailedDescription: "A comprehensive e-commerce platform built with modern web technologies. Features include AI-powered product recommendations, real-time inventory management, secure payment processing, and an intuitive admin dashboard.",
+      tags: ["React", "Node.js", "MongoDB", "AI/ML"],
+      link: "https://github.com/ovalles2019/ecommerce",
+      imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop",
       demoUrl: "https://ecommerce-demo.vercel.app",
       features: [
-        "Responsive design",
-        "Secure payment processing",
-        "Inventory management",
+        "AI-powered recommendations",
+        "Real-time inventory",
+        "Secure payments",
         "Admin dashboard",
-        "Order tracking"
+        "Mobile responsive"
       ],
-      technologies: ["React", "Node.js", "MongoDB", "Stripe", "Express.js"],
-      githubUrl: "https://github.com/example/ecommerce",
+      technologies: ["React", "Node.js", "MongoDB", "TensorFlow", "Stripe"],
+      githubUrl: "https://github.com/ovalles2019/ecommerce",
     ),
     Project(
-      title: "Infrastructure as Code with Terraform",
-      description: "Created reusable Terraform modules for AWS infrastructure, enabling consistent deployments across multiple environments.",
-      detailedDescription: "A collection of modular Terraform configurations that enable teams to deploy consistent infrastructure across development, staging, and production environments with minimal configuration changes.",
-      tags: ["Terraform", "AWS", "Infrastructure", "Automation"],
-      link: "https://github.com/example/terraform-modules",
-      imageUrl: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&h=600&fit=crop&crop=center",
-      demoUrl: "https://terraform-modules-demo.com",
+      title: "Terraform AWS Modules",
+      description: "A collection of reusable Terraform modules for AWS infrastructure, following best practices and security standards.",
+      detailedDescription: "A comprehensive collection of reusable Terraform modules for AWS infrastructure deployment. Each module follows AWS best practices, includes security configurations, and provides detailed documentation with examples.",
+      tags: ["Terraform", "AWS", "Infrastructure", "DevOps"],
+      link: "https://github.com/ovalles2019/terraform-modules",
+      imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop",
+      demoUrl: "https://terraform-modules-docs.netlify.app",
       features: [
         "Reusable modules",
-        "Environment-specific configurations",
         "Security best practices",
-        "Cost optimization",
-        "Documentation and examples"
+        "Comprehensive documentation",
+        "CI/CD integration",
+        "Cost optimization"
       ],
-      technologies: ["Terraform", "AWS", "HCL", "GitHub Actions", "AWS CLI"],
-      githubUrl: "https://github.com/example/terraform-modules",
+      technologies: ["Terraform", "AWS", "Docker", "GitHub Actions", "HCL"],
+      githubUrl: "https://github.com/ovalles2019/terraform-modules",
     ),
   ];
 
@@ -1462,19 +1537,19 @@ class _ContactSection extends StatelessWidget {
                         _ContactButton(
                           icon: Icons.email,
                           title: "Email",
-                          onTap: () => _launchUrl('mailto:ovalles6845@gmail.com'),
+                          onTap: () => _launchUrl(context, 'mailto:ovalles6845@gmail.com'),
                         ),
                         const SizedBox(height: 16),
                         _ContactButton(
                           icon: Icons.link,
                           title: "LinkedIn",
-                          onTap: () => _launchUrl('https://www.linkedin.com/in/oscarvalles87/'),
+                          onTap: () => _launchUrl(context, 'https://www.linkedin.com/in/oscarvalles87/'),
                         ),
                         const SizedBox(height: 16),
                         _ContactButton(
                           icon: Icons.code,
                           title: "GitHub",
-                          onTap: () => _launchUrl('https://github.com/ovalles2019'),
+                          onTap: () => _launchUrl(context, 'https://github.com/ovalles2019'),
                         ),
                       ],
                     );
@@ -1486,19 +1561,19 @@ class _ContactSection extends StatelessWidget {
                         _ContactButton(
                           icon: Icons.email,
                           title: "Email",
-                          onTap: () => _launchUrl('mailto:ovalles6845@gmail.com'),
+                          onTap: () => _launchUrl(context, 'mailto:ovalles6845@gmail.com'),
                         ),
                         const SizedBox(width: 20),
                         _ContactButton(
                           icon: Icons.link,
                           title: "LinkedIn",
-                          onTap: () => _launchUrl('https://www.linkedin.com/in/oscarvalles87/'),
+                          onTap: () => _launchUrl(context, 'https://www.linkedin.com/in/oscarvalles87/'),
                         ),
                         const SizedBox(width: 20),
                         _ContactButton(
                           icon: Icons.code,
                           title: "GitHub",
-                          onTap: () => _launchUrl('https://github.com/ovalles2019'),
+                          onTap: () => _launchUrl(context, 'https://github.com/ovalles2019'),
                         ),
                       ],
                     );
@@ -1512,8 +1587,57 @@ class _ContactSection extends StatelessWidget {
     );
   }
 
-  Future<void> _launchUrl(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
+  Future<void> _launchUrl(BuildContext context, String url) async {
+    if (url.contains('resume.pdf')) {
+      try {
+        // Track resume download
+        await AnalyticsService().trackResumeDownload();
+        DownloadCounterService().incrementDownloadCount();
+        
+        // For web, try multiple approaches to download the resume
+        // First, try the direct asset path
+        final anchor = html.AnchorElement(href: 'assets/resume.pdf')
+          ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
+          ..click();
+        
+        // Wait a bit to see if download starts
+        await Future.delayed(Duration(milliseconds: 500));
+        
+        // If download didn't start, try opening in new tab
+        try {
+          await launchUrl(
+            Uri.parse('assets/resume.pdf'), 
+            mode: LaunchMode.externalApplication
+          );
+        } catch (e) {
+          // Show helpful message with alternative download method
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Resume download failed. Please right-click the button and select "Save as..."'),
+              duration: Duration(seconds: 5),
+              action: SnackBarAction(
+                label: 'Copy Link',
+                onPressed: () {
+                  // Copy the direct link to clipboard
+                  html.window.navigator.clipboard?.writeText('assets/resume.pdf');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Link copied to clipboard!')),
+                  );
+                },
+              ),
+            ),
+          );
+        }
+      } catch (e) {
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Resume download failed. Please try right-clicking and "Save as..."'),
+            duration: Duration(seconds: 4),
+          ),
+        );
+      }
+    } else if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     }
   }

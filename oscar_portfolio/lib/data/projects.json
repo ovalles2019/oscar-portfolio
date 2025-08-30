@@ -1,5 +1,11 @@
 [
   {
+    "title": "AI Fashion Stylist",
+    "description": "An intelligent fashion recommendation system that uses computer vision and machine learning to suggest personalized outfit combinations. Built with Python, TensorFlow, and OpenCV for clothing analysis and style recommendations.",
+    "tags": ["Python", "Machine Learning", "Computer Vision", "AI/ML", "Flask", "TensorFlow"],
+    "link": "https://github.com/ovalles2019/ai-fashion-stylist"
+  },
+  {
     "title": "Serverless E-commerce Platform",
     "description": "Built a scalable e-commerce platform using AWS Lambda, DynamoDB, S3, API Gateway, and Amplify. Features include user authentication, product management, shopping cart, and payment processing with Stripe integration.",
     "tags": ["AWS", "Serverless", "DynamoDB", "Lambda", "React"],
