@@ -898,6 +898,42 @@ class _ProjectsSectionState extends State<_ProjectsSection>
   int _currentPage = 0;
   final List<Project> _projects = [
     Project(
+      title: "Uber Replica",
+      description: "A comprehensive ride-sharing application clone built with modern web technologies. Features include user authentication, real-time location tracking, ride booking, driver matching, and payment processing.",
+      detailedDescription: "A sophisticated ride-sharing application clone that replicates the core functionality of Uber. Built with React for the frontend, Node.js for the backend, and MongoDB for data storage. Features include real-time location tracking using WebSocket connections, secure user authentication, driver-rider matching algorithms, and integrated payment processing. The application demonstrates modern web development practices with responsive design and scalable architecture.",
+      tags: ["React", "Node.js", "MongoDB", "Real-time", "Location Services", "Payment Integration"],
+      link: "https://github.com/oscarvalles/uber-replica",
+      imageUrl: "https://images.unsplash.com/photo-1549924231-f129b911e442?w=800&h=600&fit=crop",
+      demoUrl: "https://uber-replica-demo.vercel.app",
+      features: [
+        "Real-time location tracking",
+        "User authentication & authorization",
+        "Driver-rider matching system",
+        "Payment processing integration",
+        "Responsive mobile-first design"
+      ],
+      technologies: ["React", "Node.js", "MongoDB", "WebSocket", "Stripe", "Express.js"],
+      githubUrl: "https://github.com/oscarvalles/uber-replica",
+    ),
+    Project(
+      title: "ML Cloud Deployment Platform",
+      description: "A comprehensive machine learning model deployment platform built on cloud infrastructure with automated training, A/B testing, and scalable inference endpoints.",
+      detailedDescription: "An enterprise-grade machine learning model deployment platform that streamlines the entire ML lifecycle from development to production. Built on AWS with Kubernetes orchestration, the platform provides automated model training pipelines, A/B testing capabilities, real-time monitoring, and scalable inference endpoints. Features include model versioning, performance tracking, and automated rollback mechanisms for production reliability.",
+      tags: ["Machine Learning", "AWS", "Kubernetes", "MLOps", "Python", "Docker"],
+      link: "https://github.com/oscarvalles/ml-cloud-deployment",
+      imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+      demoUrl: "https://ml-deployment-demo.aws.amazon.com",
+      features: [
+        "Automated model training pipelines",
+        "A/B testing framework",
+        "Real-time performance monitoring",
+        "Scalable inference endpoints",
+        "Model versioning & rollback"
+      ],
+      technologies: ["Python", "AWS SageMaker", "Kubernetes", "Docker", "TensorFlow", "MLflow"],
+      githubUrl: "https://github.com/oscarvalles/ml-cloud-deployment",
+    ),
+    Project(
       title: "AI Fashion Stylist",
       description: "An intelligent fashion recommendation system that uses computer vision and machine learning to suggest personalized outfit combinations.",
       detailedDescription: "A sophisticated AI-powered fashion styling application that analyzes user preferences, body type, and current wardrobe to provide personalized fashion recommendations. The system uses computer vision to analyze clothing items and machine learning algorithms to suggest optimal outfit combinations based on style, occasion, and personal taste.",
@@ -914,24 +950,6 @@ class _ProjectsSectionState extends State<_ProjectsSection>
       ],
       technologies: ["Python", "TensorFlow", "OpenCV", "Flask", "PostgreSQL", "Scikit-learn"],
       githubUrl: "https://github.com/ovalles2019/ai-fashion-stylist",
-    ),
-    Project(
-      title: "Cloud Automation Platform",
-      description: "A comprehensive cloud automation solution that streamlines infrastructure deployment and management across multiple cloud providers.",
-      detailedDescription: "A sophisticated cloud automation platform that enables DevOps teams to deploy and manage infrastructure as code across AWS, Azure, and Google Cloud. Features include automated scaling, cost optimization, and compliance monitoring.",
-      tags: ["Python", "Terraform", "AWS", "DevOps"],
-      link: "https://github.com/ovalles2019/cloud-automation",
-      imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop",
-      demoUrl: "https://demo.cloud-automation.com",
-      features: [
-        "Multi-cloud deployment",
-        "Infrastructure as Code",
-        "Automated scaling",
-        "Cost optimization",
-        "Compliance monitoring"
-      ],
-      technologies: ["Python", "Terraform", "AWS", "Docker", "Kubernetes"],
-      githubUrl: "https://github.com/ovalles2019/cloud-automation",
     ),
     Project(
       title: "Real-time Chat Application",
@@ -968,24 +986,6 @@ class _ProjectsSectionState extends State<_ProjectsSection>
       ],
       technologies: ["React", "Node.js", "MongoDB", "TensorFlow", "Stripe"],
       githubUrl: "https://github.com/ovalles2019/ecommerce",
-    ),
-    Project(
-      title: "Terraform AWS Modules",
-      description: "A collection of reusable Terraform modules for AWS infrastructure, following best practices and security standards.",
-      detailedDescription: "A comprehensive collection of reusable Terraform modules for AWS infrastructure deployment. Each module follows AWS best practices, includes security configurations, and provides detailed documentation with examples.",
-      tags: ["Terraform", "AWS", "Infrastructure", "DevOps"],
-      link: "https://github.com/ovalles2019/terraform-modules",
-      imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop",
-      demoUrl: "https://terraform-modules-docs.netlify.app",
-      features: [
-        "Reusable modules",
-        "Security best practices",
-        "Comprehensive documentation",
-        "CI/CD integration",
-        "Cost optimization"
-      ],
-      technologies: ["Terraform", "AWS", "Docker", "GitHub Actions", "HCL"],
-      githubUrl: "https://github.com/ovalles2019/terraform-modules",
     ),
   ];
 

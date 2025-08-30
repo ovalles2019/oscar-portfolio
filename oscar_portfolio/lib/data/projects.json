@@ -42,6 +42,13 @@
     "videoUrl": "https://www.youtube.com/watch?v=example-uber-replica"
   },
   {
+    "title": "ML Cloud Deployment Platform",
+    "description": "A comprehensive machine learning model deployment platform built on cloud infrastructure. Features include automated model training, A/B testing, monitoring, and scalable inference endpoints with real-time performance tracking.",
+    "tags": ["Machine Learning", "AWS", "Kubernetes", "MLOps", "Python", "Docker"],
+    "link": "https://github.com/oscarvalles/ml-cloud-deployment",
+    "videoUrl": "https://www.youtube.com/watch?v=example-ml-deployment"
+  },
+  {
     "title": "Portfolio Website",
     "description": "This very site, built with Flutter and modern web technologies. Features responsive design, dark/light theme support, and showcases my experience as a Cloud Engineer.",
     "tags": ["Flutter", "Web", "Portfolio", "Responsive Design"],
