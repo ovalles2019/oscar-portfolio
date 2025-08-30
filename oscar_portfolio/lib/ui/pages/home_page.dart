@@ -938,7 +938,7 @@ class _ProjectsSectionState extends State<_ProjectsSection>
       description: "An intelligent fashion recommendation system that uses computer vision and machine learning to suggest personalized outfit combinations.",
       detailedDescription: "A sophisticated AI-powered fashion styling application that analyzes user preferences, body type, and current wardrobe to provide personalized fashion recommendations. The system uses computer vision to analyze clothing items and machine learning algorithms to suggest optimal outfit combinations based on style, occasion, and personal taste.",
       tags: ["Python", "Machine Learning", "Computer Vision", "AI/ML", "Flask"],
-      link: "https://github.com/ovalles2019/ai-fashion-stylist",
+      link: "https://github.com/oscarvalles/ai-fashion-stylist",
       imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop",
       demoUrl: "https://ai-fashion-stylist-demo.herokuapp.com",
       features: [
@@ -949,14 +949,14 @@ class _ProjectsSectionState extends State<_ProjectsSection>
         "Outfit combination suggestions"
       ],
       technologies: ["Python", "TensorFlow", "OpenCV", "Flask", "PostgreSQL", "Scikit-learn"],
-      githubUrl: "https://github.com/ovalles2019/ai-fashion-stylist",
+      githubUrl: "https://github.com/oscarvalles/ai-fashion-stylist",
     ),
     Project(
       title: "Real-time Chat Application",
       description: "A modern, cross-platform chat application with real-time messaging, file sharing, and group chat capabilities.",
       detailedDescription: "A modern, cross-platform chat application that provides real-time messaging, file sharing, and group chat capabilities. Features include push notifications, offline support, and end-to-end encryption.",
       tags: ["Flutter", "Firebase", "Dart", "Real-time"],
-      link: "https://github.com/ovalles2019/chat-app",
+      link: "https://github.com/oscarvalles/chat-app",
       imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop",
       demoUrl: "https://chat-app-demo.web.app",
       features: [
@@ -967,14 +967,14 @@ class _ProjectsSectionState extends State<_ProjectsSection>
         "End-to-end encryption"
       ],
       technologies: ["Flutter", "Firebase", "Dart", "Cloud Firestore", "Firebase Auth"],
-      githubUrl: "https://github.com/ovalles2019/chat-app",
+      githubUrl: "https://github.com/oscarvalles/chat-app",
     ),
     Project(
       title: "E-commerce Platform",
       description: "A full-stack e-commerce solution with advanced features like AI-powered recommendations and real-time inventory management.",
       detailedDescription: "A comprehensive e-commerce platform built with modern web technologies. Features include AI-powered product recommendations, real-time inventory management, secure payment processing, and an intuitive admin dashboard.",
       tags: ["React", "Node.js", "MongoDB", "AI/ML"],
-      link: "https://github.com/ovalles2019/ecommerce",
+      link: "https://github.com/oscarvalles/ecommerce",
       imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop",
       demoUrl: "https://ecommerce-demo.vercel.app",
       features: [
@@ -985,7 +985,7 @@ class _ProjectsSectionState extends State<_ProjectsSection>
         "Mobile responsive"
       ],
       technologies: ["React", "Node.js", "MongoDB", "TensorFlow", "Stripe"],
-      githubUrl: "https://github.com/ovalles2019/ecommerce",
+      githubUrl: "https://github.com/oscarvalles/ecommerce",
     ),
   ];
 
