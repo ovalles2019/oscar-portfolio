@@ -99,8 +99,8 @@ class _ProjectCardState extends State<ProjectCard>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Project Image
-                      if (widget.project.imageUrl != null) ...[
+                      // Project Media (Image or Video)
+                      if (widget.project.imageUrl != null || widget.project.videoUrl != null) ...[
                         Container(
                           height: 160,
                           width: double.infinity,
@@ -116,22 +116,66 @@ class _ProjectCardState extends State<ProjectCard>
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(16),
-                            child: Image.network(
-                              widget.project.imageUrl!,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(16),
+                            child: Stack(
+                              children: [
+                                // Image or Video Background
+                                if (widget.project.videoUrl != null)
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.video_library,
+                                        size: 45,
+                                        color: Theme.of(context).colorScheme.primary,
+                                      ),
+                                    ),
+                                  )
+                                else if (widget.project.imageUrl != null)
+                                  Image.network(
+                                    widget.project.imageUrl!,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        child: Icon(
+                                          Icons.image,
+                                          size: 45,
+                                          color: Theme.of(context).colorScheme.primary,
+                                        ),
+                                      );
+                                    },
                                   ),
-                                  child: Icon(
-                                    Icons.image,
-                                    size: 45,
-                                    color: Theme.of(context).colorScheme.primary,
+                                
+                                // Play Button Overlay for Videos
+                                if (widget.project.videoUrl != null)
+                                  Center(
+                                    child: Container(
+                                      padding: const EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).colorScheme.primary.withOpacity(0.9),
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.3),
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Icon(
+                                        Icons.play_arrow,
+                                        size: 32,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
-                                );
-                              },
+                              ],
                             ),
                           ),
                         ),
@@ -328,8 +372,8 @@ class ProjectDetailsModal extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Project Image
-                    if (project.imageUrl != null) ...[
+                    // Project Media (Image or Video)
+                    if (project.imageUrl != null || project.videoUrl != null) ...[
                       Container(
                         height: 250,
                         width: double.infinity,
@@ -345,22 +389,69 @@ class ProjectDetailsModal extends StatelessWidget {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: Image.network(
-                            project.imageUrl!,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(16),
+                          child: Stack(
+                            children: [
+                              // Image or Video Background
+                              if (project.videoUrl != null)
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.video_library,
+                                      size: 80,
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                  ),
+                                )
+                              else if (project.imageUrl != null)
+                                Image.network(
+                                  project.imageUrl!,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Icon(
+                                        Icons.image,
+                                        size: 80,
+                                        color: Theme.of(context).colorScheme.primary,
+                                      ),
+                                    );
+                                  },
                                 ),
-                                child: Icon(
-                                  Icons.image,
-                                  size: 80,
-                                  color: Theme.of(context).colorScheme.primary,
+                              
+                              // Play Button Overlay for Videos
+                              if (project.videoUrl != null)
+                                Center(
+                                  child: GestureDetector(
+                                    onTap: () => _launchUrl(project.videoUrl!),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).colorScheme.primary.withOpacity(0.9),
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.3),
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Icon(
+                                        Icons.play_arrow,
+                                        size: 48,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              );
-                            },
+                            ],
                           ),
                         ),
                       ),

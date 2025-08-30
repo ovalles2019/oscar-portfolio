@@ -5,6 +5,7 @@ class Project {
   final List<String> tags;
   final String? link;
   final String? imageUrl;
+  final String? videoUrl;
   final String? demoUrl;
   final List<String> features;
   final List<String> technologies;
@@ -17,6 +18,7 @@ class Project {
     required this.tags,
     this.link,
     this.imageUrl,
+    this.videoUrl,
     this.demoUrl,
     this.features = const [],
     this.technologies = const [],
@@ -31,6 +33,7 @@ class Project {
       tags: List<String>.from(json['tags']),
       link: json['link'],
       imageUrl: json['imageUrl'],
+      videoUrl: json['videoUrl'],
       demoUrl: json['demoUrl'],
       features: List<String>.from(json['features'] ?? []),
       technologies: List<String>.from(json['technologies'] ?? []),
