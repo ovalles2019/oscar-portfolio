@@ -30,6 +30,12 @@
     "link": "https://github.com/oscarvalles/terraform-aws"
   },
   {
+    "title": "Uber Replica",
+    "description": "A comprehensive ride-sharing application clone built with modern web technologies. Features include user authentication, real-time location tracking, ride booking, driver matching, and payment processing. Built with React, Node.js, and MongoDB.",
+    "tags": ["React", "Node.js", "MongoDB", "Real-time", "Location Services", "Payment Integration"],
+    "link": "https://github.com/oscarvalles/uber-replica"
+  },
+  {
     "title": "Portfolio Website",
     "description": "This very site, built with Flutter and modern web technologies. Features responsive design, dark/light theme support, and showcases my experience as a Cloud Engineer.",
     "tags": ["Flutter", "Web", "Portfolio", "Responsive Design"],

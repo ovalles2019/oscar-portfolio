@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../models/project.dart';
+import '../../services/analytics_service.dart';
 
 class ProjectCard extends StatefulWidget {
   final Project project;
@@ -101,7 +102,7 @@ class _ProjectCardState extends State<ProjectCard>
                       // Project Image
                       if (widget.project.imageUrl != null) ...[
                         Container(
-                          height: 180,
+                          height: 160,
                           width: double.infinity,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
@@ -126,7 +127,7 @@ class _ProjectCardState extends State<ProjectCard>
                                   ),
                                   child: Icon(
                                     Icons.image,
-                                    size: 50,
+                                    size: 45,
                                     color: Theme.of(context).colorScheme.primary,
                                   ),
                                 );
@@ -134,7 +135,7 @@ class _ProjectCardState extends State<ProjectCard>
                             ),
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 14),
                       ],
                       
                       // Project Title
@@ -158,7 +159,7 @@ class _ProjectCardState extends State<ProjectCard>
                           height: 1.4,
                           fontWeight: FontWeight.w400,
                         ),
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 16),
@@ -247,7 +248,10 @@ class _ProjectCardState extends State<ProjectCard>
     );
   }
 
-  void _showProjectDetails(BuildContext context) {
+  void _showProjectDetails(BuildContext context) async {
+    // Track project view
+    await AnalyticsService().trackProjectView(widget.project.title);
+    
     showDialog(
       context: context,
       builder: (context) => ProjectDetailsModal(project: widget.project),
