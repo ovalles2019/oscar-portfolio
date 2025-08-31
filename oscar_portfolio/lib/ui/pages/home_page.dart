@@ -992,7 +992,7 @@ class _ProjectsSectionState extends State<_ProjectsSection>
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(viewportFraction: 0.85);
+    _pageController = PageController(viewportFraction: 0.64);
     _autoPlayController = AnimationController(
       duration: const Duration(seconds: 5),
       vsync: this,
