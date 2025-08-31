@@ -61,9 +61,13 @@ class _HomePageState extends State<HomePage> {
         DownloadCounterService().incrementDownloadCount();
         
         // For web, try multiple approaches to download the resume
-        // First, try the direct asset path
-        final anchor = html.AnchorElement(href: 'assets/resume.pdf')
+        // Use the correct asset path for deployed Flutter web apps
+        final resumeUrl = '/assets/resume.pdf';
+        
+        // First, try creating a download link
+        final anchor = html.AnchorElement(href: resumeUrl)
           ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
+          ..setAttribute('target', '_blank')
           ..click();
         
         // Wait a bit to see if download starts
@@ -72,7 +76,7 @@ class _HomePageState extends State<HomePage> {
         // If download didn't start, try opening in new tab
         try {
           await launchUrl(
-            Uri.parse('assets/resume.pdf'), 
+            Uri.parse(resumeUrl), 
             mode: LaunchMode.externalApplication
           );
         } catch (e) {
@@ -85,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                 label: 'Copy Link',
                 onPressed: () {
                   // Copy the direct link to clipboard
-                  html.window.navigator.clipboard?.writeText('assets/resume.pdf');
+                  html.window.navigator.clipboard?.writeText(resumeUrl);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Link copied to clipboard!')),
                   );
@@ -236,7 +240,7 @@ class _HeroSection extends StatelessWidget {
                           child: SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: () => onLaunchUrl(context, 'assets/resume.pdf'),
+                              onPressed: () => onLaunchUrl(context, '/assets/resume.pdf'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF007AFF),
                                 foregroundColor: Colors.white,
@@ -333,7 +337,7 @@ class _HeroSection extends StatelessWidget {
                             ],
                           ),
                           child: ElevatedButton(
-                            onPressed: () => onLaunchUrl(context, 'assets/resume.pdf'),
+                                                          onPressed: () => onLaunchUrl(context, '/assets/resume.pdf'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF007AFF),
                               foregroundColor: Colors.white,
@@ -1595,9 +1599,13 @@ class _ContactSection extends StatelessWidget {
         DownloadCounterService().incrementDownloadCount();
         
         // For web, try multiple approaches to download the resume
-        // First, try the direct asset path
-        final anchor = html.AnchorElement(href: 'assets/resume.pdf')
+        // Use the correct asset path for deployed Flutter web apps
+        final resumeUrl = '/assets/resume.pdf';
+        
+        // First, try creating a download link
+        final anchor = html.AnchorElement(href: resumeUrl)
           ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
+          ..setAttribute('target', '_blank')
           ..click();
         
         // Wait a bit to see if download starts
@@ -1606,7 +1614,7 @@ class _ContactSection extends StatelessWidget {
         // If download didn't start, try opening in new tab
         try {
           await launchUrl(
-            Uri.parse('assets/resume.pdf'), 
+            Uri.parse(resumeUrl), 
             mode: LaunchMode.externalApplication
           );
         } catch (e) {
@@ -1619,7 +1627,7 @@ class _ContactSection extends StatelessWidget {
                 label: 'Copy Link',
                 onPressed: () {
                   // Copy the direct link to clipboard
-                  html.window.navigator.clipboard?.writeText('assets/resume.pdf');
+                  html.window.navigator.clipboard?.writeText(resumeUrl);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Link copied to clipboard!')),
                   );
