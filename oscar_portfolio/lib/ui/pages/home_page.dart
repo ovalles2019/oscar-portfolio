@@ -61,42 +61,69 @@ class _HomePageState extends State<HomePage> {
         DownloadCounterService().incrementDownloadCount();
         
         // For web, try multiple approaches to download the resume
-        // Use the correct asset path for deployed Flutter web apps
-        final resumeUrl = '/assets/resume.pdf';
+        // Try different asset paths that might work on deployed sites
+        final List<String> possiblePaths = [
+          '/assets/assets/resume.pdf',  // Correct path for Flutter web build
+          '/assets/resume.pdf',
+          'assets/assets/resume.pdf',
+          'assets/resume.pdf',
+          './assets/resume.pdf',
+          'resume.pdf'
+        ];
         
-        // First, try creating a download link
-        final anchor = html.AnchorElement(href: resumeUrl)
-          ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
-          ..setAttribute('target', '_blank')
-          ..click();
+        bool downloadSuccess = false;
+        String lastError = '';
         
-        // Wait a bit to see if download starts
-        await Future.delayed(Duration(milliseconds: 500));
+        for (String path in possiblePaths) {
+          try {
+            // Try creating a download link
+            final anchor = html.AnchorElement(href: path)
+              ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
+              ..setAttribute('target', '_blank')
+              ..click();
+            
+            // Wait a bit to see if download starts
+            await Future.delayed(Duration(milliseconds: 300));
+            
+            // If we get here without error, assume it worked
+            downloadSuccess = true;
+            break;
+          } catch (e) {
+            lastError = e.toString();
+            // Continue to next path
+            continue;
+          }
+        }
         
-        // If download didn't start, try opening in new tab
-        try {
-          await launchUrl(
-            Uri.parse(resumeUrl), 
-            mode: LaunchMode.externalApplication
-          );
-        } catch (e) {
-          // Show helpful message with alternative download method
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Resume download failed. Please right-click the button and select "Save as..."'),
-              duration: Duration(seconds: 5),
-              action: SnackBarAction(
-                label: 'Copy Link',
-                onPressed: () {
-                  // Copy the direct link to clipboard
-                  html.window.navigator.clipboard?.writeText(resumeUrl);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Link copied to clipboard!')),
-                  );
-                },
+        // If none of the direct paths worked, try opening in new tab
+        if (!downloadSuccess) {
+          try {
+            await launchUrl(
+              Uri.parse('/assets/assets/resume.pdf'), 
+              mode: LaunchMode.externalApplication
+            );
+          } catch (e) {
+            // Show helpful message with alternative download method and debug info
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Resume download failed. Please right-click the button and select "Save as..."'),
+                duration: Duration(seconds: 8),
+                action: SnackBarAction(
+                  label: 'Copy Link',
+                  onPressed: () {
+                    // Copy the direct link to clipboard
+                    html.window.navigator.clipboard?.writeText('/assets/assets/resume.pdf');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Link copied to clipboard!')),
+                    );
+                  },
+                ),
               ),
-            ),
-          );
+            );
+            
+            // Log the error for debugging
+            print('Resume download failed. Last error: $lastError');
+          }
         }
       } catch (e) {
         // Show error message
@@ -1599,42 +1626,69 @@ class _ContactSection extends StatelessWidget {
         DownloadCounterService().incrementDownloadCount();
         
         // For web, try multiple approaches to download the resume
-        // Use the correct asset path for deployed Flutter web apps
-        final resumeUrl = '/assets/resume.pdf';
+        // Try different asset paths that might work on deployed sites
+        final List<String> possiblePaths = [
+          '/assets/assets/resume.pdf',  // Correct path for Flutter web build
+          '/assets/resume.pdf',
+          'assets/assets/resume.pdf',
+          'assets/resume.pdf',
+          './assets/resume.pdf',
+          'resume.pdf'
+        ];
         
-        // First, try creating a download link
-        final anchor = html.AnchorElement(href: resumeUrl)
-          ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
-          ..setAttribute('target', '_blank')
-          ..click();
+        bool downloadSuccess = false;
+        String lastError = '';
         
-        // Wait a bit to see if download starts
-        await Future.delayed(Duration(milliseconds: 500));
+        for (String path in possiblePaths) {
+          try {
+            // Try creating a download link
+            final anchor = html.AnchorElement(href: path)
+              ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
+              ..setAttribute('target', '_blank')
+              ..click();
+            
+            // Wait a bit to see if download starts
+            await Future.delayed(Duration(milliseconds: 300));
+            
+            // If we get here without error, assume it worked
+            downloadSuccess = true;
+            break;
+          } catch (e) {
+            lastError = e.toString();
+            // Continue to next path
+            continue;
+          }
+        }
         
-        // If download didn't start, try opening in new tab
-        try {
-          await launchUrl(
-            Uri.parse(resumeUrl), 
-            mode: LaunchMode.externalApplication
-          );
-        } catch (e) {
-          // Show helpful message with alternative download method
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Resume download failed. Please right-click the button and select "Save as..."'),
-              duration: Duration(seconds: 5),
-              action: SnackBarAction(
-                label: 'Copy Link',
-                onPressed: () {
-                  // Copy the direct link to clipboard
-                  html.window.navigator.clipboard?.writeText(resumeUrl);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Link copied to clipboard!')),
-                  );
-                },
+        // If none of the direct paths worked, try opening in new tab
+        if (!downloadSuccess) {
+          try {
+            await launchUrl(
+              Uri.parse('/assets/assets/resume.pdf'), 
+              mode: LaunchMode.externalApplication
+            );
+          } catch (e) {
+            // Show helpful message with alternative download method and debug info
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Resume download failed. Please right-click the button and select "Save as..."'),
+                duration: Duration(seconds: 8),
+                action: SnackBarAction(
+                  label: 'Copy Link',
+                  onPressed: () {
+                    // Copy the direct link to clipboard
+                    html.window.navigator.clipboard?.writeText('/assets/assets/resume.pdf');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Link copied to clipboard!')),
+                    );
+                  },
+                ),
               ),
-            ),
-          );
+            );
+            
+            // Log the error for debugging
+            print('Resume download failed. Last error: $lastError');
+          }
         }
       } catch (e) {
         // Show error message
