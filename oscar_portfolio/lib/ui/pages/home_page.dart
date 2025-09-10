@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 120),
             _SkillsSection(),
             const SizedBox(height: 120),
-            _ContactSection(),
+            _ContactSection(onLaunchUrl: _launchUrl),
             const SizedBox(height: 120),
           ],
         ),
@@ -1428,6 +1428,10 @@ class _SkillsSectionState extends State<_SkillsSection>
 }
 
 class _ContactSection extends StatelessWidget {
+  final Future<void> Function(BuildContext context, String url) onLaunchUrl;
+
+  const _ContactSection({required this.onLaunchUrl});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -1491,19 +1495,19 @@ class _ContactSection extends StatelessWidget {
                         _ContactButton(
                           icon: Icons.email,
                           title: "Email",
-                          onTap: () => _launchUrl(context, 'mailto:ovalles6845@gmail.com'),
+                          onTap: () => onLaunchUrl(context, 'mailto:ovalles6845@gmail.com'),
                         ),
                         const SizedBox(height: 16),
                         _ContactButton(
                           icon: Icons.link,
                           title: "LinkedIn",
-                          onTap: () => _launchUrl(context, 'https://www.linkedin.com/in/oscarvalles87/'),
+                          onTap: () => onLaunchUrl(context, 'https://www.linkedin.com/in/oscarvalles87/'),
                         ),
                         const SizedBox(height: 16),
                         _ContactButton(
                           icon: Icons.code,
                           title: "GitHub",
-                          onTap: () => _launchUrl(context, 'https://github.com/ovalles2019'),
+                          onTap: () => onLaunchUrl(context, 'https://github.com/ovalles2019'),
                         ),
                       ],
                     );
@@ -1515,19 +1519,19 @@ class _ContactSection extends StatelessWidget {
                         _ContactButton(
                           icon: Icons.email,
                           title: "Email",
-                          onTap: () => _launchUrl(context, 'mailto:ovalles6845@gmail.com'),
+                          onTap: () => onLaunchUrl(context, 'mailto:ovalles6845@gmail.com'),
                         ),
                         const SizedBox(width: 20),
                         _ContactButton(
                           icon: Icons.link,
                           title: "LinkedIn",
-                          onTap: () => _launchUrl(context, 'https://www.linkedin.com/in/oscarvalles87/'),
+                          onTap: () => onLaunchUrl(context, 'https://www.linkedin.com/in/oscarvalles87/'),
                         ),
                         const SizedBox(width: 20),
                         _ContactButton(
                           icon: Icons.code,
                           title: "GitHub",
-                          onTap: () => _launchUrl(context, 'https://github.com/ovalles2019'),
+                          onTap: () => onLaunchUrl(context, 'https://github.com/ovalles2019'),
                         ),
                       ],
                     );
