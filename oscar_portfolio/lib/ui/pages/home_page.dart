@@ -50,47 +50,34 @@ class _HomePageState extends State<HomePage> {
   Future<void> _launchUrl(BuildContext context, String url) async {
     if (url.contains('resume.pdf')) {
       try {
+        // For Flutter web, use the correct asset path
+        final resumeUrl = Uri.parse('assets/resume.pdf');
         
-        // For web, try multiple approaches to download the resume
-        // First, try the direct asset path
-        final anchor = html.AnchorElement(href: 'assets/resume.pdf')
-          ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
-          ..click();
-        
-        // Wait a bit to see if download starts
-        await Future.delayed(Duration(milliseconds: 500));
-        
-        // If download didn't start, try opening in new tab
-        try {
-          await launchUrl(
-            Uri.parse('assets/resume.pdf'), 
-            mode: LaunchMode.externalApplication
-          );
-        } catch (e) {
-          // Show helpful message with alternative download method
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Resume download failed. Please right-click the button and select "Save as..."'),
-              duration: Duration(seconds: 5),
-              action: SnackBarAction(
-                label: 'Copy Link',
-                onPressed: () {
-                  // Copy the direct link to clipboard
-                  html.window.navigator.clipboard?.writeText('assets/resume.pdf');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Link copied to clipboard!')),
-                  );
-                },
-              ),
-            ),
-          );
+        // Try to launch the URL directly
+        if (await canLaunchUrl(resumeUrl)) {
+          await launchUrl(resumeUrl, mode: LaunchMode.externalApplication);
+        } else {
+          // Fallback: create a download link
+          final anchor = html.AnchorElement(href: 'assets/resume.pdf')
+            ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
+            ..click();
         }
       } catch (e) {
-        // Show error message
+        // Show error message with helpful instructions
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Resume download failed. Please try right-clicking and "Save as..."'),
-            duration: Duration(seconds: 4),
+            content: Text('Resume download failed. Please try right-clicking the button and select "Save as..."'),
+            duration: Duration(seconds: 5),
+            action: SnackBarAction(
+              label: 'Copy Link',
+              onPressed: () {
+                // Copy the direct link to clipboard
+                html.window.navigator.clipboard?.writeText('assets/resume.pdf');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Link copied to clipboard!')),
+                );
+              },
+            ),
           ),
         );
       }
@@ -1557,47 +1544,34 @@ class _ContactSection extends StatelessWidget {
   Future<void> _launchUrl(BuildContext context, String url) async {
     if (url.contains('resume.pdf')) {
       try {
+        // For Flutter web, use the correct asset path
+        final resumeUrl = Uri.parse('assets/resume.pdf');
         
-        // For web, try multiple approaches to download the resume
-        // First, try the direct asset path
-        final anchor = html.AnchorElement(href: 'assets/resume.pdf')
-          ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
-          ..click();
-        
-        // Wait a bit to see if download starts
-        await Future.delayed(Duration(milliseconds: 500));
-        
-        // If download didn't start, try opening in new tab
-        try {
-          await launchUrl(
-            Uri.parse('assets/resume.pdf'), 
-            mode: LaunchMode.externalApplication
-          );
-        } catch (e) {
-          // Show helpful message with alternative download method
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Resume download failed. Please right-click the button and select "Save as..."'),
-              duration: Duration(seconds: 5),
-              action: SnackBarAction(
-                label: 'Copy Link',
-                onPressed: () {
-                  // Copy the direct link to clipboard
-                  html.window.navigator.clipboard?.writeText('assets/resume.pdf');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Link copied to clipboard!')),
-                  );
-                },
-              ),
-            ),
-          );
+        // Try to launch the URL directly
+        if (await canLaunchUrl(resumeUrl)) {
+          await launchUrl(resumeUrl, mode: LaunchMode.externalApplication);
+        } else {
+          // Fallback: create a download link
+          final anchor = html.AnchorElement(href: 'assets/resume.pdf')
+            ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
+            ..click();
         }
       } catch (e) {
-        // Show error message
+        // Show error message with helpful instructions
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Resume download failed. Please try right-clicking and "Save as..."'),
-            duration: Duration(seconds: 4),
+            content: Text('Resume download failed. Please try right-clicking the button and select "Save as..."'),
+            duration: Duration(seconds: 5),
+            action: SnackBarAction(
+              label: 'Copy Link',
+              onPressed: () {
+                // Copy the direct link to clipboard
+                html.window.navigator.clipboard?.writeText('assets/resume.pdf');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Link copied to clipboard!')),
+                );
+              },
+            ),
           ),
         );
       }
