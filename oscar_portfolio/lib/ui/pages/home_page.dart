@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:math';
 import 'dart:html' as html;
 import '../widgets/nav_bar.dart';
-import '../widgets/section.dart';
 import '../widgets/project_card.dart';
 import '../../models/project.dart';
-import '../../data/projects.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -58,7 +55,7 @@ class _HomePageState extends State<HomePage> {
           await launchUrl(resumeUrl, mode: LaunchMode.externalApplication);
         } else {
           // Fallback: create a download link
-          final anchor = html.AnchorElement(href: '/assets/assets/resume.pdf')
+          html.AnchorElement(href: '/assets/assets/resume.pdf')
             ..setAttribute('download', 'resume.pdf')
               ..click();
         }
