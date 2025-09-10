@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../services/analytics_service.dart';
 
 class NavBar extends StatelessWidget {
   @override
@@ -42,7 +41,6 @@ class NavBar extends StatelessWidget {
 
   void _scrollToSection(BuildContext context, String section) async {
     // Track section navigation
-    await AnalyticsService().trackPageView(section);
     
     // This will be implemented with scroll controller
     // For now, just show a snackbar
@@ -109,7 +107,6 @@ class _GitHubButton extends StatelessWidget {
       ),
       child: TextButton(
         onPressed: () async {
-          await AnalyticsService().trackGitHubClick();
           _launchGitHub();
         },
         style: TextButton.styleFrom(

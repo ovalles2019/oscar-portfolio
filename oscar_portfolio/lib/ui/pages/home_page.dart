@@ -7,8 +7,6 @@ import '../widgets/section.dart';
 import '../widgets/project_card.dart';
 import '../../models/project.dart';
 import '../../data/projects.dart';
-import '../../services/analytics_service.dart';
-import '../../services/download_counter_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,10 +19,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // Track page view when component mounts
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      AnalyticsService().trackPageView('home');
-    });
   }
 
   @override
@@ -56,9 +50,6 @@ class _HomePageState extends State<HomePage> {
   Future<void> _launchUrl(BuildContext context, String url) async {
     if (url.contains('resume.pdf')) {
       try {
-        // Track resume download
-        await AnalyticsService().trackResumeDownload();
-        DownloadCounterService().incrementDownloadCount();
         
         // For web, try multiple approaches to download the resume
         // First, try the direct asset path
@@ -257,17 +248,6 @@ class _HeroSection extends StatelessWidget {
                                       letterSpacing: -0.5,
                                     ),
                                   ),
-                                  if (DownloadCounterService().hasDownloads) ...[
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      DownloadCounterService().downloadCountText,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white.withOpacity(0.8),
-                                      ),
-                                    ),
-                                  ],
                                 ],
                               ),
                             ),
@@ -290,7 +270,6 @@ class _HeroSection extends StatelessWidget {
                             width: double.infinity,
                             child: OutlinedButton(
                               onPressed: () async {
-                                await AnalyticsService().trackContactClick();
                                 _scrollToSection(context, "contact");
                               },
                               style: OutlinedButton.styleFrom(
@@ -354,17 +333,6 @@ class _HeroSection extends StatelessWidget {
                                     letterSpacing: -0.5,
                                   ),
                                 ),
-                                if (DownloadCounterService().hasDownloads) ...[
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    DownloadCounterService().downloadCountText,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white.withOpacity(0.8),
-                                    ),
-                                  ),
-                                ],
                               ],
                             ),
                           ),
@@ -384,7 +352,6 @@ class _HeroSection extends StatelessWidget {
                           ),
                           child: OutlinedButton(
                             onPressed: () async {
-                              await AnalyticsService().trackContactClick();
                               _scrollToSection(context, "contact");
                             },
                             style: OutlinedButton.styleFrom(
@@ -1590,9 +1557,6 @@ class _ContactSection extends StatelessWidget {
   Future<void> _launchUrl(BuildContext context, String url) async {
     if (url.contains('resume.pdf')) {
       try {
-        // Track resume download
-        await AnalyticsService().trackResumeDownload();
-        DownloadCounterService().incrementDownloadCount();
         
         // For web, try multiple approaches to download the resume
         // First, try the direct asset path

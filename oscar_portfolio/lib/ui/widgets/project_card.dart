@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../models/project.dart';
-import '../../services/analytics_service.dart';
 
 class ProjectCard extends StatefulWidget {
   final Project project;
@@ -294,7 +293,6 @@ class _ProjectCardState extends State<ProjectCard>
 
   void _showProjectDetails(BuildContext context) async {
     // Track project view
-    await AnalyticsService().trackProjectView(widget.project.title);
     
     showDialog(
       context: context,
