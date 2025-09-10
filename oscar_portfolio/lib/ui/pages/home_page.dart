@@ -4,6 +4,7 @@ import 'dart:html' as html;
 import '../widgets/nav_bar.dart';
 import '../widgets/project_card.dart';
 import '../../models/project.dart';
+import '../../services/download_counter_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -53,11 +54,19 @@ class _HomePageState extends State<HomePage> {
         // Try to launch the URL directly
         if (await canLaunchUrl(resumeUrl)) {
           await launchUrl(resumeUrl, mode: LaunchMode.externalApplication);
+          // Increment download counter
+          DownloadCounterService.incrementDownloadCount();
+          // Trigger rebuild to update counter display
+          if (mounted) setState(() {});
         } else {
           // Fallback: create a download link
           html.AnchorElement(href: '/assets/assets/resume.pdf')
             ..setAttribute('download', 'resume.pdf')
               ..click();
+          // Increment download counter
+          DownloadCounterService.incrementDownloadCount();
+          // Trigger rebuild to update counter display
+          if (mounted) setState(() {});
         }
           } catch (e) {
         // Show error message with helpful instructions
@@ -225,7 +234,7 @@ class _HeroSection extends StatelessWidget {
                               child: Column(
                                 children: [
                                   Text(
-                                    "Download Resume",
+                                    DownloadCounterService.downloadCountText,
                                     style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w600,
@@ -310,7 +319,7 @@ class _HeroSection extends StatelessWidget {
                             child: Column(
                               children: [
                                 Text(
-                                  "Download Resume",
+                                  DownloadCounterService.downloadCountText,
                                   style: TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.w600,
