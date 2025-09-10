@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'ui/theme.dart';
 import 'ui/pages/home_page.dart';
-import 'services/analytics_service.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize analytics
-  await AnalyticsService().initialize();
-  
+void main() {
   runApp(const App());
 }
 
