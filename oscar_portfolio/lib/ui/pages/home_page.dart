@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
         } else {
           // Fallback: create a download link
           final anchor = html.AnchorElement(href: 'assets/resume.pdf')
-            ..setAttribute('download', 'Oscar_Valles_Resume.pdf')
+            ..setAttribute('download', 'resume.pdf')
             ..click();
         }
       } catch (e) {
