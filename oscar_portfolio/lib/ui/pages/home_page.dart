@@ -51,33 +51,33 @@ class _HomePageState extends State<HomePage> {
     if (url.contains('resume.pdf')) {
       try {
         // For Flutter web, use the correct asset path
-        final resumeUrl = Uri.parse('/assets/resume.pdf');
+        final resumeUrl = Uri.parse('/assets/assets/resume.pdf');
         
         // Try to launch the URL directly
         if (await canLaunchUrl(resumeUrl)) {
           await launchUrl(resumeUrl, mode: LaunchMode.externalApplication);
         } else {
           // Fallback: create a download link
-          final anchor = html.AnchorElement(href: '/assets/resume.pdf')
+          final anchor = html.AnchorElement(href: '/assets/assets/resume.pdf')
             ..setAttribute('download', 'resume.pdf')
-            ..click();
+              ..click();
         }
-      } catch (e) {
+          } catch (e) {
         // Show error message with helpful instructions
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
             content: Text('Resume download failed. Please try right-clicking the button and select "Save as..."'),
             duration: Duration(seconds: 5),
-            action: SnackBarAction(
-              label: 'Copy Link',
-              onPressed: () {
-                // Copy the direct link to clipboard
-                html.window.navigator.clipboard?.writeText('/assets/resume.pdf');
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Link copied to clipboard!')),
-                );
-              },
-            ),
+                action: SnackBarAction(
+                  label: 'Copy Link',
+                  onPressed: () {
+                    // Copy the direct link to clipboard
+                    html.window.navigator.clipboard?.writeText('/assets/assets/resume.pdf');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Link copied to clipboard!')),
+                    );
+                  },
+                ),
           ),
         );
       }
@@ -214,7 +214,7 @@ class _HeroSection extends StatelessWidget {
                           child: SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: () => onLaunchUrl(context, '/assets/resume.pdf'),
+                              onPressed: () => onLaunchUrl(context, '/assets/assets/resume.pdf'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF007AFF),
                                 foregroundColor: Colors.white,
