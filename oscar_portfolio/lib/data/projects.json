@@ -56,6 +56,28 @@
     "videoUrl": "https://www.youtube.com/watch?v=example-ml-deployment"
   },
   {
+    "title": "Geofences Platform",
+    "description": "A comprehensive geofencing platform that enables location-based services and notifications. Built with modern web technologies and cloud infrastructure for scalable geofence management and real-time location tracking.",
+    "detailedDescription": "A full-stack geofencing platform that provides businesses with powerful location-based services. The platform allows users to create, manage, and monitor geofences with real-time notifications and analytics. Features include interactive map visualization, geofence creation tools, real-time location tracking, push notifications, and comprehensive analytics dashboard.",
+    "tags": ["React", "Node.js", "MongoDB", "Geolocation", "Real-time", "WebSocket", "Maps API", "Cloud Infrastructure"],
+    "technologies": ["React", "Node.js", "Express", "MongoDB", "Socket.io", "Google Maps API", "AWS", "Docker", "Redis"],
+    "features": [
+      "Interactive map interface for geofence creation",
+      "Real-time location tracking and monitoring",
+      "Push notifications for geofence entry/exit events",
+      "Analytics dashboard with geofence performance metrics",
+      "RESTful API for geofence management",
+      "WebSocket connections for real-time updates",
+      "User authentication and role-based access control",
+      "Mobile-responsive design for cross-platform access"
+    ],
+    "link": "https://geofences-platform-demo.vercel.app",
+    "githubUrl": "https://github.com/ovalles2019/geofences-platform",
+    "videoUrl": "https://www.youtube.com/watch?v=example-geofences-platform",
+    "imageUrl": null,
+    "demoUrl": "https://geofences-platform-demo.vercel.app"
+  },
+  {
     "title": "Portfolio Website",
     "description": "This very site, built with Flutter and modern web technologies. Features responsive design, dark/light theme support, and showcases my experience as a Cloud Engineer.",
     "tags": ["Flutter", "Web", "Portfolio", "Responsive Design"],
