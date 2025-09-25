@@ -117,8 +117,56 @@ class _ProjectCardState extends State<ProjectCard>
                             borderRadius: BorderRadius.circular(16),
                             child: Stack(
                               children: [
-                                // Image or Video Background
-                                if (widget.project.imageUrl != null)
+                                // Image or Video Background - TEST WITH HARDCODED IMAGE
+                                if (true) // Always show image for testing
+                                  Image.network(
+                                    'https://picsum.photos/800/600?random=99',
+                                    fit: BoxFit.cover,
+                                    loadingBuilder: (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress.expectedTotalBytes != null
+                                                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                                : null,
+                                            color: Theme.of(context).colorScheme.primary,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      print('Image load error: $error');
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.image,
+                                              size: 45,
+                                              color: Theme.of(context).colorScheme.primary,
+                                            ),
+                                            Text(
+                                              'Image failed to load',
+                                              style: TextStyle(
+                                                color: Theme.of(context).colorScheme.primary,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  )
+                                else if (widget.project.imageUrl != null)
                                   Image.network(
                                     widget.project.imageUrl!,
                                     fit: BoxFit.cover,
