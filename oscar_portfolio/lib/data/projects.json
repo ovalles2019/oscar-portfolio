@@ -85,6 +85,28 @@
     "demoUrl": "https://geofences-platform-demo.vercel.app"
   },
   {
+    "title": "Parz-AI",
+    "description": "An advanced AI-powered platform that leverages cutting-edge machine learning and natural language processing to provide intelligent automation and decision-making capabilities. Built with modern AI frameworks and cloud infrastructure for scalable AI services.",
+    "detailedDescription": "Parz-AI is a comprehensive artificial intelligence platform designed to deliver intelligent automation and advanced decision-making capabilities. The platform integrates multiple AI technologies including natural language processing, machine learning models, and predictive analytics to provide businesses with powerful AI-driven solutions. Features include intelligent document processing, automated decision workflows, predictive analytics, and real-time AI insights with comprehensive monitoring and analytics dashboard.",
+    "tags": ["AI/ML", "Python", "Machine Learning", "NLP", "Cloud Infrastructure", "Automation", "Analytics"],
+    "technologies": ["Python", "TensorFlow", "PyTorch", "OpenAI API", "AWS", "Docker", "Kubernetes", "FastAPI", "PostgreSQL", "Redis"],
+    "features": [
+      "Intelligent document processing and analysis",
+      "Automated decision-making workflows",
+      "Real-time AI insights and recommendations",
+      "Natural language processing capabilities",
+      "Predictive analytics and forecasting",
+      "Comprehensive AI model monitoring",
+      "Scalable cloud infrastructure",
+      "RESTful API for AI services integration"
+    ],
+    "link": "https://parz-ai-demo.vercel.app",
+    "githubUrl": "https://github.com/ovalles2019/parz-ai",
+    "videoUrl": "https://www.youtube.com/watch?v=example-parz-ai",
+    "imageUrl": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop&q=80",
+    "demoUrl": "https://parz-ai-demo.vercel.app"
+  },
+  {
     "title": "Portfolio Website",
     "description": "This very site, built with Flutter and modern web technologies. Features responsive design, dark/light theme support, and showcases my experience as a Cloud Engineer.",
     "tags": ["Flutter", "Web", "Portfolio", "Responsive Design"],
