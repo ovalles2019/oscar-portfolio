@@ -122,16 +122,47 @@ class _ProjectCardState extends State<ProjectCard>
                                   Image.network(
                                     widget.project.imageUrl!,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
+                                    loadingBuilder: (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
                                       return Container(
                                         decoration: BoxDecoration(
                                           color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                                           borderRadius: BorderRadius.circular(16),
                                         ),
-                                        child: Icon(
-                                          Icons.image,
-                                          size: 45,
-                                          color: Theme.of(context).colorScheme.primary,
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress.expectedTotalBytes != null
+                                                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                                : null,
+                                            color: Theme.of(context).colorScheme.primary,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      print('Image load error: $error');
+                                      print('Image URL: ${widget.project.imageUrl}');
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.image,
+                                              size: 45,
+                                              color: Theme.of(context).colorScheme.primary,
+                                            ),
+                                            Text(
+                                              'Image failed to load',
+                                              style: TextStyle(
+                                                color: Theme.of(context).colorScheme.primary,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       );
                                     },
