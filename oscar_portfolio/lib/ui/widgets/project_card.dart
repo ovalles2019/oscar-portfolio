@@ -117,10 +117,10 @@ class _ProjectCardState extends State<ProjectCard>
                             borderRadius: BorderRadius.circular(16),
                             child: Stack(
                               children: [
-                                // Image or Video Background - TEST WITH HARDCODED IMAGE
-                                if (true) // Always show image for testing
+                                // Image or Video Background
+                                if (widget.project.imageUrl != null)
                                   Image.network(
-                                    'https://picsum.photos/800/600?random=99',
+                                    widget.project.imageUrl!,
                                     fit: BoxFit.cover,
                                     loadingBuilder: (context, child, loadingProgress) {
                                       if (loadingProgress == null) return child;

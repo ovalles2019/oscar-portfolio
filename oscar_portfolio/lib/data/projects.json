@@ -6,7 +6,7 @@
     "link": "https://ai-fashion-stylist-demo.herokuapp.com",
     "githubUrl": "https://github.com/ovalles2019/ai-fashion-stylist",
     "videoUrl": "https://www.youtube.com/watch?v=example-fashion-stylist",
-    "imageUrl": "https://picsum.photos/800/600?random=1"
+    "imageUrl": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop&q=80"
   },
   {
     "title": "Serverless E-commerce Platform",
@@ -15,7 +15,7 @@
     "link": "https://ecommerce-platform-demo.vercel.app",
     "githubUrl": "https://github.com/ovalles2019/ecommerce-platform",
     "videoUrl": "https://www.youtube.com/watch?v=example-ecommerce",
-    "imageUrl": "https://picsum.photos/800/600?random=2"
+    "imageUrl": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop&q=80"
   },
   {
     "title": "AI-Powered Spam Detection System",
@@ -24,7 +24,7 @@
     "link": "https://spam-detection-demo.aws.amazon.com",
     "githubUrl": "https://github.com/ovalles2019/spam-detection",
     "videoUrl": "https://www.youtube.com/watch?v=example-spam-detection",
-    "imageUrl": "https://picsum.photos/800/600?random=3"
+    "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80"
   },
   {
     "title": "Real-time Chat Application",
