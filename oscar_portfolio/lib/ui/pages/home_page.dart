@@ -5,6 +5,7 @@ import '../widgets/nav_bar.dart';
 import '../widgets/project_card.dart';
 import '../../models/project.dart';
 import '../../services/download_counter_service.dart';
+import '../../data/projects.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -856,98 +857,8 @@ class _ProjectsSectionState extends State<_ProjectsSection>
   late PageController _pageController;
   late AnimationController _autoPlayController;
   int _currentPage = 0;
-  final List<Project> _projects = [
-    Project(
-      title: "Uber Replica",
-      description: "A comprehensive ride-sharing application clone built with modern web technologies. Features include user authentication, real-time location tracking, ride booking, driver matching, and payment processing.",
-      detailedDescription: "A sophisticated ride-sharing application clone that replicates the core functionality of Uber. Built with React for the frontend, Node.js for the backend, and MongoDB for data storage. Features include real-time location tracking using WebSocket connections, secure user authentication, driver-rider matching algorithms, and integrated payment processing. The application demonstrates modern web development practices with responsive design and scalable architecture.",
-      tags: ["React", "Node.js", "MongoDB", "Real-time", "Location Services", "Payment Integration"],
-      link: "https://github.com/ovalles2019/uber-replica",
-      imageUrl: "https://images.unsplash.com/photo-1549924231-f129b911e442?w=800&h=600&fit=crop",
-      demoUrl: "https://uber-replica-demo.vercel.app",
-      features: [
-        "Real-time location tracking",
-        "User authentication & authorization",
-        "Driver-rider matching system",
-        "Payment processing integration",
-        "Responsive mobile-first design"
-      ],
-      technologies: ["React", "Node.js", "MongoDB", "WebSocket", "Stripe", "Express.js"],
-      githubUrl: "https://github.com/ovalles2019/uber-replica",
-    ),
-    Project(
-      title: "ML Cloud Deployment Platform",
-      description: "A comprehensive machine learning model deployment platform built on cloud infrastructure with automated training, A/B testing, and scalable inference endpoints.",
-      detailedDescription: "An enterprise-grade machine learning model deployment platform that streamlines the entire ML lifecycle from development to production. Built on AWS with Kubernetes orchestration, the platform provides automated model training pipelines, A/B testing capabilities, real-time monitoring, and scalable inference endpoints. Features include model versioning, performance tracking, and automated rollback mechanisms for production reliability.",
-      tags: ["Machine Learning", "AWS", "Kubernetes", "MLOps", "Python", "Docker"],
-      link: "https://github.com/ovalles2019/ml-cloud-deployment",
-      imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
-      demoUrl: "https://ml-deployment-demo.aws.amazon.com",
-      features: [
-        "Automated model training pipelines",
-        "A/B testing framework",
-        "Real-time performance monitoring",
-        "Scalable inference endpoints",
-        "Model versioning & rollback"
-      ],
-      technologies: ["Python", "AWS SageMaker", "Kubernetes", "Docker", "TensorFlow", "MLflow"],
-      githubUrl: "https://github.com/ovalles2019/ml-cloud-deployment",
-    ),
-    Project(
-      title: "AI Fashion Stylist",
-      description: "An intelligent fashion recommendation system that uses computer vision and machine learning to suggest personalized outfit combinations.",
-      detailedDescription: "A sophisticated AI-powered fashion styling application that analyzes user preferences, body type, and current wardrobe to provide personalized fashion recommendations. The system uses computer vision to analyze clothing items and machine learning algorithms to suggest optimal outfit combinations based on style, occasion, and personal taste.",
-      tags: ["Python", "Machine Learning", "Computer Vision", "AI/ML", "Flask"],
-      link: "https://github.com/ovalles2019/ai-fashion-stylist",
-      imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop",
-      demoUrl: "https://ai-fashion-stylist-demo.herokuapp.com",
-      features: [
-        "Computer vision clothing analysis",
-        "Personalized style recommendations",
-        "Wardrobe management system",
-        "Style preference learning",
-        "Outfit combination suggestions"
-      ],
-      technologies: ["Python", "TensorFlow", "OpenCV", "Flask", "PostgreSQL", "Scikit-learn"],
-      githubUrl: "https://github.com/ovalles2019/ai-fashion-stylist",
-    ),
-    Project(
-      title: "Real-time Chat Application",
-      description: "A modern, cross-platform chat application with real-time messaging, file sharing, and group chat capabilities.",
-      detailedDescription: "A modern, cross-platform chat application that provides real-time messaging, file sharing, and group chat capabilities. Features include push notifications, offline support, and end-to-end encryption.",
-      tags: ["Flutter", "Firebase", "Dart", "Real-time"],
-      link: "https://github.com/ovalles2019/chat-app",
-      imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop",
-      demoUrl: "https://chat-app-demo.web.app",
-      features: [
-        "Real-time messaging",
-        "File sharing",
-        "Push notifications",
-        "Offline support",
-        "End-to-end encryption"
-      ],
-      technologies: ["Flutter", "Firebase", "Dart", "Cloud Firestore", "Firebase Auth"],
-      githubUrl: "https://github.com/ovalles2019/chat-app",
-    ),
-    Project(
-      title: "E-commerce Platform",
-      description: "A full-stack e-commerce solution with advanced features like AI-powered recommendations and real-time inventory management.",
-      detailedDescription: "A comprehensive e-commerce platform built with modern web technologies. Features include AI-powered product recommendations, real-time inventory management, secure payment processing, and an intuitive admin dashboard.",
-      tags: ["React", "Node.js", "MongoDB", "AI/ML"],
-      link: "https://github.com/ovalles2019/ecommerce",
-      imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop",
-      demoUrl: "https://ecommerce-demo.vercel.app",
-      features: [
-        "AI-powered recommendations",
-        "Real-time inventory",
-        "Secure payments",
-        "Admin dashboard",
-        "Mobile responsive"
-      ],
-      technologies: ["React", "Node.js", "MongoDB", "TensorFlow", "Stripe"],
-      githubUrl: "https://github.com/ovalles2019/ecommerce",
-    ),
-  ];
+  List<Project> _projects = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -958,8 +869,8 @@ class _ProjectsSectionState extends State<_ProjectsSection>
       vsync: this,
     );
     
-    // Auto-play the carousel
-    _startAutoPlay();
+    // Load projects from JSON file
+    _loadProjects();
     
     // Listen to page changes
     _pageController.addListener(() {
@@ -968,6 +879,19 @@ class _ProjectsSectionState extends State<_ProjectsSection>
         setState(() => _currentPage = page);
       }
     });
+  }
+
+  Future<void> _loadProjects() async {
+    await loadProjects();
+    setState(() {
+      _projects = demoProjects;
+      _isLoading = false;
+    });
+    
+    // Start auto-play after projects are loaded
+    if (_projects.isNotEmpty) {
+      _startAutoPlay();
+    }
   }
 
   @override
@@ -1053,59 +977,75 @@ class _ProjectsSectionState extends State<_ProjectsSection>
               // Projects Carousel
               Container(
                 height: MediaQuery.of(context).size.width < 768 ? 400 : 500,
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: _projects.length,
-                  itemBuilder: (context, index) {
-                    final project = _projects[index];
-                    return AnimatedBuilder(
-                      animation: _pageController,
-                      builder: (context, child) {
-                        double value = 1.0;
-                        if (_pageController.position.haveDimensions) {
-                          value = _pageController.page! - index;
-                          value = (1 - (value.abs() * 0.3)).clamp(0.0, 1.0);
-                        }
-                        
-                        return Transform.scale(
-                          scale: Curves.easeOutCubic.transform(value),
-                          child: Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: MediaQuery.of(context).size.width < 768 ? 5 : 10,
+                child: _isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      )
+                    : _projects.isEmpty
+                        ? Center(
+                            child: Text(
+                              "No projects available",
+                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                              ),
                             ),
-                            child: ProjectCard(project: project),
+                          )
+                        : PageView.builder(
+                            controller: _pageController,
+                            itemCount: _projects.length,
+                            itemBuilder: (context, index) {
+                              final project = _projects[index];
+                              return AnimatedBuilder(
+                                animation: _pageController,
+                                builder: (context, child) {
+                                  double value = 1.0;
+                                  if (_pageController.position.haveDimensions) {
+                                    value = _pageController.page! - index;
+                                    value = (1 - (value.abs() * 0.3)).clamp(0.0, 1.0);
+                                  }
+                                  
+                                  return Transform.scale(
+                                    scale: Curves.easeOutCubic.transform(value),
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(
+                                        horizontal: MediaQuery.of(context).size.width < 768 ? 5 : 10,
+                                      ),
+                                      child: ProjectCard(project: project),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
                           ),
-                        );
-                      },
-                    );
-                  },
-                ),
               ),
               
               const SizedBox(height: 40),
               
               // Navigation Dots
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(_projects.length, (index) {
-                  return GestureDetector(
-                    onTap: () => _goToPage(index),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width < 768 ? 10 : 12,
-                      height: MediaQuery.of(context).size.width < 768 ? 10 : 12,
-                      margin: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width < 768 ? 4 : 6,
+              if (!_isLoading && _projects.isNotEmpty)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(_projects.length, (index) {
+                    return GestureDetector(
+                      onTap: () => _goToPage(index),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width < 768 ? 10 : 12,
+                        height: MediaQuery.of(context).size.width < 768 ? 10 : 12,
+                        margin: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width < 768 ? 4 : 6,
+                        ),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _currentPage == index
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
+                        ),
                       ),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _currentPage == index
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
-                      ),
-                    ),
-                  );
-                }),
-              ),
+                    );
+                  }),
+                ),
               
               const SizedBox(height: 20),
               
