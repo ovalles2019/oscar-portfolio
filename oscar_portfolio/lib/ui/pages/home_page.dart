@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:html' as html;
 import '../widgets/nav_bar.dart';
 import '../widgets/project_card.dart';
+import '../widgets/ai_chat_widget.dart';
 import '../../models/project.dart';
 import '../../services/download_counter_service.dart';
 import '../../data/projects.dart';
@@ -27,21 +28,27 @@ class _HomePageState extends State<HomePage> {
         preferredSize: const Size.fromHeight(60),
         child: NavBar(),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _HeroSection(onLaunchUrl: _launchUrl),
-            const SizedBox(height: 120),
-            _AboutSection(),
-            const SizedBox(height: 120),
-            _ProjectsSection(),
-            const SizedBox(height: 120),
-            _SkillsSection(),
-            const SizedBox(height: 120),
-            _ContactSection(onLaunchUrl: _launchUrl),
-            const SizedBox(height: 120),
-          ],
-        ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                _HeroSection(onLaunchUrl: _launchUrl),
+                const SizedBox(height: 120),
+                _AboutSection(),
+                const SizedBox(height: 120),
+                _ProjectsSection(),
+                const SizedBox(height: 120),
+                _SkillsSection(),
+                const SizedBox(height: 120),
+                _ContactSection(onLaunchUrl: _launchUrl),
+                const SizedBox(height: 120),
+              ],
+            ),
+          ),
+          // AI Chat Widget
+          const AIChatWidget(),
+        ],
       ),
     );
   }
