@@ -21,30 +21,27 @@ jobs:
       # Setup Flutter
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.16.0'
+          flutter-version: '3.24.0'
           channel: 'stable'
+          cache: true
 
       - name: Install dependencies
-        run: |
-          cd oscar_portfolio
-          flutter pub get
+        run: flutter pub get
+        working-directory: ./oscar_portfolio
 
       # Uncomment this step to verify the use of 'dart format' on each commit.
       # - name: Verify formatting
-      #   run: |
-      #     cd oscar_portfolio
-      #     dart format --output=none --set-exit-if-changed .
+      #   run: dart format --output=none --set-exit-if-changed .
+      #   working-directory: ./oscar_portfolio
 
       # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
-        run: |
-          cd oscar_portfolio
-          flutter analyze
+        run: flutter analyze
+        working-directory: ./oscar_portfolio
 
       # Your project will need to have tests in test/ and a dependency on
       # package:test for this step to succeed. Note that Flutter projects will
       # want to change this to 'flutter test'.
       - name: Run tests
-        run: |
-          cd oscar_portfolio
-          flutter test
+        run: flutter test
+        working-directory: ./oscar_portfolio
