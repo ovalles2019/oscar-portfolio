@@ -118,21 +118,7 @@ class _ProjectCardState extends State<ProjectCard>
                             child: Stack(
                               children: [
                                 // Image or Video Background
-                                if (widget.project.videoUrl != null)
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.video_library,
-                                        size: 45,
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ),
-                                    ),
-                                  )
-                                else if (widget.project.imageUrl != null)
+                                if (widget.project.imageUrl != null)
                                   Image.network(
                                     widget.project.imageUrl!,
                                     fit: BoxFit.cover,
@@ -149,10 +135,24 @@ class _ProjectCardState extends State<ProjectCard>
                                         ),
                                       );
                                     },
+                                  )
+                                else if (widget.project.videoUrl != null)
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.video_library,
+                                        size: 45,
+                                        color: Theme.of(context).colorScheme.primary,
+                                      ),
+                                    ),
                                   ),
                                 
-                                // Play Button Overlay for Videos
-                                if (widget.project.videoUrl != null)
+                                // Play Button Overlay for Videos (only if no image)
+                                if (widget.project.videoUrl != null && widget.project.imageUrl == null)
                                   Center(
                                     child: Container(
                                       padding: const EdgeInsets.all(12),
@@ -390,21 +390,7 @@ class ProjectDetailsModal extends StatelessWidget {
                           child: Stack(
                             children: [
                               // Image or Video Background
-                              if (project.videoUrl != null)
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.video_library,
-                                      size: 80,
-                                      color: Theme.of(context).colorScheme.primary,
-                                    ),
-                                  ),
-                                )
-                              else if (project.imageUrl != null)
+                              if (project.imageUrl != null)
                                 Image.network(
                                   project.imageUrl!,
                                   fit: BoxFit.cover,
@@ -421,10 +407,24 @@ class ProjectDetailsModal extends StatelessWidget {
                                       ),
                                     );
                                   },
+                                )
+                              else if (project.videoUrl != null)
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.video_library,
+                                      size: 80,
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                  ),
                                 ),
                               
-                              // Play Button Overlay for Videos
-                              if (project.videoUrl != null)
+                              // Play Button Overlay for Videos (only if no image)
+                              if (project.videoUrl != null && project.imageUrl == null)
                                 Center(
                                   child: GestureDetector(
                                     onTap: () => _launchUrl(project.videoUrl!),
