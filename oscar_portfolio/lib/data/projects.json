@@ -5,7 +5,8 @@
     "tags": ["Python", "Machine Learning", "Computer Vision", "AI/ML", "Flask", "TensorFlow"],
     "link": "https://ai-fashion-stylist-demo.herokuapp.com",
     "githubUrl": "https://github.com/ovalles2019/ai-fashion-stylist",
-    "videoUrl": "https://www.youtube.com/watch?v=example-fashion-stylist"
+    "videoUrl": "https://www.youtube.com/watch?v=example-fashion-stylist",
+    "imageUrl": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop&q=80"
   },
   {
     "title": "Serverless E-commerce Platform",
@@ -13,7 +14,8 @@
     "tags": ["AWS", "Serverless", "DynamoDB", "Lambda", "React"],
     "link": "https://ecommerce-platform-demo.vercel.app",
     "githubUrl": "https://github.com/ovalles2019/ecommerce-platform",
-    "videoUrl": "https://www.youtube.com/watch?v=example-ecommerce"
+    "videoUrl": "https://www.youtube.com/watch?v=example-ecommerce",
+    "imageUrl": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop&q=80"
   },
   {
     "title": "AI-Powered Spam Detection System",
@@ -21,7 +23,8 @@
     "tags": ["Machine Learning", "Python", "TensorFlow", "AWS SageMaker", "NLP"],
     "link": "https://spam-detection-demo.aws.amazon.com",
     "githubUrl": "https://github.com/ovalles2019/spam-detection",
-    "videoUrl": "https://www.youtube.com/watch?v=example-spam-detection"
+    "videoUrl": "https://www.youtube.com/watch?v=example-spam-detection",
+    "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80"
   },
   {
     "title": "Real-time Chat Application",
@@ -29,7 +32,8 @@
     "tags": ["Flutter", "WebSocket", "Firebase", "Real-time", "Mobile"],
     "link": "https://chat-app-demo.web.app",
     "githubUrl": "https://github.com/ovalles2019/chat-app",
-    "videoUrl": "https://www.youtube.com/watch?v=example-chat-app"
+    "videoUrl": "https://www.youtube.com/watch?v=example-chat-app",
+    "imageUrl": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop&q=80"
   },
   {
     "title": "Infrastructure as Code with Terraform",
@@ -37,7 +41,8 @@
     "tags": ["Terraform", "AWS", "DevOps", "CI/CD", "Infrastructure"],
     "link": "https://terraform-aws-docs.netlify.app",
     "githubUrl": "https://github.com/ovalles2019/terraform-aws",
-    "videoUrl": "https://www.youtube.com/watch?v=example-terraform"
+    "videoUrl": "https://www.youtube.com/watch?v=example-terraform",
+    "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&q=80"
   },
   {
     "title": "Uber Replica",
@@ -45,7 +50,8 @@
     "tags": ["React", "Node.js", "MongoDB", "Real-time", "Location Services", "Payment Integration"],
     "link": "https://uber-replica-demo.vercel.app",
     "githubUrl": "https://github.com/ovalles2019/uber-replica",
-    "videoUrl": "https://www.youtube.com/watch?v=example-uber-replica"
+    "videoUrl": "https://www.youtube.com/watch?v=example-uber-replica",
+    "imageUrl": "https://images.unsplash.com/photo-1549924231-f129b911e442?w=800&h=600&fit=crop&q=80"
   },
   {
     "title": "ML Cloud Deployment Platform",
@@ -53,7 +59,8 @@
     "tags": ["Machine Learning", "AWS", "Kubernetes", "MLOps", "Python", "Docker"],
     "link": "https://ml-deployment-demo.aws.amazon.com",
     "githubUrl": "https://github.com/ovalles2019/ml-cloud-deployment",
-    "videoUrl": "https://www.youtube.com/watch?v=example-ml-deployment"
+    "videoUrl": "https://www.youtube.com/watch?v=example-ml-deployment",
+    "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80"
   },
   {
     "title": "Geofences Platform",
@@ -74,7 +81,7 @@
     "link": "https://geofences-platform-demo.vercel.app",
     "githubUrl": "https://github.com/ovalles2019/geofences-platform",
     "videoUrl": "https://www.youtube.com/watch?v=example-geofences-platform",
-    "imageUrl": null,
+    "imageUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop&q=80",
     "demoUrl": "https://geofences-platform-demo.vercel.app"
   },
   {
