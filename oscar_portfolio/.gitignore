@@ -46,3 +46,5 @@ app.*.map.json
 flutter/
 node_modules/
 flutter.tar.xz
+node_modules/
+react-demo/node_modules/
