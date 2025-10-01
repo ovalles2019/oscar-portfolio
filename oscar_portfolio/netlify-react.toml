@@ -1,0 +1,8 @@
+[build]
+  command = "cd react-demo && npm install && npm run build"
+  publish = "react-demo/build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,10 @@
+{
+  "name": "oscar-portfolio",
+  "version": "1.0.0",
+  "description": "Oscar Valles Portfolio with AI Chat",
+  "dependencies": {
+    "openai": "^4.20.1"
+  }
+}
+
+

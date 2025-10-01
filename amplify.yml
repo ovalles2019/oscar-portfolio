@@ -1,0 +1,52 @@
+version: 1
+applications:
+  - appRoot: oscar_portfolio
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - set -euxo pipefail
+            # Optional pin via env. Leave unset to use latest stable channel head.
+            - export FLUTTER_VERSION="${FLUTTER_VERSION:-}"
+
+            # Clone Flutter stable channel (always exists)
+            - rm -rf "$HOME/flutter"
+            - git clone --depth 1 --branch stable https://github.com/flutter/flutter.git "$HOME/flutter"
+
+            # Use Flutter
+            - export PATH="$HOME/flutter/bin:$PATH"
+            - flutter --version
+
+            # If FLUTTER_VERSION is set, try to pin to it. If it fails, continue on stable head.
+            - |
+              if [ -n "$FLUTTER_VERSION" ]; then
+                echo "Attempting to pin Flutter to $FLUTTER_VERSION"
+                yes | flutter version "$FLUTTER_VERSION" || echo "Pin failed; continuing on stable channel head."
+                flutter --version
+              fi
+
+            # Project sanity
+            - test -f pubspec.yaml || (echo "pubspec.yaml not found under appRoot" && exit 2)
+
+            # Prepare for web
+            - flutter config --enable-web
+            - flutter pub get
+            - flutter precache --web
+
+        build:
+          commands:
+            - set -euxo pipefail
+            - export PATH="$HOME/flutter/bin:$PATH"
+            - echo "Building Flutter web app..."
+            - flutter build web --release --no-tree-shake-icons
+            - '[ -f build/web/index.html ] || (echo "ERROR: build/web/index.html missing" && exit 3)'
+
+      artifacts:
+        baseDirectory: build/web
+        files:
+          - "**/*"
+
+      cache:
+        paths:
+          - $HOME/.pub-cache
+          - $HOME/flutter/bin/cache
