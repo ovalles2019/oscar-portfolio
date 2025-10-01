@@ -1,0 +1,44 @@
+functionsDirectory = "/Users/oscarvalles/oscar_portfolio/oscar_portfolio/netlify/functions"
+functionsDirectoryOrigin = "config-v1"
+redirectsOrigin = "config"
+plugins = []
+headers = []
+
+[build]
+publish = "/Users/oscarvalles/oscar_portfolio/oscar_portfolio/build/web"
+publishOrigin = "config"
+commandOrigin = "config"
+base = "/Users/oscarvalles/oscar_portfolio/oscar_portfolio"
+command = "npm install && curl -o flutter.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.0-stable.tar.xz && tar xf flutter.tar.xz && export PATH=$PATH:$PWD/flutter/bin && flutter doctor && flutter build web --release"
+functions = "/Users/oscarvalles/oscar_portfolio/oscar_portfolio/netlify/functions"
+
+[build.environment]
+FLUTTER_VERSION = "3.24.0"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[functions]
+
+[functions."*"]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

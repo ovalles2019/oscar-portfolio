@@ -1,0 +1,116 @@
+[
+  {
+    "title": "AI Fashion Stylist",
+    "description": "An intelligent fashion recommendation system that uses computer vision and machine learning to suggest personalized outfit combinations. Built with Python, TensorFlow, and OpenCV for clothing analysis and style recommendations.",
+    "tags": ["Python", "Machine Learning", "Computer Vision", "AI/ML", "Flask", "TensorFlow"],
+    "link": "https://ai-fashion-stylist-demo.herokuapp.com",
+    "githubUrl": "https://github.com/ovalles2019/ai-fashion-stylist",
+    "videoUrl": "https://www.youtube.com/watch?v=example-fashion-stylist",
+    "imageUrl": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop&q=80"
+  },
+  {
+    "title": "Serverless E-commerce Platform",
+    "description": "Built a scalable e-commerce platform using AWS Lambda, DynamoDB, S3, API Gateway, and Amplify. Features include user authentication, product management, shopping cart, and payment processing with Stripe integration.",
+    "tags": ["AWS", "Serverless", "DynamoDB", "Lambda", "React"],
+    "link": "https://ecommerce-platform-demo.vercel.app",
+    "githubUrl": "https://github.com/ovalles2019/ecommerce-platform",
+    "videoUrl": "https://www.youtube.com/watch?v=example-ecommerce",
+    "imageUrl": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop&q=80"
+  },
+  {
+    "title": "AI-Powered Spam Detection System",
+    "description": "Developed a machine learning application using SVM, LSTM, and BERT models to classify spam emails with 95% accuracy. Built with Python, TensorFlow, and deployed on AWS SageMaker.",
+    "tags": ["Machine Learning", "Python", "TensorFlow", "AWS SageMaker", "NLP"],
+    "link": "https://spam-detection-demo.aws.amazon.com",
+    "githubUrl": "https://github.com/ovalles2019/spam-detection",
+    "videoUrl": "https://www.youtube.com/watch?v=example-spam-detection",
+    "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80"
+  },
+  {
+    "title": "Real-time Chat Application",
+    "description": "Created a real-time chat application using Flutter for mobile and web, with WebSocket connections, Firebase authentication, and cloud functions for backend services.",
+    "tags": ["Flutter", "WebSocket", "Firebase", "Real-time", "Mobile"],
+    "link": "https://chat-app-demo.web.app",
+    "githubUrl": "https://github.com/ovalles2019/chat-app",
+    "videoUrl": "https://www.youtube.com/watch?v=example-chat-app",
+    "imageUrl": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop&q=80"
+  },
+  {
+    "title": "Infrastructure as Code with Terraform",
+    "description": "Designed and implemented infrastructure as code for multi-environment AWS deployments using Terraform, including VPC, EC2, RDS, and auto-scaling groups with CI/CD pipeline integration.",
+    "tags": ["Terraform", "AWS", "DevOps", "CI/CD", "Infrastructure"],
+    "link": "https://terraform-aws-docs.netlify.app",
+    "githubUrl": "https://github.com/ovalles2019/terraform-aws",
+    "videoUrl": "https://www.youtube.com/watch?v=example-terraform",
+    "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&q=80"
+  },
+  {
+    "title": "Uber Replica",
+    "description": "A comprehensive ride-sharing application clone built with modern web technologies. Features include user authentication, real-time location tracking, ride booking, driver matching, and payment processing. Built with React, Node.js, and MongoDB.",
+    "tags": ["React", "Node.js", "MongoDB", "Real-time", "Location Services", "Payment Integration"],
+    "link": "https://uber-replica-demo.vercel.app",
+    "githubUrl": "https://github.com/ovalles2019/uber-replica",
+    "videoUrl": "https://www.youtube.com/watch?v=example-uber-replica",
+    "imageUrl": "https://images.unsplash.com/photo-1549924231-f129b911e442?w=800&h=600&fit=crop&q=80"
+  },
+  {
+    "title": "ML Cloud Deployment Platform",
+    "description": "A comprehensive machine learning model deployment platform built on cloud infrastructure. Features include automated model training, A/B testing, monitoring, and scalable inference endpoints with real-time performance tracking.",
+    "tags": ["Machine Learning", "AWS", "Kubernetes", "MLOps", "Python", "Docker"],
+    "link": "https://ml-deployment-demo.aws.amazon.com",
+    "githubUrl": "https://github.com/ovalles2019/ml-cloud-deployment",
+    "videoUrl": "https://www.youtube.com/watch?v=example-ml-deployment",
+    "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80"
+  },
+  {
+    "title": "Geofences Platform",
+    "description": "A comprehensive geofencing platform that enables location-based services and notifications. Built with modern web technologies and cloud infrastructure for scalable geofence management and real-time location tracking.",
+    "detailedDescription": "A full-stack geofencing platform that provides businesses with powerful location-based services. The platform allows users to create, manage, and monitor geofences with real-time notifications and analytics. Features include interactive map visualization, geofence creation tools, real-time location tracking, push notifications, and comprehensive analytics dashboard.",
+    "tags": ["React", "Node.js", "MongoDB", "Geolocation", "Real-time", "WebSocket", "Maps API", "Cloud Infrastructure"],
+    "technologies": ["React", "Node.js", "Express", "MongoDB", "Socket.io", "Google Maps API", "AWS", "Docker", "Redis"],
+    "features": [
+      "Interactive map interface for geofence creation",
+      "Real-time location tracking and monitoring",
+      "Push notifications for geofence entry/exit events",
+      "Analytics dashboard with geofence performance metrics",
+      "RESTful API for geofence management",
+      "WebSocket connections for real-time updates",
+      "User authentication and role-based access control",
+      "Mobile-responsive design for cross-platform access"
+    ],
+    "link": "https://geofences-platform-demo.vercel.app",
+    "githubUrl": "https://github.com/ovalles2019/geofences-platform",
+    "videoUrl": "https://www.youtube.com/watch?v=example-geofences-platform",
+    "imageUrl": "https://picsum.photos/800/600?random=geofences",
+    "demoUrl": "https://geofences-platform-demo.vercel.app"
+  },
+  {
+    "title": "Parz-AI",
+    "description": "An advanced AI-powered platform that leverages cutting-edge machine learning and natural language processing to provide intelligent automation and decision-making capabilities. Built with modern AI frameworks and cloud infrastructure for scalable AI services.",
+    "detailedDescription": "Parz-AI is a comprehensive artificial intelligence platform designed to deliver intelligent automation and advanced decision-making capabilities. The platform integrates multiple AI technologies including natural language processing, machine learning models, and predictive analytics to provide businesses with powerful AI-driven solutions. Features include intelligent document processing, automated decision workflows, predictive analytics, and real-time AI insights with comprehensive monitoring and analytics dashboard.",
+    "tags": ["AI/ML", "Python", "Machine Learning", "NLP", "Cloud Infrastructure", "Automation", "Analytics"],
+    "technologies": ["Python", "TensorFlow", "PyTorch", "OpenAI API", "AWS", "Docker", "Kubernetes", "FastAPI", "PostgreSQL", "Redis"],
+    "features": [
+      "Intelligent document processing and analysis",
+      "Automated decision-making workflows",
+      "Real-time AI insights and recommendations",
+      "Natural language processing capabilities",
+      "Predictive analytics and forecasting",
+      "Comprehensive AI model monitoring",
+      "Scalable cloud infrastructure",
+      "RESTful API for AI services integration"
+    ],
+    "link": "https://parz-ai-demo.vercel.app",
+    "githubUrl": "https://github.com/ovalles2019/parz-ai",
+    "videoUrl": "https://www.youtube.com/watch?v=example-parz-ai",
+    "imageUrl": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop&q=80",
+    "demoUrl": "https://parz-ai-demo.vercel.app"
+  },
+  {
+    "title": "Portfolio Website",
+    "description": "This very site, built with Flutter and modern web technologies. Features responsive design, dark/light theme support, and showcases my experience as a Cloud Engineer.",
+    "tags": ["Flutter", "Web", "Portfolio", "Responsive Design"],
+    "link": null,
+    "githubUrl": null
+  }
+]

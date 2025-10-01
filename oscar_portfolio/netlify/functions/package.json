@@ -1,0 +1,10 @@
+{
+  "name": "oscar-portfolio-functions",
+  "version": "1.0.0",
+  "description": "Netlify functions for Oscar's portfolio",
+  "dependencies": {
+    "openai": "^4.20.1"
+  }
+}
+
+

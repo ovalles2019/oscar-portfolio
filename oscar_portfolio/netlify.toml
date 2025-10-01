@@ -1,0 +1,12 @@
+[build]
+  command = "npm install && curl -o flutter.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.0-stable.tar.xz && tar xf flutter.tar.xz && export PATH=$PATH:$PWD/flutter/bin && flutter doctor && flutter build web --release"
+  publish = "build/web"
+  functions = "netlify/functions"
+
+[build.environment]
+  FLUTTER_VERSION = "3.24.0"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
