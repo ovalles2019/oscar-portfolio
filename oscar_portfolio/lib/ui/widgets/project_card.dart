@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../models/project.dart';
 
 class ProjectCard extends StatefulWidget {
@@ -14,28 +15,20 @@ class ProjectCard extends StatefulWidget {
 
 class _ProjectCardState extends State<ProjectCard>
     with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
-
+  late final AnimationController _animationController;
+  late final Animation<double> _liftAnimation;
   bool _isHovered = false;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 220),
       vsync: this,
     );
-    
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.05,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutCubic,
-    ));
-    
-
+    _liftAnimation = Tween<double>(begin: 0, end: -8).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
+    );
   }
 
   @override
@@ -44,9 +37,9 @@ class _ProjectCardState extends State<ProjectCard>
     super.dispose();
   }
 
-  void _onHover(bool isHovered) {
-    setState(() => _isHovered = isHovered);
-    if (isHovered) {
+  void _onHover(bool hovered) {
+    setState(() => _isHovered = hovered);
+    if (hovered) {
       _animationController.forward();
     } else {
       _animationController.reverse();
@@ -55,311 +48,130 @@ class _ProjectCardState extends State<ProjectCard>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final project = widget.project;
+
     return MouseRegion(
       onEnter: (_) => _onHover(true),
       onExit: (_) => _onHover(false),
       child: AnimatedBuilder(
-        animation: _animationController,
+        animation: _liftAnimation,
         builder: (context, child) {
-          return Transform.scale(
-            scale: _scaleAnimation.value,
+          return Transform.translate(
+            offset: Offset(0, _liftAnimation.value),
             child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 16),
               decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(24),
+                color: theme.colorScheme.surface.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(28),
                 border: Border.all(
-                  color: _isHovered 
-                    ? Theme.of(context).colorScheme.primary.withOpacity(0.3)
-                    : Theme.of(context).colorScheme.onSurface.withOpacity(0.06),
-                  width: _isHovered ? 2 : 1,
+                  color: _isHovered
+                      ? theme.colorScheme.primary.withOpacity(0.35)
+                      : theme.colorScheme.outline.withOpacity(0.35),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF6B7280).withOpacity(0.08),
-                    blurRadius: 24,
-                    offset: const Offset(0, 8),
-                    spreadRadius: 0,
-                  ),
-                  if (_isHovered)
-                    BoxShadow(
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.15),
-                      blurRadius: 32,
-                      offset: const Offset(0, 16),
-                      spreadRadius: 0,
+                    color: Colors.black.withOpacity(
+                      theme.brightness == Brightness.dark ? 0.24 : 0.08,
                     ),
+                    blurRadius: _isHovered ? 30 : 18,
+                    offset: Offset(0, _isHovered ? 18 : 10),
+                  ),
                 ],
               ),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(24),
-                onTap: widget.onTap ?? () => _showProjectDetails(context),
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Project Media (Image or Video)
-                      if (widget.project.imageUrl != null || widget.project.videoUrl != null) ...[
-                        Container(
-                          height: 160,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 8,
-                                offset: const Offset(0, 4),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(28),
+                  onTap: widget.onTap ?? () => _showProjectDetails(context),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _ProjectMedia(project: project),
+                        const SizedBox(height: 18),
+                        Text(
+                          project.category,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1,
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(project.title, style: theme.textTheme.headlineMedium),
+                        const SizedBox(height: 10),
+                        Text(
+                          project.description,
+                          style: theme.textTheme.bodyLarge,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 16),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: project.tags
+                              .take(4)
+                              .map((tag) => Chip(label: Text(tag)))
+                              .toList(),
+                        ),
+                        if (project.features.isNotEmpty) ...[
+                          const SizedBox(height: 18),
+                          ...project.features.take(2).map(
+                                (feature) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 8),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 6),
+                                        child: Icon(
+                                          Icons.circle,
+                                          size: 7,
+                                          color: theme.colorScheme.secondary,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Text(
+                                          feature,
+                                          style: theme.textTheme.bodyMedium,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                        ],
+                        const SizedBox(height: 18),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                onPressed: () => _showProjectDetails(context),
+                                icon: const Icon(Icons.visibility_outlined, size: 18),
+                                label: const Text('Details'),
+                              ),
+                            ),
+                            if (project.primaryLink != null) ...[
+                              const SizedBox(width: 10),
+                              IconButton(
+                                onPressed: () => _launchUrl(project.primaryLink!),
+                                icon: const Icon(Icons.open_in_new_rounded),
+                                tooltip: 'Open project',
+                                style: IconButton.styleFrom(
+                                  backgroundColor:
+                                      theme.colorScheme.surfaceContainerHighest,
+                                  foregroundColor: theme.colorScheme.onSurface,
+                                  padding: const EdgeInsets.all(14),
+                                ),
                               ),
                             ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Stack(
-                              children: [
-                                // Image or Video Background
-                                if (widget.project.imageUrl != null)
-                                  Image.network(
-                                    widget.project.imageUrl!,
-                                    fit: BoxFit.cover,
-                                    loadingBuilder: (context, child, loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(16),
-                                        ),
-                                        child: Center(
-                                          child: CircularProgressIndicator(
-                                            value: loadingProgress.expectedTotalBytes != null
-                                                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                                : null,
-                                            color: Theme.of(context).colorScheme.primary,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    errorBuilder: (context, error, stackTrace) {
-                                      print('Image load error: $error');
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(16),
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.image,
-                                              size: 45,
-                                              color: Theme.of(context).colorScheme.primary,
-                                            ),
-                                            Text(
-                                              'Image failed to load',
-                                              style: TextStyle(
-                                                color: Theme.of(context).colorScheme.primary,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  )
-                                else if (widget.project.imageUrl != null)
-                                  Image.network(
-                                    widget.project.imageUrl!,
-                                    fit: BoxFit.cover,
-                                    loadingBuilder: (context, child, loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(16),
-                                        ),
-                                        child: Center(
-                                          child: CircularProgressIndicator(
-                                            value: loadingProgress.expectedTotalBytes != null
-                                                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                                : null,
-                                            color: Theme.of(context).colorScheme.primary,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    errorBuilder: (context, error, stackTrace) {
-                                      print('Image load error: $error');
-                                      print('Image URL: ${widget.project.imageUrl}');
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(16),
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.image,
-                                              size: 45,
-                                              color: Theme.of(context).colorScheme.primary,
-                                            ),
-                                            Text(
-                                              'Image failed to load',
-                                              style: TextStyle(
-                                                color: Theme.of(context).colorScheme.primary,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  )
-                                else if (widget.project.videoUrl != null)
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.video_library,
-                                        size: 45,
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ),
-                                    ),
-                                  ),
-                                
-                                // Play Button Overlay for Videos (only if no image)
-                                if (widget.project.videoUrl != null && widget.project.imageUrl == null)
-                                  Center(
-                                    child: Container(
-                                      padding: const EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.primary.withOpacity(0.9),
-                                        shape: BoxShape.circle,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withOpacity(0.3),
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 4),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Icon(
-                                        Icons.play_arrow,
-                                        size: 32,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
+                          ],
                         ),
-                        const SizedBox(height: 14),
                       ],
-                      
-                      // Project Title
-                      Text(
-                        widget.project.title,
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: _isHovered 
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.onSurface,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      
-                      // Project Description
-                      Text(
-                        widget.project.description,
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                          height: 1.4,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 16),
-                      
-                      // Project Tags
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 6,
-                        children: widget.project.tags.map((tag) {
-                          return Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
-                                width: 1,
-                              ),
-                            ),
-                            child: Text(
-                              tag,
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(height: 16),
-                      
-                      // Action Buttons
-                      Row(
-                        children: [
-                          // View Details Button
-                          Expanded(
-                            child: ElevatedButton.icon(
-                              onPressed: () => _showProjectDetails(context),
-                              icon: const Icon(Icons.visibility, size: 16),
-                              label: const Text("View Details", style: TextStyle(fontSize: 13)),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context).colorScheme.primary,
-                                foregroundColor: Colors.white,
-                                elevation: 0,
-                                padding: const EdgeInsets.symmetric(vertical: 10),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          
-                          // External Link Button
-                          if (widget.project.link != null)
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
-                                  width: 1,
-                                ),
-                              ),
-                              child: IconButton(
-                                onPressed: () => _launchUrl(widget.project.link!),
-                                icon: const Icon(Icons.open_in_new, size: 18),
-                                tooltip: "Open Project",
-                                style: IconButton.styleFrom(
-                                  backgroundColor: Colors.transparent,
-                                  foregroundColor: Theme.of(context).colorScheme.onSurface,
-                                  padding: const EdgeInsets.all(8),
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -370,19 +182,86 @@ class _ProjectCardState extends State<ProjectCard>
     );
   }
 
-  void _showProjectDetails(BuildContext context) async {
-    // Track project view
-    
-    showDialog(
+  void _showProjectDetails(BuildContext context) {
+    showDialog<void>(
       context: context,
       builder: (context) => ProjectDetailsModal(project: widget.project),
     );
   }
 
   Future<void> _launchUrl(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
+  }
+}
+
+class _ProjectMedia extends StatelessWidget {
+  final Project project;
+
+  const _ProjectMedia({required this.project});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return AspectRatio(
+      aspectRatio: 16 / 10,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(22),
+        child: project.imageUrl != null && project.imageUrl!.isNotEmpty
+            ? Image.network(
+                project.imageUrl!,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => _FallbackMedia(
+                  icon: Icons.image_outlined,
+                  label: project.category,
+                ),
+              )
+            : _FallbackMedia(
+                icon: project.videoUrl != null && project.videoUrl!.isNotEmpty
+                    ? Icons.play_circle_outline_rounded
+                    : Icons.dashboard_customize_outlined,
+                label: project.category,
+              ),
+      ),
+    );
+  }
+}
+
+class _FallbackMedia extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _FallbackMedia({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            theme.colorScheme.primary.withOpacity(0.18),
+            theme.colorScheme.secondary.withOpacity(0.14),
+          ],
+        ),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 42, color: theme.colorScheme.primary),
+            const SizedBox(height: 10),
+            Text(label, style: theme.textTheme.titleLarge),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -393,279 +272,133 @@ class ProjectDetailsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Dialog(
       backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
       child: Container(
-        constraints: const BoxConstraints(maxWidth: 800, maxHeight: 600),
+        constraints: const BoxConstraints(maxWidth: 900, maxHeight: 760),
         decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(24),
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(32),
+          border: Border.all(color: theme.colorScheme.outline.withOpacity(0.35)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
+              color: Colors.black.withOpacity(0.28),
+              blurRadius: 30,
+              offset: const Offset(0, 20),
             ),
           ],
         ),
         child: Column(
           children: [
-            // Header with close button
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                ),
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.05),
-              ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 24, 16, 0),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Text(
-                      project.title,
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          project.category.toUpperCase(),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.1,
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(project.title, style: theme.textTheme.displayMedium),
+                      ],
                     ),
                   ),
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    icon: const Icon(Icons.close),
+                    icon: const Icon(Icons.close_rounded),
                     style: IconButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+                      backgroundColor: theme.colorScheme.surfaceContainerHighest,
                     ),
                   ),
                 ],
               ),
             ),
-            
-            // Content
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Project Media (Image or Video)
-                    if (project.imageUrl != null || project.videoUrl != null) ...[
-                      Container(
-                        height: 250,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 8,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Stack(
+                    _ProjectMedia(project: project),
+                    const SizedBox(height: 24),
+                    Text(project.detailedDescription, style: theme.textTheme.bodyLarge),
+                    if (project.features.isNotEmpty) ...[
+                      const SizedBox(height: 28),
+                      Text('Highlights', style: theme.textTheme.headlineMedium),
+                      const SizedBox(height: 12),
+                      ...project.features.map(
+                        (feature) => Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Image or Video Background
-                              if (project.imageUrl != null)
-                                Image.network(
-                                  project.imageUrl!,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      child: Icon(
-                                        Icons.image,
-                                        size: 80,
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ),
-                                    );
-                                  },
-                                )
-                              else if (project.videoUrl != null)
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.video_library,
-                                      size: 80,
-                                      color: Theme.of(context).colorScheme.primary,
-                                    ),
-                                  ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 7),
+                                child: Icon(
+                                  Icons.check_circle_rounded,
+                                  size: 18,
+                                  color: theme.colorScheme.secondary,
                                 ),
-                              
-                              // Play Button Overlay for Videos (only if no image)
-                              if (project.videoUrl != null && project.imageUrl == null)
-                                Center(
-                                  child: GestureDetector(
-                                    onTap: () => _launchUrl(project.videoUrl!),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(16),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.primary.withOpacity(0.9),
-                                        shape: BoxShape.circle,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withOpacity(0.3),
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 4),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Icon(
-                                        Icons.play_arrow,
-                                        size: 48,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  feature,
+                                  style: theme.textTheme.bodyLarge,
                                 ),
+                              ),
                             ],
                           ),
                         ),
                       ),
-                      const SizedBox(height: 24),
                     ],
-                    
-                    // Detailed Description
-                    Text(
-                      "About this project",
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      project.detailedDescription,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
-                        height: 1.6,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    
-                    // Features
-                    if (project.features.isNotEmpty) ...[
-                      Text(
-                        "Key Features",
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      ...project.features.map((feature) => Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.check_circle,
-                              size: 20,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text(
-                                feature,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )),
-                      const SizedBox(height: 24),
-                    ],
-                    
-                    // Technologies
                     if (project.technologies.isNotEmpty) ...[
-                      Text(
-                        "Technologies Used",
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
+                      const SizedBox(height: 28),
+                      Text('Technology stack', style: theme.textTheme.headlineMedium),
                       const SizedBox(height: 12),
                       Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: project.technologies.map((tech) {
-                          return Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                                width: 1,
-                              ),
-                            ),
-                            child: Text(
-                              tech,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                          );
-                        }).toList(),
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: project.technologies
+                            .map((tech) => Chip(label: Text(tech)))
+                            .toList(),
                       ),
-                      const SizedBox(height: 24),
                     ],
-                    
-                    // Action Buttons
-                    Row(
+                    const SizedBox(height: 28),
+                    Wrap(
+                      spacing: 12,
+                      runSpacing: 12,
                       children: [
-                        if (project.demoUrl != null) ...[
-                          Expanded(
-                            child: ElevatedButton.icon(
-                              onPressed: () => _launchUrl(project.demoUrl!),
-                              icon: const Icon(Icons.play_arrow),
-                              label: const Text("Live Demo"),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context).colorScheme.primary,
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                            ),
+                        if (project.liveUrl != null && project.liveUrl!.isNotEmpty)
+                          ElevatedButton.icon(
+                            onPressed: () => _launchUrl(project.liveUrl!),
+                            icon: const Icon(Icons.public_rounded),
+                            label: const Text('Live demo'),
                           ),
-                          const SizedBox(width: 16),
-                        ],
-                        if (project.githubUrl != null) ...[
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: () => _launchUrl(project.githubUrl!),
-                              icon: const Icon(Icons.code),
-                              label: const Text("View Code"),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: Theme.of(context).colorScheme.primary,
-                                side: BorderSide(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  width: 2,
-                                ),
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                            ),
+                        if (project.demoUrl != null && project.demoUrl!.isNotEmpty)
+                          FilledButton.tonalIcon(
+                            onPressed: () => _launchUrl(project.demoUrl!),
+                            icon: const Icon(Icons.play_circle_outline_rounded),
+                            label: const Text('Demo'),
                           ),
-                        ],
+                        if (project.githubUrl != null && project.githubUrl!.isNotEmpty)
+                          OutlinedButton.icon(
+                            onPressed: () => _launchUrl(project.githubUrl!),
+                            icon: const Icon(Icons.code_rounded),
+                            label: const Text('GitHub'),
+                          ),
                       ],
                     ),
                   ],
@@ -679,8 +412,9 @@ class ProjectDetailsModal extends StatelessWidget {
   }
 
   Future<void> _launchUrl(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
 }
