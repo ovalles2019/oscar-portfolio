@@ -1,19 +1,34 @@
 [
   {
-    "title": "Cloud Infrastructure Dashboard",
-    "description": "A comprehensive AWS cloud monitoring dashboard built with Flutter and serverless architecture. Features real-time metrics, cost optimization insights, and automated scaling recommendations.",
-    "detailedDescription": "This cloud infrastructure dashboard provides real-time monitoring and management of AWS resources. Built with Flutter for cross-platform compatibility, it offers intuitive visualizations of cloud metrics, automated cost optimization recommendations, and intelligent scaling suggestions. The dashboard integrates with AWS CloudWatch, DynamoDB, and Lambda functions to provide comprehensive infrastructure insights.",
-    "technologies": ["Flutter", "AWS", "DynamoDB", "Lambda", "CloudWatch"],
-    "tags": ["Flutter", "AWS", "DynamoDB", "Lambda", "CloudWatch"],
+    "title": "Cloud Infrastructure Command Center",
+    "description": "A polished operations dashboard for AWS workloads with real-time health monitoring, cost visibility, and deployment signals for engineering teams.",
+    "detailedDescription": "This project reframes cloud operations as a product experience. I designed a cross-platform Flutter dashboard connected to AWS services so teams can monitor service health, track cost drift, review deployment status, and respond faster to incidents. The emphasis is on clear information hierarchy, lightweight automation, and interfaces that help operators make confident decisions quickly.",
+    "technologies": ["Flutter", "AWS", "CloudWatch", "Lambda", "DynamoDB", "Amplify"],
+    "tags": ["Flutter", "AWS", "Observability", "Serverless"],
     "features": [
-      "Real-time cloud metrics visualization",
-      "Cost optimization recommendations",
-      "Automated scaling suggestions",
-      "Multi-region resource monitoring",
-      "Custom alert configurations",
-      "Performance analytics dashboard"
+      "Unified view of cloud health, alerts, and release status",
+      "Cost insights and trend summaries surfaced for faster decision-making",
+      "Serverless backend patterns for responsive and scalable monitoring workflows"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=center",
+    "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=800&fit=crop&crop=center",
+    "videoUrl": "",
+    "githubUrl": "https://github.com/ovalles2019",
+    "liveUrl": "",
+    "demoUrl": "",
+    "category": "Cloud & Platform"
+  },
+  {
+    "title": "Budgeting + Insights Platform",
+    "description": "A production-style finance platform that combines budgeting workflows, anomaly detection, and cloud-native delivery with a modern React dashboard.",
+    "detailedDescription": "Built as a showcase of end-to-end engineering maturity, this platform uses microservices to separate transaction ingestion, analytics, and reporting concerns. Infrastructure is automated with Terraform, workloads are containerized for Kubernetes, and the UI focuses on turning raw data into accessible insight. The project demonstrates both platform thinking and the importance of presentation quality for technical products.",
+    "technologies": ["React", "Python", "Flask", "AWS", "Terraform", "Docker", "Kubernetes", "Jenkins"],
+    "tags": ["React", "Python", "Kubernetes", "Terraform"],
+    "features": [
+      "Interactive dashboards for budgets, anomalies, and trend snapshots",
+      "Infrastructure as code and CI/CD workflow designed for repeatable delivery",
+      "Microservice architecture that cleanly separates ingestion, analytics, and presentation"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=800&fit=crop&crop=center",
     "videoUrl": "",
     "githubUrl": "https://github.com/ovalles2019",
     "liveUrl": "",
@@ -22,110 +37,38 @@
   },
   {
     "title": "AI-Powered Portfolio Analyzer",
-    "description": "Machine learning application that analyzes investment portfolios and provides personalized recommendations using Python, TensorFlow, and modern web technologies.",
-    "detailedDescription": "An intelligent portfolio analysis platform that leverages machine learning algorithms to evaluate investment portfolios and provide personalized recommendations. The system uses TensorFlow for deep learning models, processes historical market data, and generates risk assessments and optimization suggestions. Features include portfolio diversification analysis, risk-return optimization, and predictive market trend analysis.",
+    "description": "An ML-assisted web experience that evaluates portfolio composition, highlights risk patterns, and surfaces personalized recommendations in a clearer visual flow.",
+    "detailedDescription": "This application combines predictive analytics with a strong front-end experience. Historical market data is processed through machine learning models to generate risk assessments, diversification guidance, and trend-aware recommendations. The interface emphasizes readability and confidence, making complex financial concepts easier to evaluate at a glance.",
     "technologies": ["Python", "TensorFlow", "React", "PostgreSQL", "Docker"],
-    "tags": ["Python", "TensorFlow", "React", "PostgreSQL", "Docker"],
+    "tags": ["Machine Learning", "Python", "Analytics", "React"],
     "features": [
-      "Machine learning portfolio analysis",
-      "Risk assessment algorithms",
-      "Personalized investment recommendations",
-      "Real-time market data integration",
-      "Portfolio diversification insights",
-      "Predictive trend analysis"
+      "Risk scoring and diversification analysis backed by ML models",
+      "Recommendation flows designed to explain outcomes, not just output numbers",
+      "Containerized deployment approach for consistent development and delivery"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=600&fit=crop&crop=center",
+    "imageUrl": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&h=800&fit=crop&crop=center",
     "videoUrl": "",
     "githubUrl": "https://github.com/ovalles2019",
     "liveUrl": "",
     "demoUrl": "",
-    "category": "Machine Learning"
+    "category": "AI & Analytics"
   },
   {
-    "title": "Real-time Chat Application",
-    "description": "Scalable real-time messaging platform with end-to-end encryption, file sharing, and video calling capabilities built with Flutter and Firebase.",
-    "detailedDescription": "A modern, secure messaging platform that enables real-time communication with advanced features. Built with Flutter for cross-platform compatibility and Firebase for backend services, it offers end-to-end encryption, file sharing, video calling, and group chat functionality. The application supports multiple media types, message reactions, and offline message synchronization.",
-    "technologies": ["Flutter", "Firebase", "WebRTC", "Dart", "Cloud Functions"],
-    "tags": ["Flutter", "Firebase", "WebRTC", "Dart", "Cloud Functions"],
+    "title": "Real-Time Collaboration Suite",
+    "description": "A secure messaging and collaboration experience built with Flutter and Firebase, focused on responsive communication and smooth cross-platform usability.",
+    "detailedDescription": "This project explores how a communication product can feel fast, reliable, and intuitive across devices. It uses Firebase for realtime sync and Flutter for a shared UI codebase, pairing messaging, media sharing, and collaboration flows with a stronger design sensibility than typical demo apps. The result is a cleaner, more credible case study for mobile and full-stack delivery.",
+    "technologies": ["Flutter", "Firebase", "Dart", "Cloud Functions", "WebRTC"],
+    "tags": ["Flutter", "Realtime", "Firebase", "Mobile"],
     "features": [
-      "End-to-end encryption",
-      "Real-time messaging",
-      "Video and voice calling",
-      "File sharing capabilities",
-      "Group chat functionality",
-      "Message reactions and replies",
-      "Offline message sync"
+      "Realtime chat architecture with responsive UX across devices",
+      "Support for file sharing, call-ready interaction patterns, and conversation context",
+      "Cross-platform implementation strategy that balances speed and maintainability"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=800&h=600&fit=crop&crop=center",
+    "imageUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=800&fit=crop&crop=center",
     "videoUrl": "",
     "githubUrl": "https://github.com/ovalles2019",
     "liveUrl": "",
     "demoUrl": "",
-    "category": "Mobile Development"
-  },
-  {
-    "title": "E-commerce Microservices Platform",
-    "description": "High-performance e-commerce platform built with microservices architecture, featuring inventory management, payment processing, and order fulfillment systems.",
-    "detailedDescription": "A robust e-commerce platform designed with microservices architecture for scalability and maintainability. The system includes separate services for inventory management, payment processing, order fulfillment, user authentication, and recommendation engines. Built with Node.js and containerized with Docker, it provides high availability and horizontal scaling capabilities.",
-    "technologies": ["Node.js", "Kubernetes", "MongoDB", "Redis", "Docker"],
-    "tags": ["Node.js", "Kubernetes", "MongoDB", "Redis", "Docker"],
-    "features": [
-      "Microservices architecture",
-      "Inventory management system",
-      "Secure payment processing",
-      "Order fulfillment automation",
-      "User authentication & authorization",
-      "Product recommendation engine",
-      "Real-time analytics dashboard"
-    ],
-    "imageUrl": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop&crop=center",
-    "videoUrl": "",
-    "githubUrl": "https://github.com/ovalles2019",
-    "liveUrl": "",
-    "demoUrl": "",
-    "category": "Full-Stack Development"
-  },
-  {
-    "title": "IoT Smart Home Controller",
-    "description": "Internet of Things application for controlling smart home devices with voice commands, automation rules, and energy monitoring capabilities.",
-    "detailedDescription": "An intelligent smart home control system that integrates various IoT devices through a unified Flutter application. The system supports voice commands, automated routines, energy monitoring, and remote device control. Built with Arduino microcontrollers, MQTT protocol for device communication, and AWS IoT for cloud connectivity, it provides a seamless smart home experience.",
-    "technologies": ["Flutter", "Arduino", "MQTT", "AWS IoT", "Python"],
-    "tags": ["Flutter", "Arduino", "MQTT", "AWS IoT", "Python"],
-    "features": [
-      "Voice command integration",
-      "Automated device routines",
-      "Energy consumption monitoring",
-      "Remote device control",
-      "Multi-device synchronization",
-      "Security and privacy controls",
-      "Custom automation rules"
-    ],
-    "imageUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop&crop=center",
-    "videoUrl": "",
-    "githubUrl": "https://github.com/ovalles2019",
-    "liveUrl": "",
-    "demoUrl": "",
-    "category": "IoT & Embedded"
-  },
-  {
-    "title": "Cloud Budgeting + Insights Platform",
-    "description": "Production-ready personal finance platform built with microservices architecture, real-time analytics, and a React dashboard for budgets, anomalies, and insights.",
-    "detailedDescription": "A cloud-first budgeting and insights platform designed to demonstrate enterprise-grade engineering practices. It uses microservices for transaction management and analytics, containerized deployments on Kubernetes (EKS), infrastructure as code with Terraform, and CI/CD via Jenkins. The React frontend provides interactive dashboards, anomaly alerts, and spending insights backed by Prometheus metrics and health checks.",
-    "technologies": ["React", "Python", "Flask", "Kubernetes", "AWS", "Terraform", "Docker", "Jenkins"],
-    "tags": ["React", "Python", "Flask", "Kubernetes", "AWS", "Terraform", "Docker", "Jenkins"],
-    "features": [
-      "Microservices for transactions and analytics",
-      "Anomaly detection and budget status insights",
-      "Interactive dashboard with charts and alerts",
-      "Kubernetes orchestration on AWS EKS",
-      "Terraform-managed infrastructure",
-      "CI/CD pipeline with Jenkins"
-    ],
-    "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop&crop=center",
-    "videoUrl": "",
-    "githubUrl": "https://github.com/ovalles2019",
-    "liveUrl": "",
-    "demoUrl": "",
-    "category": "Cloud & DevOps"
+    "category": "Product Engineering"
   }
 ]

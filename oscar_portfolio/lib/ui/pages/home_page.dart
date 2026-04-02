@@ -1,12 +1,14 @@
+import 'dart:html' as html;
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:html' as html;
-import '../widgets/nav_bar.dart';
-import '../widgets/project_card.dart';
-import '../widgets/ai_chat_widget.dart';
+
+import '../../data/projects.dart';
 import '../../models/project.dart';
 import '../../services/download_counter_service.dart';
-import '../../data/projects.dart';
+import '../widgets/ai_chat_widget.dart';
+import '../widgets/nav_bar.dart';
+import '../widgets/project_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,602 +18,733 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final ScrollController _scrollController = ScrollController();
+  final Map<String, GlobalKey> _sectionKeys = {
+    'about': GlobalKey(),
+    'projects': GlobalKey(),
+    'skills': GlobalKey(),
+    'contact': GlobalKey(),
+  };
+
+  String _currentSection = 'about';
+  List<Project> _projects = [];
+  bool _projectsLoading = true;
+
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_handleScroll);
+    _loadProjects();
+  }
+
+  Future<void> _loadProjects() async {
+    await loadProjects();
+    if (!mounted) return;
+    setState(() {
+      _projects = demoProjects;
+      _projectsLoading = false;
+    });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: NavBar(),
-      ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                _HeroSection(onLaunchUrl: _launchUrl),
-                const SizedBox(height: 120),
-                _AboutSection(),
-                const SizedBox(height: 120),
-                _ProjectsSection(),
-                const SizedBox(height: 120),
-                _SkillsSection(),
-                const SizedBox(height: 120),
-                _ContactSection(onLaunchUrl: _launchUrl),
-                const SizedBox(height: 120),
-              ],
-            ),
-          ),
-          // AI Chat Widget
-          const AIChatWidget(),
-        ],
-      ),
+  void dispose() {
+    _scrollController
+      ..removeListener(_handleScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _handleScroll() {
+    final viewportHeight = MediaQuery.of(context).size.height;
+    var activeSection = _currentSection;
+
+    for (final entry in _sectionKeys.entries) {
+      final contextForKey = entry.value.currentContext;
+      if (contextForKey == null) continue;
+      final box = contextForKey.findRenderObject() as RenderBox?;
+      if (box == null) continue;
+      final offset = box.localToGlobal(Offset.zero).dy;
+      if (offset <= viewportHeight * 0.35) {
+        activeSection = entry.key;
+      }
+    }
+
+    if (activeSection != _currentSection && mounted) {
+      setState(() => _currentSection = activeSection);
+    }
+  }
+
+  Future<void> _scrollToSection(String section) async {
+    final targetContext = _sectionKeys[section]?.currentContext;
+    if (targetContext == null) return;
+
+    await Scrollable.ensureVisible(
+      targetContext,
+      duration: const Duration(milliseconds: 700),
+      curve: Curves.easeInOutCubic,
+      alignment: 0.08,
     );
   }
 
   Future<void> _launchUrl(BuildContext context, String url) async {
     if (url.contains('resume.pdf')) {
       try {
-        // For Flutter web, use the correct asset path
         final resumeUrl = Uri.parse('/assets/assets/resume.pdf');
-        
-        // Try to launch the URL directly
         if (await canLaunchUrl(resumeUrl)) {
           await launchUrl(resumeUrl, mode: LaunchMode.externalApplication);
-          // Increment download counter
-          DownloadCounterService.incrementDownloadCount();
-          // Trigger rebuild to update counter display
-          if (mounted) setState(() {});
         } else {
-          // Fallback: create a download link
           html.AnchorElement(href: '/assets/assets/resume.pdf')
-            ..setAttribute('download', 'resume.pdf')
-              ..click();
-          // Increment download counter
-          DownloadCounterService.incrementDownloadCount();
-          // Trigger rebuild to update counter display
-          if (mounted) setState(() {});
+            ..setAttribute('download', 'Oscar-Valles-Resume.pdf')
+            ..click();
         }
-          } catch (e) {
-        // Show error message with helpful instructions
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-            content: Text('Resume download failed. Please try right-clicking the button and select "Save as..."'),
-            duration: Duration(seconds: 5),
-                action: SnackBarAction(
-                  label: 'Copy Link',
-                  onPressed: () {
-                    // Copy the direct link to clipboard
-                    html.window.navigator.clipboard?.writeText('/assets/assets/resume.pdf');
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Link copied to clipboard!')),
-                    );
-                  },
-                ),
+        DownloadCounterService.incrementDownloadCount();
+        if (mounted) setState(() {});
+      } catch (_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Resume download failed. Please try opening it in a new tab.',
+            ),
           ),
         );
       }
-    } else if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
+      return;
     }
+
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final horizontalPadding = _responsiveHorizontalPadding(context);
+
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: NavBar(
+        currentSection: _currentSection,
+        onSectionSelected: _scrollToSection,
+      ),
+      body: Stack(
+        children: [
+          const Positioned.fill(child: _PageBackdrop()),
+          SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              children: [
+                _HeroSection(
+                  horizontalPadding: horizontalPadding,
+                  onLaunchUrl: _launchUrl,
+                  onViewWork: () => _scrollToSection('projects'),
+                  onContact: () => _scrollToSection('contact'),
+                ),
+                _SectionShell(
+                  key: _sectionKeys['about'],
+                  horizontalPadding: horizontalPadding,
+                  child: const _AboutSection(),
+                ),
+                _SectionShell(
+                  key: _sectionKeys['projects'],
+                  horizontalPadding: horizontalPadding,
+                  child: _ProjectsSection(
+                    isLoading: _projectsLoading,
+                    projects: _projects,
+                  ),
+                ),
+                _SectionShell(
+                  key: _sectionKeys['skills'],
+                  horizontalPadding: horizontalPadding,
+                  child: const _SkillsSection(),
+                ),
+                _SectionShell(
+                  key: _sectionKeys['contact'],
+                  horizontalPadding: horizontalPadding,
+                  child: _ContactSection(
+                    onLaunchUrl: _launchUrl,
+                  ),
+                ),
+                const SizedBox(height: 120),
+              ],
+            ),
+          ),
+          const AIChatWidget(),
+        ],
+      ),
+    );
+  }
+
+  double _responsiveHorizontalPadding(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1400) return 72;
+    if (width >= 1024) return 56;
+    if (width >= 768) return 32;
+    return 20;
+  }
+}
+
+class _PageBackdrop extends StatelessWidget {
+  const _PageBackdrop();
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: isDark
+              ? const [Color(0xFF060B16), Color(0xFF0A1222), Color(0xFF060B16)]
+              : const [Color(0xFFF8FAFC), Color(0xFFF3F6FB), Color(0xFFFFFFFF)],
+        ),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            top: -120,
+            left: -40,
+            child: _GlowOrb(
+              size: 320,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.18),
+            ),
+          ),
+          Positioned(
+            top: 420,
+            right: -100,
+            child: _GlowOrb(
+              size: 280,
+              color: Theme.of(context).colorScheme.secondary.withOpacity(0.16),
+            ),
+          ),
+          Positioned(
+            bottom: 180,
+            left: -60,
+            child: _GlowOrb(
+              size: 240,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.12),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _GlowOrb extends StatelessWidget {
+  final double size;
+  final Color color;
+
+  const _GlowOrb({required this.size, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: RadialGradient(
+            colors: [color, color.withOpacity(0)],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SectionShell extends StatelessWidget {
+  final Widget child;
+  final double horizontalPadding;
+
+  const _SectionShell({
+    super.key,
+    required this.child,
+    required this.horizontalPadding,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(horizontalPadding, 0, horizontalPadding, 96),
+      child: child,
+    );
   }
 }
 
 class _HeroSection extends StatelessWidget {
+  final double horizontalPadding;
   final Future<void> Function(BuildContext, String) onLaunchUrl;
-  
-  const _HeroSection({required this.onLaunchUrl});
-  
+  final VoidCallback onViewWork;
+  final VoidCallback onContact;
+
+  const _HeroSection({
+    required this.horizontalPadding,
+    required this.onLaunchUrl,
+    required this.onViewWork,
+    required this.onContact,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width < 768 ? 20 : 40,
-        vertical: MediaQuery.of(context).size.width < 768 ? 80 : 120,
-      ),
-      child: Stack(
-        children: [
-          // Dynamic background with elegant wave animations
-          Positioned.fill(
-            child: _AnimatedBackground(),
+    final theme = Theme.of(context);
+    final width = MediaQuery.of(context).size.width;
+    final isCompact = width < 980;
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(horizontalPadding, 120, horizontalPadding, 96),
+      child: Container(
+        padding: EdgeInsets.all(isCompact ? 28 : 40),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              theme.colorScheme.surface.withOpacity(0.92),
+              theme.colorScheme.surfaceContainerHighest.withOpacity(0.92),
+            ],
           ),
-          
-          // Content on top
-          Column(
+          borderRadius: BorderRadius.circular(36),
+          border: Border.all(color: theme.colorScheme.outline.withOpacity(0.35)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(
+                theme.brightness == Brightness.dark ? 0.22 : 0.06,
+              ),
+              blurRadius: 40,
+              offset: const Offset(0, 20),
+            ),
+          ],
+        ),
+        child: isCompact
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _HeroCopy(
+                    onLaunchUrl: onLaunchUrl,
+                    onViewWork: onViewWork,
+                    onContact: onContact,
+                  ),
+                  const SizedBox(height: 28),
+                  const _HeroSpotlightCard(),
+                ],
+              )
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 6,
+                    child: _HeroCopy(
+                      onLaunchUrl: onLaunchUrl,
+                      onViewWork: onViewWork,
+                      onContact: onContact,
+                    ),
+                  ),
+                  const SizedBox(width: 28),
+                  const Expanded(
+                    flex: 4,
+                    child: _HeroSpotlightCard(),
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+}
+
+class _HeroCopy extends StatelessWidget {
+  final Future<void> Function(BuildContext, String) onLaunchUrl;
+  final VoidCallback onViewWork;
+  final VoidCallback onContact;
+
+  const _HeroCopy({
+    required this.onLaunchUrl,
+    required this.onViewWork,
+    required this.onContact,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final width = MediaQuery.of(context).size.width;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.primary.withOpacity(0.08),
+            borderRadius: BorderRadius.circular(999),
+            border: Border.all(
+              color: theme.colorScheme.primary.withOpacity(0.22),
+            ),
+          ),
+          child: Text(
+            'Open to cloud engineering, platform, and DevOps opportunities',
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: theme.colorScheme.primary,
+            ),
+          ),
+        ),
+        const SizedBox(height: 28),
+        Text(
+          'Designing reliable cloud systems with a sharp product mindset.',
+          style: theme.textTheme.displayLarge?.copyWith(
+            fontSize: width < 768 ? 42 : null,
+          ),
+        ),
+        const SizedBox(height: 20),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 660),
+          child: Text(
+            'I help teams turn infrastructure, automation, and modern application development into polished experiences that scale. This portfolio now leads with stronger hierarchy, clearer proof of value, and a more premium visual system.',
+            style: theme.textTheme.bodyLarge,
+          ),
+        ),
+        const SizedBox(height: 28),
+        Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          children: [
+            ElevatedButton.icon(
+              onPressed: onViewWork,
+              icon: const Icon(Icons.grid_view_rounded),
+              label: const Text('View case studies'),
+            ),
+            OutlinedButton.icon(
+              onPressed: () => onLaunchUrl(context, '/assets/assets/resume.pdf'),
+              icon: const Icon(Icons.download_rounded),
+              label: Text(DownloadCounterService.downloadCountText),
+            ),
+            FilledButton.tonalIcon(
+              onPressed: onContact,
+              icon: const Icon(Icons.arrow_outward_rounded),
+              label: const Text('Let’s work together'),
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 32),
+        Wrap(
+          spacing: 16,
+          runSpacing: 16,
+          children: const [
+            _MetricChip(value: 'AWS', label: 'Cloud, IaC, monitoring'),
+            _MetricChip(value: 'Flutter', label: 'Web & mobile experiences'),
+            _MetricChip(value: 'AI', label: 'Applied ML + automation'),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _MetricChip extends StatelessWidget {
+  final String value;
+  final String label;
+
+  const _MetricChip({required this.value, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: theme.colorScheme.outline.withOpacity(0.35)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            value,
+            style: theme.textTheme.titleLarge?.copyWith(
+              color: theme.colorScheme.primary,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Text(label, style: theme.textTheme.bodyMedium),
+        ],
+      ),
+    );
+  }
+}
+
+class _HeroSpotlightCard extends StatelessWidget {
+  const _HeroSpotlightCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface.withOpacity(0.84),
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(color: theme.colorScheme.outline.withOpacity(0.35)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              // Profile picture
               Container(
-                width: 140, // Increased from 120
-                height: 140, // Increased from 120
+                width: 68,
+                height: 68,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
-                    width: 3,
+                    color: theme.colorScheme.primary.withOpacity(0.25),
+                    width: 2,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
                 ),
                 child: ClipOval(
                   child: Image.asset(
                     'assets/avatar.jpg',
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.person,
-                          size: 60, // Increased from 50
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      );
-                    },
+                    errorBuilder: (context, error, stackTrace) => Icon(
+                      Icons.person_rounded,
+                      color: theme.colorScheme.primary,
+                      size: 32,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(height: 40),
-              
-              // Large, impactful title
-              Text(
-                "Oscar Valles",
-                style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  letterSpacing: -2.0,
-                  height: 1.1,
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Oscar Valles', style: theme.textTheme.titleLarge),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Cloud engineer • Full-stack developer',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                  ],
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              
-              // Subtitle with Apple-style typography
-              Text(
-                "Cloud Engineer & Full-Stack Developer",
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: -0.5,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 40),
-              
-              // Description with clean, readable text
-              Container(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: Text(
-                  "Building scalable cloud solutions with AWS, Flutter, and modern technologies. "
-                  "Passionate about creating efficient, reliable, and user-friendly applications.",
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                    height: 1.5,
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: -0.3,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(height: 60),
-              
-              // Action buttons with Apple-style design
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  if (constraints.maxWidth < 768) {
-                    // Mobile layout - stacked vertically
-                    return Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF007AFF).withOpacity(0.4),
-                                blurRadius: 20,
-                                offset: const Offset(0, 8),
-                                spreadRadius: 2,
-                              ),
-                            ],
-                          ),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () => onLaunchUrl(context, '/assets/assets/resume.pdf'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF007AFF),
-                                foregroundColor: Colors.white,
-                                elevation: 0,
-                                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                shadowColor: Colors.transparent,
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    DownloadCounterService.downloadCountText,
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: -0.5,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF34C759).withOpacity(0.3),
-                                blurRadius: 15,
-                                offset: const Offset(0, 6),
-                                spreadRadius: 1,
-                              ),
-                            ],
-                          ),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () async {
-                                _scrollToSection(context, "contact");
-                              },
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: const Color(0xFF34C759),
-                                side: const BorderSide(color: Color(0xFF34C759), width: 2),
-                                backgroundColor: const Color(0xFF34C759).withOpacity(0.1),
-                                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                              ),
-                              child: const Text(
-                                "Get In Touch",
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: -0.5,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  } else {
-                    // Desktop layout - side by side
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF007AFF).withOpacity(0.4),
-                                blurRadius: 20,
-                                offset: const Offset(0, 8),
-                                spreadRadius: 2,
-                              ),
-                            ],
-                          ),
-                          child: ElevatedButton(
-                            onPressed: () => onLaunchUrl(context, 'assets/resume.pdf'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF007AFF),
-                              foregroundColor: Colors.white,
-                              elevation: 0,
-                              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              shadowColor: Colors.transparent,
-                            ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  DownloadCounterService.downloadCountText,
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: -0.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF34C759).withOpacity(0.3),
-                                blurRadius: 15,
-                                offset: const Offset(0, 6),
-                                spreadRadius: 1,
-                              ),
-                            ],
-                          ),
-                          child: OutlinedButton(
-                            onPressed: () async {
-                              _scrollToSection(context, "contact");
-                            },
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: const Color(0xFF34C759),
-                              side: const BorderSide(color: Color(0xFF34C759), width: 2),
-                              backgroundColor: const Color(0xFF34C759).withOpacity(0.1),
-                              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                            ),
-                            child: const Text(
-                              "Get In Touch",
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: -0.5,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                },
               ),
             ],
+          ),
+          const SizedBox(height: 24),
+          _SpotlightRow(
+            eyebrow: 'Current focus',
+            title: 'Production-ready cloud platforms',
+            detail:
+                'Shipping scalable dashboards, automation workflows, and AI-enabled tooling with clean UX.',
+          ),
+          const SizedBox(height: 18),
+          _SpotlightRow(
+            eyebrow: 'Strengths',
+            title: 'Infrastructure + product polish',
+            detail:
+                'Bridging architecture, implementation, and presentation so technical work feels trustworthy.',
+          ),
+          const SizedBox(height: 18),
+          _SpotlightRow(
+            eyebrow: 'Based in',
+            title: 'UTD / Texas',
+            detail:
+                'Open to internships and full-time roles in cloud, DevOps, platform engineering, and applied AI.',
           ),
         ],
       ),
     );
   }
-
-  void _scrollToSection(BuildContext context, String section) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Scrolling to $section section...')),
-    );
-  }
 }
 
-class _AnimatedBackground extends StatefulWidget {
-  @override
-  State<_AnimatedBackground> createState() => _AnimatedBackgroundState();
-}
+class _SpotlightRow extends StatelessWidget {
+  final String eyebrow;
+  final String title;
+  final String detail;
 
-class _AnimatedBackgroundState extends State<_AnimatedBackground>
-    with TickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(seconds: 20),
-      vsync: this,
-    );
-    
-    _animation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.linear,
-    ));
-    
-    _animationController.repeat();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
+  const _SpotlightRow({
+    required this.eyebrow,
+    required this.title,
+    required this.detail,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (context, child) {
-        return CustomPaint(
-          painter: _CloudPainter(_animation.value),
-          size: Size.infinite,
-        );
-      },
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          eyebrow.toUpperCase(),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            letterSpacing: 1.2,
+            fontWeight: FontWeight.w700,
+            color: theme.colorScheme.primary,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(title, style: theme.textTheme.titleLarge),
+        const SizedBox(height: 4),
+        Text(detail, style: theme.textTheme.bodyMedium),
+      ],
     );
   }
 }
 
-class _CloudPainter extends CustomPainter {
-  final double animationValue;
+class _SectionHeader extends StatelessWidget {
+  final String eyebrow;
+  final String title;
+  final String description;
 
-  _CloudPainter(this.animationValue);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFF007AFF).withOpacity(0.03) // Fixed color instead of Theme.of(context)
-      ..style = PaintingStyle.fill;
-
-    // Multiple floating clouds with different speeds and positions
-    _drawCloud(canvas, size, paint, 0.1, 0.2, 0.8);
-    _drawCloud(canvas, size, paint, 0.3, 0.7, 0.6);
-    _drawCloud(canvas, size, paint, 0.6, 0.3, 0.9);
-    _drawCloud(canvas, size, paint, 0.8, 0.8, 0.7);
-    _drawCloud(canvas, size, paint, 0.2, 0.5, 0.5);
-  }
-
-  void _drawCloud(Canvas canvas, Size size, Paint paint, double x, double y, double speed) {
-    final cloudX = (x + animationValue * speed) * size.width;
-    final cloudY = y * size.height;
-    
-    // Draw cloud using multiple circles
-    canvas.drawCircle(
-      Offset(cloudX, cloudY),
-      40,
-      paint,
-    );
-    canvas.drawCircle(
-      Offset(cloudX + 30, cloudY),
-      35,
-      paint,
-    );
-    canvas.drawCircle(
-      Offset(cloudX + 60, cloudY),
-      30,
-      paint,
-    );
-    canvas.drawCircle(
-      Offset(cloudX + 15, cloudY - 20),
-      25,
-      paint,
-    );
-    canvas.drawCircle(
-      Offset(cloudX + 45, cloudY - 15),
-      20,
-      paint,
-    );
-  }
+  const _SectionHeader({
+    required this.eyebrow,
+    required this.title,
+    required this.description,
+  });
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          eyebrow.toUpperCase(),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1.2,
+            color: theme.colorScheme.primary,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Text(title, style: theme.textTheme.displayMedium),
+        const SizedBox(height: 14),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 720),
+          child: Text(description, style: theme.textTheme.bodyLarge),
+        ),
+      ],
+    );
+  }
 }
 
 class _AboutSection extends StatelessWidget {
+  const _AboutSection();
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width < 768 ? 20 : 40,
+    final width = MediaQuery.of(context).size.width;
+    final isCompact = width < 1024;
+
+    final cards = const [
+      _ValueCard(
+        icon: Icons.cloud_done_rounded,
+        title: 'Cloud systems that feel dependable',
+        description:
+            'I focus on observable, maintainable architecture with strong deployment and operations discipline.',
       ),
-      child: Stack(
-        children: [
-          // Subtle animated background
-          Positioned.fill(
-            child: _SubtleAnimatedBackground(),
-          ),
-          
-          // Content
-          Column(
-            children: [
-              // Section header with Apple-style typography
-              Text(
-                "About Me",
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  letterSpacing: -1.0,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              
-              Text(
-                "Passionate Cloud Engineer with expertise in AWS and modern development",
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: -0.3,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 60),
-              
-              // About text
-              Container(
-                constraints: const BoxConstraints(maxWidth: 700),
-                child: Text(
-                  "I'm a Master's student in Computer Engineering at UTD building cloud-native, ML-powered, and automated systems.\n\n"
-                  "I'm targeting Cloud Engineering, DevOps, and AI infrastructure roles where I can ship scalable, reliable services.",
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    height: 1.6,
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: -0.3,
+      _ValueCard(
+        icon: Icons.auto_awesome_rounded,
+        title: 'Product thinking in technical work',
+        description:
+            'Every project is framed around outcomes, clarity, and the confidence a reviewer gets within seconds.',
+      ),
+      _ValueCard(
+        icon: Icons.settings_suggest_rounded,
+        title: 'Automation with intention',
+        description:
+            'I use AI and tooling to remove friction while keeping systems practical, measurable, and easy to hand off.',
+      ),
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _SectionHeader(
+          eyebrow: 'About',
+          title: 'A sharper story, not just a list of tools.',
+          description:
+              'To feel professional, the portfolio now emphasizes signal over noise: what you build, how you think, and why your work is valuable to a team.',
+        ),
+        const SizedBox(height: 32),
+        isCompact
+            ? Column(
+                children: [
+                  const _StoryPanel(),
+                  const SizedBox(height: 20),
+                  ...cards.expand((card) => [card, const SizedBox(height: 16)]),
+                ],
+              )
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Expanded(flex: 5, child: _StoryPanel()),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    flex: 4,
+                    child: Column(
+                      children: [
+                        for (var i = 0; i < cards.length; i++) ...[
+                          cards[i],
+                          if (i != cards.length - 1) const SizedBox(height: 16),
+                        ],
+                      ],
+                    ),
                   ),
-                  textAlign: TextAlign.center,
-                ),
+                ],
               ),
-              const SizedBox(height: 80),
-              
-              // Feature cards in responsive layout
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  if (constraints.maxWidth < 768) {
-                    // Mobile layout - stacked vertically
-                    return Column(
-                      children: [
-                        _FeatureCard(
-                          icon: Icons.cloud,
-                          title: "Cloud Solutions",
-                          description: "AWS, Serverless, Microservices",
-                        ),
-                        const SizedBox(height: 24),
-                        _FeatureCard(
-                          icon: Icons.code,
-                          title: "Full-Stack Development",
-                          description: "Flutter, Web, Mobile Apps",
-                        ),
-                        const SizedBox(height: 24),
-                        _FeatureCard(
-                          icon: Icons.architecture,
-                          title: "System Design",
-                          description: "Scalable, Reliable, Efficient",
-                        ),
-                      ],
-                    );
-                  } else {
-                    // Desktop layout - side by side
-                    return Row(
-                      children: [
-                        Expanded(
-                          child: _FeatureCard(
-                            icon: Icons.cloud,
-                            title: "Cloud Solutions",
-                            description: "AWS, Serverless, Microservices",
-                          ),
-                        ),
-                        const SizedBox(width: 24),
-                        Expanded(
-                          child: _FeatureCard(
-                            icon: Icons.code,
-                            title: "Full-Stack Development",
-                            description: "Flutter, Web, Mobile Apps",
-                          ),
-                        ),
-                        const SizedBox(width: 24),
-                        Expanded(
-                          child: _FeatureCard(
-                            icon: Icons.architecture,
-                            title: "System Design",
-                            description: "Scalable, Reliable, Efficient",
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                },
-              ),
+      ],
+    );
+  }
+}
+
+class _StoryPanel extends StatelessWidget {
+  const _StoryPanel();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(28),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface.withOpacity(0.88),
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(color: theme.colorScheme.outline.withOpacity(0.35)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('What I bring', style: theme.textTheme.headlineMedium),
+          const SizedBox(height: 16),
+          Text(
+            'I’m a Computer Engineering master’s student at UTD focused on cloud engineering, DevOps, and applied AI infrastructure roles. My strongest work lives at the intersection of backend reliability, automation, and user-facing polish.',
+            style: theme.textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 18),
+          Text(
+            'The goal of this redesign is to present that value faster: fewer gimmicks, stronger structure, clearer case studies, and a visual identity that feels premium without trying too hard.',
+            style: theme.textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 24),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: const [
+              _MiniStat(label: 'Focus', value: 'Cloud / Platform'),
+              _MiniStat(label: 'Approach', value: 'Reliable + polished'),
+              _MiniStat(label: 'Strength', value: 'Infra + UX clarity'),
             ],
           ),
         ],
@@ -620,759 +753,235 @@ class _AboutSection extends StatelessWidget {
   }
 }
 
-class _SubtleAnimatedBackground extends StatefulWidget {
-  @override
-  State<_SubtleAnimatedBackground> createState() => _SubtleAnimatedBackgroundState();
-}
+class _MiniStat extends StatelessWidget {
+  final String label;
+  final String value;
 
-class _SubtleAnimatedBackgroundState extends State<_SubtleAnimatedBackground>
-    with TickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(seconds: 25),
-      vsync: this,
-    );
-    
-    _animation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.linear,
-    ));
-    
-    _animationController.repeat();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
+  const _MiniStat({required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (context, child) {
-        return CustomPaint(
-          painter: _SubtleCloudPainter(_animation.value),
-          size: Size.infinite,
-        );
-      },
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.75),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(label.toUpperCase(), style: theme.textTheme.bodyMedium),
+          const SizedBox(height: 4),
+          Text(value, style: theme.textTheme.titleLarge),
+        ],
+      ),
     );
   }
 }
 
-class _SubtleCloudPainter extends CustomPainter {
-  final double animationValue;
-
-  _SubtleCloudPainter(this.animationValue);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFF007AFF).withOpacity(0.02) // Fixed color instead of Theme.of(context)
-      ..style = PaintingStyle.fill;
-
-    // Subtle floating clouds for sections
-    _drawSubtleCloud(canvas, size, paint, 0.1, 0.1, 0.4);
-    _drawSubtleCloud(canvas, size, paint, 0.8, 0.2, 0.3);
-    _drawSubtleCloud(canvas, size, paint, 0.3, 0.8, 0.5);
-    _drawSubtleCloud(canvas, size, paint, 0.7, 0.7, 0.6);
-  }
-
-  void _drawSubtleCloud(Canvas canvas, Size size, Paint paint, double x, double y, double speed) {
-    final cloudX = (x + animationValue * speed) * size.width;
-    final cloudY = y * size.height;
-    
-    // Draw smaller, more subtle clouds
-    canvas.drawCircle(
-      Offset(cloudX, cloudY),
-      25,
-      paint,
-    );
-    canvas.drawCircle(
-      Offset(cloudX + 20, cloudY),
-      20,
-      paint,
-    );
-    canvas.drawCircle(
-      Offset(cloudX + 40, cloudY),
-      15,
-      paint,
-    );
-    canvas.drawCircle(
-      Offset(cloudX + 10, cloudY - 15),
-      12,
-      paint,
-    );
-    canvas.drawCircle(
-      Offset(cloudX + 30, cloudY - 10),
-      10,
-      paint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
-}
-
-class _FeatureCard extends StatefulWidget {
+class _ValueCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final String description;
 
-  const _FeatureCard({
+  const _ValueCard({
     required this.icon,
     required this.title,
     required this.description,
   });
 
   @override
-  State<_FeatureCard> createState() => _FeatureCardState();
-}
-
-class _FeatureCardState extends State<_FeatureCard>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _floatAnimation;
-  bool _isHovered = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(seconds: 4),
-      vsync: this,
-    );
-    
-    _floatAnimation = Tween<double>(
-      begin: 0.0,
-      end: 12.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
-    
-    _animationController.repeat(reverse: true);
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: AnimatedBuilder(
-        animation: _animationController,
-        builder: (context, child) {
-          return Transform.translate(
-            offset: Offset(0, _floatAnimation.value),
-            child: Container(
-              padding: const EdgeInsets.all(40),
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  color: _isHovered 
-                    ? Theme.of(context).colorScheme.primary.withOpacity(0.2)
-                    : Theme.of(context).colorScheme.onSurface.withOpacity(0.06),
-                  width: _isHovered ? 1.5 : 1,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF6B7280).withOpacity(0.08), // Soft gray shadow
-                    blurRadius: 24,
-                    offset: const Offset(0, 8),
-                    spreadRadius: 0,
-                  ),
-                  if (_isHovered)
-                    BoxShadow(
-                      color: const Color(0xFF6B7280).withOpacity(0.12), // Slightly stronger on hover
-                      blurRadius: 32,
-                      offset: const Offset(0, 12),
-                      spreadRadius: 0,
-                    ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: _isHovered 
-                        ? Theme.of(context).colorScheme.primary.withOpacity(0.08)
-                        : Theme.of(context).colorScheme.primary.withOpacity(0.04),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Icon(
-                      widget.icon,
-                      size: 32,
-                      color: _isHovered 
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.primary.withOpacity(0.7),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    widget.title,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: _isHovered 
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.onSurface,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    widget.description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                      height: 1.6,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
+    final theme = Theme.of(context);
 
-class _ProjectsSection extends StatefulWidget {
-  @override
-  State<_ProjectsSection> createState() => _ProjectsSectionState();
-}
-
-class _ProjectsSectionState extends State<_ProjectsSection>
-    with TickerProviderStateMixin {
-  late PageController _pageController;
-  late AnimationController _autoPlayController;
-  int _currentPage = 0;
-  List<Project> _projects = [];
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(viewportFraction: 0.45);
-    _autoPlayController = AnimationController(
-      duration: const Duration(seconds: 5),
-      vsync: this,
-    );
-    
-    // Load projects from JSON file
-    _loadProjects();
-    
-    // Listen to page changes
-    _pageController.addListener(() {
-      final page = _pageController.page?.round() ?? 0;
-      if (page != _currentPage) {
-        setState(() => _currentPage = page);
-      }
-    });
-  }
-
-  Future<void> _loadProjects() async {
-    await loadProjects();
-    setState(() {
-      _projects = demoProjects;
-      _isLoading = false;
-    });
-    
-    // Start auto-play after projects are loaded
-    if (_projects.isNotEmpty) {
-      _startAutoPlay();
-    }
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    _autoPlayController.dispose();
-    super.dispose();
-  }
-
-  void _startAutoPlay() {
-    _autoPlayController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        if (_currentPage < _projects.length - 1) {
-          _pageController.nextPage(
-            duration: const Duration(milliseconds: 800),
-            curve: Curves.easeInOutCubic,
-          );
-        } else {
-          _pageController.animateToPage(
-            0,
-            duration: const Duration(milliseconds: 800),
-            curve: Curves.easeInOutCubic,
-          );
-        }
-        _autoPlayController.reset();
-        _autoPlayController.forward();
-      }
-    });
-    _autoPlayController.forward();
-  }
-
-  void _goToPage(int page) {
-    _pageController.animateToPage(
-      page,
-      duration: const Duration(milliseconds: 800),
-      curve: Curves.easeInOutCubic,
-    );
-    setState(() => _currentPage = page);
-    
-    // Reset auto-play
-    _autoPlayController.reset();
-    _autoPlayController.forward();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width < 768 ? 20 : 40,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface.withOpacity(0.84),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: theme.colorScheme.outline.withOpacity(0.35)),
       ),
-      child: Stack(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Subtle animated background
-          Positioned.fill(
-            child: _SubtleAnimatedBackground(),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(icon, color: theme.colorScheme.primary),
           ),
-          
-          // Content
-          Column(
-            children: [
-              Text(
-                "Featured Projects",
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  letterSpacing: -1.0,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              
-              Text(
-                "Explore my latest work and creative solutions",
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: -0.3,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 60),
-              
-              // Projects Carousel
-              Container(
-                height: MediaQuery.of(context).size.width < 768 ? 400 : 500,
-                child: _isLoading
-                    ? Center(
-                        child: CircularProgressIndicator(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      )
-                    : _projects.isEmpty
-                        ? Center(
-                            child: Text(
-                              "No projects available",
-                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                              ),
-                            ),
-                          )
-                        : PageView.builder(
-                            controller: _pageController,
-                            itemCount: _projects.length,
-                            itemBuilder: (context, index) {
-                              final project = _projects[index];
-                              return AnimatedBuilder(
-                                animation: _pageController,
-                                builder: (context, child) {
-                                  double value = 1.0;
-                                  if (_pageController.position.haveDimensions) {
-                                    value = _pageController.page! - index;
-                                    value = (1 - (value.abs() * 0.3)).clamp(0.0, 1.0);
-                                  }
-                                  
-                                  return Transform.scale(
-                                    scale: Curves.easeOutCubic.transform(value),
-                                    child: Container(
-                                      margin: EdgeInsets.symmetric(
-                                        horizontal: MediaQuery.of(context).size.width < 768 ? 5 : 10,
-                                      ),
-                                      child: ProjectCard(project: project),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-              ),
-              
-              const SizedBox(height: 40),
-              
-              // Navigation Dots
-              if (!_isLoading && _projects.isNotEmpty)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(_projects.length, (index) {
-                    return GestureDetector(
-                      onTap: () => _goToPage(index),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width < 768 ? 10 : 12,
-                        height: MediaQuery.of(context).size.width < 768 ? 10 : 12,
-                        margin: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width < 768 ? 4 : 6,
-                        ),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _currentPage == index
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-              
-              const SizedBox(height: 20),
-              
-              // View All Projects Button
-              ElevatedButton(
-                onPressed: () {
-                  // Scroll to show all projects or expand the view
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: const Text('Viewing all projects...'),
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  );
-                },
-                child: const Text("View All Projects"),
-              ),
-            ],
-          ),
+          const SizedBox(height: 18),
+          Text(title, style: theme.textTheme.headlineMedium),
+          const SizedBox(height: 10),
+          Text(description, style: theme.textTheme.bodyLarge),
         ],
       ),
     );
   }
 }
 
-class _SkillsSection extends StatefulWidget {
-  @override
-  State<_SkillsSection> createState() => _SkillsSectionState();
-}
+class _ProjectsSection extends StatelessWidget {
+  final bool isLoading;
+  final List<Project> projects;
 
-class _SkillsSectionState extends State<_SkillsSection>
-    with TickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _floatAnimation;
-
-  // Helper method to build skill cards
-  Widget _buildSkillCard({
-    required IconData icon,
-    required Color iconColor,
-    required String title,
-    required String description,
-    required List<String> skills,
-    required Animation<double> animation,
-  }) {
-    return AnimatedBuilder(
-      animation: animation,
-      builder: (context, child) {
-        return Transform.translate(
-          offset: Offset(0, animation.value * 0.8),
-          child: Container(
-            constraints: const BoxConstraints(
-              minHeight: 300,
-              maxHeight: 350,
-            ),
-            margin: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.06),
-                width: 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF6B7280).withOpacity(0.08),
-                  blurRadius: 24,
-                  offset: const Offset(0, 8),
-                  spreadRadius: 0,
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(32),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: iconColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Icon(
-                          icon,
-                          size: 32,
-                          color: iconColor,
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).colorScheme.onSurface,
-                            letterSpacing: -0.5,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    description,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                      height: 1.5,
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 12,
-                    children: skills.map((skill) => Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: iconColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: iconColor.withOpacity(0.2),
-                          width: 1,
-                        ),
-                      ),
-                      child: Text(
-                        skill,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: iconColor,
-                        ),
-                      ),
-                    )).toList(),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(seconds: 6),
-      vsync: this,
-    );
-    
-    _floatAnimation = Tween<double>(
-      begin: 0.0,
-      end: 8.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
-    
-    _animationController.repeat(reverse: true);
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
+  const _ProjectsSection({required this.isLoading, required this.projects});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width < 768 ? 20 : 40,
-      ),
-      child: Stack(
-        children: [
-          // Subtle animated background
-          Positioned.fill(
-            child: _SubtleAnimatedBackground(),
+    final width = MediaQuery.of(context).size.width;
+    final cardWidth = width >= 1280
+        ? (width - 240) / 3
+        : width >= 900
+            ? (width - 180) / 2
+            : double.infinity;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _SectionHeader(
+          eyebrow: 'Projects',
+          title: 'Case studies with clearer proof and stronger presentation.',
+          description:
+              'A modern portfolio feels more credible when projects read like outcomes, not placeholders. These cards now highlight category, technologies, and the strongest reasons to click deeper.',
+        ),
+        const SizedBox(height: 32),
+        if (isLoading)
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 40),
+              child: CircularProgressIndicator(),
+            ),
+          )
+        else
+          Wrap(
+            spacing: 20,
+            runSpacing: 20,
+            children: projects
+                .map(
+                  (project) => SizedBox(
+                    width: cardWidth,
+                    child: ProjectCard(project: project),
+                  ),
+                )
+                .toList(),
           ),
-          
-          // Content
-          Column(
-            children: [
-              Text(
-                "Skills & Technologies",
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  letterSpacing: -1.0,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: MediaQuery.of(context).size.width < 768 ? 16 : 20),
-              
-              Text(
-                "Technologies I work with and areas of expertise",
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: -0.3,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: MediaQuery.of(context).size.width < 768 ? 60 : 80),
-              
-              // Four large sections in responsive grid (Apple-style)
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  // Use responsive layout based on screen width
-                  if (constraints.maxWidth < 768) {
-                    // Mobile layout - single column
-                    return Column(
-                      children: [
-                        _buildSkillCard(
-                          icon: Icons.cloud,
-                          iconColor: const Color(0xFF007AFF),
-                          title: "Cloud & DevOps",
-                          description: "Building scalable infrastructure with modern cloud technologies",
-                          skills: ["AWS", "Docker", "Kubernetes", "CI/CD", "Terraform"],
-                          animation: _floatAnimation,
-                        ),
-                        const SizedBox(height: 24),
-                        _buildSkillCard(
-                          icon: Icons.code,
-                          iconColor: const Color(0xFF34C759),
-                          title: "Programming",
-                          description: "Creating robust applications with modern programming languages",
-                          skills: ["Dart/Flutter", "Python", "JavaScript", "TypeScript", "Java"],
-                          animation: _floatAnimation,
-                        ),
-                        const SizedBox(height: 24),
-                        _buildSkillCard(
-                          icon: Icons.storage,
-                          iconColor: const Color(0xFFFF9500),
-                          title: "Databases",
-                          description: "Designing efficient data storage and retrieval systems",
-                          skills: ["DynamoDB", "PostgreSQL", "MongoDB", "Redis"],
-                          animation: _floatAnimation,
-                        ),
-                        const SizedBox(height: 24),
-                        _buildSkillCard(
-                          icon: Icons.build,
-                          iconColor: const Color(0xFFAF52DE),
-                          title: "Tools & Frameworks",
-                          description: "Leveraging powerful tools for efficient development workflows",
-                          skills: ["Git", "VS Code", "Postman", "Jira", "Confluence"],
-                          animation: _floatAnimation,
-                        ),
-                      ],
-                    );
-                  } else {
-                    // Desktop layout - 2x2 grid
-                    return Column(
-                      children: [
-                        // Top row - two large sections
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _buildSkillCard(
-                                icon: Icons.cloud,
-                                iconColor: const Color(0xFF007AFF),
-                                title: "Cloud & DevOps",
-                                description: "Building scalable infrastructure with modern cloud technologies",
-                                skills: ["AWS", "Docker", "Kubernetes", "CI/CD", "Terraform"],
-                                animation: _floatAnimation,
-                              ),
-                            ),
-                            const SizedBox(width: 32),
-                            Expanded(
-                              child: _buildSkillCard(
-                                icon: Icons.code,
-                                iconColor: const Color(0xFF34C759),
-                                title: "Programming",
-                                description: "Creating robust applications with modern programming languages",
-                                skills: ["Dart/Flutter", "Python", "JavaScript", "TypeScript", "Java"],
-                                animation: _floatAnimation,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 32),
-                        // Bottom row - two large sections
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _buildSkillCard(
-                                icon: Icons.storage,
-                                iconColor: const Color(0xFFFF9500),
-                                title: "Databases",
-                                description: "Designing efficient data storage and retrieval systems",
-                                skills: ["DynamoDB", "PostgreSQL", "MongoDB", "Redis"],
-                                animation: _floatAnimation,
-                              ),
-                            ),
-                            const SizedBox(width: 32),
-                            Expanded(
-                              child: _buildSkillCard(
-                                icon: Icons.build,
-                                iconColor: const Color(0xFFAF52DE),
-                                title: "Tools & Frameworks",
-                                description: "Leveraging powerful tools for efficient development workflows",
-                                skills: ["Git", "VS Code", "Postman", "Jira", "Confluence"],
-                                animation: _floatAnimation,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  }
-                },
-              ),
-                      
-                      
-            ],
+      ],
+    );
+  }
+}
+
+class _SkillsSection extends StatelessWidget {
+  const _SkillsSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final cardWidth = width >= 1200
+        ? (width - 220) / 4
+        : width >= 900
+            ? (width - 160) / 2
+            : double.infinity;
+
+    const cards = [
+      _SkillPanel(
+        title: 'Cloud & Platform',
+        subtitle: 'Reliable infrastructure, deployment, and observability.',
+        icon: Icons.cloud_queue_rounded,
+        skills: ['AWS', 'Terraform', 'Docker', 'Kubernetes', 'CI/CD'],
+      ),
+      _SkillPanel(
+        title: 'Application Development',
+        subtitle: 'Frontend and backend experiences with product-level polish.',
+        icon: Icons.devices_rounded,
+        skills: ['Flutter', 'React', 'Node.js', 'Python', 'REST APIs'],
+      ),
+      _SkillPanel(
+        title: 'Data & Automation',
+        subtitle: 'Insights, intelligent workflows, and operational leverage.',
+        icon: Icons.insights_rounded,
+        skills: ['DynamoDB', 'PostgreSQL', 'Redis', 'Prometheus', 'AI tooling'],
+      ),
+      _SkillPanel(
+        title: 'Ways of Working',
+        subtitle: 'The habits that make technical work feel professional.',
+        icon: Icons.rule_folder_rounded,
+        skills: ['Documentation', 'Testing', 'Architecture', 'Performance', 'Communication'],
+      ),
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _SectionHeader(
+          eyebrow: 'Skills',
+          title: 'Capabilities grouped the way hiring teams think.',
+          description:
+              'Instead of a noisy skills dump, this layout organizes strengths into the themes that matter most: platform reliability, application delivery, automation, and execution quality.',
+        ),
+        const SizedBox(height: 32),
+        Wrap(
+          spacing: 20,
+          runSpacing: 20,
+          children: cards
+              .map((card) => SizedBox(width: cardWidth, child: card))
+              .toList(),
+        ),
+      ],
+    );
+  }
+}
+
+class _SkillPanel extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final List<String> skills;
+
+  const _SkillPanel({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.skills,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface.withOpacity(0.86),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: theme.colorScheme.outline.withOpacity(0.35)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(icon, color: theme.colorScheme.primary),
+          ),
+          const SizedBox(height: 18),
+          Text(title, style: theme.textTheme.headlineMedium),
+          const SizedBox(height: 8),
+          Text(subtitle, style: theme.textTheme.bodyLarge),
+          const SizedBox(height: 18),
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: skills
+                .map((skill) => Chip(label: Text(skill), visualDensity: VisualDensity.compact))
+                .toList(),
           ),
         ],
       ),
@@ -1387,238 +996,166 @@ class _ContactSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final width = MediaQuery.of(context).size.width;
+    final isCompact = width < 920;
+
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width < 768 ? 20 : 40,
+      padding: EdgeInsets.all(isCompact ? 24 : 32),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            theme.colorScheme.primary.withOpacity(0.14),
+            theme.colorScheme.secondary.withOpacity(0.12),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(32),
+        border: Border.all(color: theme.colorScheme.outline.withOpacity(0.35)),
       ),
-      child: Stack(
-        children: [
-          // Subtle animated background
-          Positioned.fill(
-            child: _SubtleAnimatedBackground(),
-          ),
-          
-          // Content
-          Column(
-            children: [
-              Text(
-                "Get In Touch",
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  letterSpacing: -1.0,
+      child: isCompact
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _ContactCopy(),
+                const SizedBox(height: 24),
+                _ContactActions(onLaunchUrl: onLaunchUrl),
+              ],
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Expanded(flex: 5, child: _ContactCopy()),
+                const SizedBox(width: 24),
+                Expanded(
+                  flex: 4,
+                  child: _ContactActions(onLaunchUrl: onLaunchUrl),
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              
-              Text(
-                "Let's discuss how we can work together",
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: -0.3,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 60),
-              
-              Container(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: Text(
-                  "I'm always interested in new opportunities and exciting projects. "
-                  "Whether you have a question or just want to say hi, feel free to reach out!",
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    height: 1.6,
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: -0.3,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(height: 60),
-              
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  if (constraints.maxWidth < 768) {
-                    // Mobile layout - stacked vertically
-                    return Column(
-                      children: [
-                        _ContactButton(
-                          icon: Icons.email,
-                          title: "Email",
-                          onTap: () => onLaunchUrl(context, 'mailto:ovalles6845@gmail.com'),
-                        ),
-                        const SizedBox(height: 16),
-                        _ContactButton(
-                          icon: Icons.link,
-                          title: "LinkedIn",
-                          onTap: () => onLaunchUrl(context, 'https://www.linkedin.com/in/oscarvalles87/'),
-                        ),
-                        const SizedBox(height: 16),
-                        _ContactButton(
-                          icon: Icons.code,
-                          title: "GitHub",
-                          onTap: () => onLaunchUrl(context, 'https://github.com/ovalles2019'),
-                        ),
-                      ],
-                    );
-                  } else {
-                    // Desktop layout - side by side
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _ContactButton(
-                          icon: Icons.email,
-                          title: "Email",
-                          onTap: () => onLaunchUrl(context, 'mailto:ovalles6845@gmail.com'),
-                        ),
-                        const SizedBox(width: 20),
-                        _ContactButton(
-                          icon: Icons.link,
-                          title: "LinkedIn",
-                          onTap: () => onLaunchUrl(context, 'https://www.linkedin.com/in/oscarvalles87/'),
-                        ),
-                        const SizedBox(width: 20),
-                        _ContactButton(
-                          icon: Icons.code,
-                          title: "GitHub",
-                          onTap: () => onLaunchUrl(context, 'https://github.com/ovalles2019'),
-                        ),
-                      ],
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
-        ],
-      ),
+              ],
+            ),
     );
   }
 }
 
-class _ContactButton extends StatefulWidget {
+class _ContactCopy extends StatelessWidget {
+  const _ContactCopy();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _SectionHeader(
+          eyebrow: 'Contact',
+          title: 'Ready for opportunities that value ownership and polish.',
+          description:
+              'If you want someone who cares about infrastructure quality, clean execution, and the way technical work is presented, I’d love to connect.',
+        ),
+        const SizedBox(height: 18),
+        Text(
+          'Best fit: cloud engineering, DevOps, platform engineering, and AI infrastructure roles.',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      ],
+    );
+  }
+}
+
+class _ContactActions extends StatelessWidget {
+  final Future<void> Function(BuildContext context, String url) onLaunchUrl;
+
+  const _ContactActions({required this.onLaunchUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _ContactButton(
+          icon: Icons.email_outlined,
+          title: 'Email',
+          subtitle: 'ovalles6845@gmail.com',
+          onTap: () => onLaunchUrl(context, 'mailto:ovalles6845@gmail.com'),
+        ),
+        const SizedBox(height: 14),
+        _ContactButton(
+          icon: Icons.work_outline_rounded,
+          title: 'LinkedIn',
+          subtitle: 'linkedin.com/in/oscarvalles87',
+          onTap: () => onLaunchUrl(
+            context,
+            'https://www.linkedin.com/in/oscarvalles87/',
+          ),
+        ),
+        const SizedBox(height: 14),
+        _ContactButton(
+          icon: Icons.code_rounded,
+          title: 'GitHub',
+          subtitle: 'github.com/ovalles2019',
+          onTap: () => onLaunchUrl(context, 'https://github.com/ovalles2019'),
+        ),
+      ],
+    );
+  }
+}
+
+class _ContactButton extends StatelessWidget {
   final String title;
+  final String subtitle;
   final IconData icon;
   final VoidCallback onTap;
 
   const _ContactButton({
     required this.title,
+    required this.subtitle,
     required this.icon,
     required this.onTap,
   });
 
   @override
-  State<_ContactButton> createState() => _ContactButtonState();
-}
-
-class _ContactButtonState extends State<_ContactButton>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
-  bool _isHovered = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-    
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.05,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutBack,
-    ));
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  void _onHover(bool isHovered) {
-    setState(() => _isHovered = isHovered);
-    if (isHovered) {
-      _animationController.forward();
-    } else {
-      _animationController.reverse();
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => _onHover(true),
-      onExit: (_) => _onHover(false),
-      child: AnimatedBuilder(
-        animation: _animationController,
-        builder: (context, child) {
-          return Transform.scale(
-            scale: _scaleAnimation.value,
-            child: Container(
-              decoration: BoxDecoration(
-                color: _isHovered 
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: _isHovered 
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                  width: _isHovered ? 2 : 1,
-                ),
-                boxShadow: _isHovered ? [
-                  BoxShadow(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                    blurRadius: 15,
-                    offset: const Offset(0, 8),
-                    spreadRadius: 2,
-                  ),
-                ] : null,
-              ),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
+    final theme = Theme.of(context);
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(22),
+        onTap: onTap,
+        child: Ink(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface.withOpacity(0.88),
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: theme.colorScheme.outline.withOpacity(0.35)),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(16),
-                  onTap: widget.onTap,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          widget.icon,
-                          color: _isHovered 
-                            ? Colors.white
-                            : Theme.of(context).colorScheme.primary,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          widget.title,
-                          style: TextStyle(
-                            color: _isHovered 
-                              ? Colors.white
-                              : Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                ),
+                child: Icon(icon, color: theme.colorScheme.primary),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: theme.textTheme.titleLarge),
+                    const SizedBox(height: 4),
+                    Text(subtitle, style: theme.textTheme.bodyMedium),
+                  ],
                 ),
               ),
-            ),
-          );
-        },
+              Icon(
+                Icons.arrow_outward_rounded,
+                color: theme.colorScheme.onSurface.withOpacity(0.7),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
