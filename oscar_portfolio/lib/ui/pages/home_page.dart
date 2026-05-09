@@ -47,8 +47,15 @@ class _HomePageState extends State<HomePage>
   }
 
   Future<void> _open(String url) async {
-    final u = Uri.parse(url);
-    if (await canLaunchUrl(u)) await launchUrl(u, mode: LaunchMode.externalApplication);
+    Uri u;
+    if (url.startsWith('/')) {
+      u = Uri.base.resolve(url);
+    } else {
+      u = Uri.parse(url);
+    }
+    if (await canLaunchUrl(u)) {
+      await launchUrl(u, mode: LaunchMode.externalApplication);
+    }
   }
 
   @override
