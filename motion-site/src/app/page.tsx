@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero';
+import FoldExperience from '@/components/fold-experience';
 import { motion } from 'framer-motion';
 import {
   Cloud,
@@ -37,6 +38,8 @@ export default function Home() {
         bgVideoSrc="/bg-video.mp4"
         scrollToExpand="↓ Scroll to Explore"
       >
+        <FoldExperience />
+
         {/* ── About ─────────────────────────────────────── */}
         <section className="max-w-5xl mx-auto mb-32">
           <motion.p
