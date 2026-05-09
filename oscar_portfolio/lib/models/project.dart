@@ -10,6 +10,7 @@ class Project {
   final List<String> features;
   final List<String> technologies;
   final String? githubUrl;
+  final String category;
 
   Project({
     required this.title,
@@ -23,6 +24,7 @@ class Project {
     this.features = const [],
     this.technologies = const [],
     this.githubUrl,
+    this.category = 'Other',
   });
 
   factory Project.fromJson(Map<String, dynamic> json) {
@@ -38,6 +40,7 @@ class Project {
       features: List<String>.from(json['features'] ?? []),
       technologies: List<String>.from(json['technologies'] ?? []),
       githubUrl: json['githubUrl'],
+      category: json['category'] ?? 'Other',
     );
   }
 }

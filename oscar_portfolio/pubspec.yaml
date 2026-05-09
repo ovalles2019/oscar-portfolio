@@ -60,6 +60,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/avatar.jpg
+    - assets/profile.png
+    - assets/hero-card.png
     - assets/og.png
     - assets/resume.pdf
     - assets/images/
