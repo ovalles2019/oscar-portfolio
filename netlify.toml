@@ -1,6 +1,6 @@
 # Deploy the Next.js portfolio from /motion-site.
-# Use the repository root as the linked site directory in Netlify (leave “Base directory” empty).
-# This file sets [build.base] so you do not need to enter motion-site in the UI.
+# Use when Netlify’s linked repo directory is the repo root (leave “Base directory” empty).
+# If your site still uses Base directory = oscar_portfolio, that folder has its own netlify.toml.
 [build]
   base = "motion-site"
   command = "npm run build"
