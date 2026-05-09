@@ -1,0 +1,357 @@
+'use client';
+
+import { useEffect } from 'react';
+import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero';
+import { motion } from 'framer-motion';
+import {
+  Cloud,
+  Layers,
+  Code2,
+  ShieldCheck,
+  ExternalLink,
+  Mail,
+  Download,
+  ArrowUpRight,
+} from 'lucide-react';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.6, ease: 'easeOut' as const },
+  }),
+};
+
+export default function Home() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-black">
+      <ScrollExpandMedia
+        mediaType="image"
+        mediaSrc="/hero-card.png"
+        bgImageSrc="/bg-poster.jpg"
+        bgVideoSrc="/bg-video.mp4"
+        scrollToExpand="↓ Scroll to Explore"
+      >
+        {/* ── About ─────────────────────────────────────── */}
+        <section className="max-w-5xl mx-auto mb-32">
+          <motion.p
+            className="text-indigo-400 font-bold text-sm tracking-[0.2em] uppercase mb-4"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            custom={0}
+          >
+            ABOUT
+          </motion.p>
+          <motion.h2
+            className="text-3xl md:text-5xl font-bold mb-6 text-white"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            custom={1}
+          >
+            Building Cloud, AI, and Scalable Systems
+          </motion.h2>
+          <motion.p
+            className="text-lg text-gray-400 max-w-3xl leading-relaxed"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            custom={2}
+          >
+            I&apos;m a Master&apos;s student in Computer Engineering at UTD,
+            focused on ML-powered and automated systems. I architect
+            production-grade cloud infrastructure, build full-stack
+            applications, and design interfaces that turn complex systems into
+            something people can actually use.
+          </motion.p>
+
+          <motion.div
+            className="flex flex-wrap gap-3 mt-8"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            custom={3}
+          >
+            {['AWS', 'Kubernetes', 'Terraform', 'Python', 'React', 'Flutter', 'Docker', 'CI/CD'].map(
+              (t) => (
+                <span
+                  key={t}
+                  className="px-4 py-1.5 text-sm font-semibold rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20"
+                >
+                  {t}
+                </span>
+              )
+            )}
+          </motion.div>
+
+          <motion.div
+            className="flex flex-wrap gap-4 mt-10"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            custom={4}
+          >
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold text-sm hover:shadow-lg hover:shadow-indigo-500/25 transition-all"
+            >
+              <Download size={16} /> Download Resume
+            </a>
+            <a
+              href="https://github.com/ovalles2019"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 text-white font-bold text-sm hover:bg-white/5 transition-all"
+            >
+              <Code2 size={16} /> GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/oscarvalles87/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 text-white font-bold text-sm hover:bg-white/5 transition-all"
+            >
+              <ExternalLink size={16} /> LinkedIn
+            </a>
+          </motion.div>
+        </section>
+
+        {/* ── Capabilities ──────────────────────────────── */}
+        <section className="max-w-5xl mx-auto mb-32">
+          <motion.p
+            className="text-indigo-400 font-bold text-sm tracking-[0.2em] uppercase mb-4"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            custom={0}
+          >
+            CAPABILITIES
+          </motion.p>
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold mb-10 text-white"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            custom={1}
+          >
+            Full-stack. Cloud-native. Production-ready.
+          </motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-5">
+            {[
+              {
+                icon: Cloud,
+                title: 'Cloud Architecture',
+                desc: 'AWS, Terraform, K8s, CI/CD pipelines, and observability at scale.',
+              },
+              {
+                icon: Layers,
+                title: 'Product Engineering',
+                desc: 'Full-stack systems that turn complex workflows into usable interfaces.',
+              },
+              {
+                icon: Code2,
+                title: 'Backend & APIs',
+                desc: 'Service design, data modeling, and integrations across modern stacks.',
+              },
+              {
+                icon: ShieldCheck,
+                title: 'Execution Quality',
+                desc: 'Refactoring discipline and code that stays maintainable after launch.',
+              },
+            ].map((cap, i) => (
+              <motion.div
+                key={cap.title}
+                className="group p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:border-indigo-500/20 hover:bg-white/[0.05] transition-all duration-300"
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                custom={i + 2}
+              >
+                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center mb-4 group-hover:bg-indigo-500/15 transition-colors">
+                  <cap.icon size={20} className="text-indigo-400" />
+                </div>
+                <h3 className="text-lg font-bold text-white mb-2">
+                  {cap.title}
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  {cap.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── Projects ──────────────────────────────────── */}
+        <section className="max-w-5xl mx-auto mb-32">
+          <motion.p
+            className="text-indigo-400 font-bold text-sm tracking-[0.2em] uppercase mb-4"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            custom={0}
+          >
+            SELECTED WORK
+          </motion.p>
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold mb-10 text-white"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            custom={1}
+          >
+            Projects built for production.
+          </motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {projects.map((p, i) => (
+              <motion.div
+                key={p.title}
+                className="group rounded-2xl overflow-hidden bg-white/[0.03] border border-white/[0.06] hover:border-indigo-500/20 transition-all duration-300"
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                custom={i + 2}
+              >
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={p.image}
+                    alt={p.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <span className="absolute top-3 left-3 px-3 py-1 text-[10px] font-bold tracking-wider text-indigo-300 bg-black/60 rounded-md border border-indigo-500/20">
+                    {p.category}
+                  </span>
+                </div>
+                <div className="p-5">
+                  <h3 className="text-lg font-bold text-white mb-2">
+                    {p.title}
+                  </h3>
+                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                    {p.desc}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {p.tech.map((t) => (
+                      <span
+                        key={t}
+                        className="px-2.5 py-1 text-[11px] font-semibold rounded-md bg-indigo-500/10 text-indigo-300 border border-indigo-500/15"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <a
+                    href={p.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors"
+                  >
+                    View Source <ArrowUpRight size={14} />
+                  </a>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── Contact CTA ───────────────────────────────── */}
+        <section className="max-w-5xl mx-auto mb-20">
+          <motion.div
+            className="p-10 md:p-16 rounded-3xl bg-gradient-to-br from-indigo-500/[0.06] to-purple-500/[0.04] border border-indigo-500/10"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            custom={0}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Let&apos;s build something together.
+            </h2>
+            <p className="text-gray-400 text-lg mb-8 max-w-xl">
+              I&apos;m open to full-time roles, contract work, and
+              collaborations in cloud engineering and product development.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <a
+                href="mailto:ovalles6845@gmail.com"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold text-sm hover:shadow-lg hover:shadow-indigo-500/25 transition-all"
+              >
+                <Mail size={16} /> Get in Touch
+              </a>
+              <a
+                href="https://github.com/ovalles2019"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-white/10 text-white font-bold text-sm hover:bg-white/5 transition-all"
+              >
+                <Code2 size={16} /> GitHub
+              </a>
+            </div>
+          </motion.div>
+
+          <p className="text-center text-gray-600 text-sm mt-16">
+            © {new Date().getFullYear()} Oscar Valles
+          </p>
+        </section>
+      </ScrollExpandMedia>
+    </div>
+  );
+}
+
+const projects = [
+  {
+    title: 'Cloud Infrastructure Dashboard',
+    desc: 'Real-time AWS monitoring with cost optimization insights and automated scaling recommendations.',
+    tech: ['Flutter', 'AWS', 'DynamoDB', 'Lambda'],
+    category: 'CLOUD & DEVOPS',
+    image:
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=center',
+    github: 'https://github.com/ovalles2019',
+  },
+  {
+    title: 'AI Portfolio Analyzer',
+    desc: 'ML-powered investment analysis with risk assessment and personalized recommendations.',
+    tech: ['Python', 'TensorFlow', 'React', 'PostgreSQL'],
+    category: 'MACHINE LEARNING',
+    image:
+      'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=600&fit=crop&crop=center',
+    github: 'https://github.com/ovalles2019',
+  },
+  {
+    title: 'Cloud Budgeting Platform',
+    desc: 'Microservices architecture with real-time analytics, anomaly detection, and React dashboard.',
+    tech: ['React', 'Python', 'Kubernetes', 'Terraform'],
+    category: 'CLOUD & DEVOPS',
+    image:
+      'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop&crop=center',
+    github: 'https://github.com/ovalles2019',
+  },
+  {
+    title: 'E-commerce Microservices',
+    desc: 'High-performance platform with inventory management, payments, and order fulfillment.',
+    tech: ['Node.js', 'Kubernetes', 'MongoDB', 'Redis'],
+    category: 'FULL-STACK',
+    image:
+      'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop&crop=center',
+    github: 'https://github.com/ovalles2019',
+  },
+];
