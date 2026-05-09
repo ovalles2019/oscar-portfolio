@@ -1,6 +1,12 @@
 # Deploy the Next.js portfolio from /motion-site.
-# Use when Netlify’s linked repo directory is the repo root (leave “Base directory” empty).
-# If your site still uses Base directory = oscar_portfolio, that folder has its own netlify.toml.
+#
+# Netlify UI (repo root as linked site):
+#   • Base directory: leave EMPTY (this file sets [build.base] below).
+#   • Publish directory: leave EMPTY — required. If Publish equals Base, the Next plugin errors:
+#     "publish directory cannot be the same as the base directory".
+#   • Build command: leave EMPTY (uses command below) or "npm run build".
+#
+# If your site uses Base directory = oscar_portfolio, see oscar_portfolio/netlify.toml instead.
 [build]
   base = "motion-site"
   command = "npm run build"
