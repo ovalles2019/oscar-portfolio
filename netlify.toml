@@ -1,15 +1,15 @@
 # Deploy the Next.js portfolio from /motion-site.
 #
-# Netlify UI (repo root as linked site):
-#   • Base directory: leave EMPTY (this file sets [build.base] below).
-#   • Publish directory: leave EMPTY — required. If Publish equals Base, the Next plugin errors:
-#     "publish directory cannot be the same as the base directory".
-#   • Build command: leave EMPTY (uses command below) or "npm run build".
+# Netlify UI: Base directory = / (repo root). Leave Build & Publish unset here —
+# this file sets them. Critical: publish must be ".next" under base, not the app folder,
+# or @netlify/plugin-nextjs errors ("publish directory cannot be the same as the base directory").
 #
 # If your site uses Base directory = oscar_portfolio, see oscar_portfolio/netlify.toml instead.
 [build]
   base = "motion-site"
   command = "npm run build"
+  # Relative to [build.base]; resolves to motion-site/.next (Next output). Required for the plugin.
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"

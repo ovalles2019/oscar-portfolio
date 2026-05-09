@@ -1,7 +1,9 @@
-# Used when Netlify "Base directory" is oscar_portfolio (legacy Flutter path).
-# Builds the Next.js portfolio in the sibling folder ../motion-site.
+# Used when Netlify "Base directory" is oscar_portfolio.
+# Next app is built from ../motion-site; publish must be the .next output, not motion-site itself.
 [build]
   command = "cd ../motion-site && npm ci && npm run build"
+  # Relative to this folder (oscar_portfolio): sibling motion-site’s Next output.
+  publish = "../motion-site/.next"
 
 [build.environment]
   NODE_VERSION = "20"
