@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Urbanist } from "next/font/google";
+import SiteChat from "@/components/site-chat";
 import "./globals.css";
 
 const urbanist = Urbanist({
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang="en" className={`${urbanist.variable} dark`}>
       <body className="min-h-screen bg-black text-white font-sans antialiased">
         {children}
+        <SiteChat />
       </body>
     </html>
   );
