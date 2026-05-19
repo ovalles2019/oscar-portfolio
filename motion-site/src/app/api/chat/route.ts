@@ -11,12 +11,12 @@ const MAX_MESSAGES = 20;
 const MAX_CONTENT = 8000;
 
 export async function POST(req: Request) {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.Ai_K ?? process.env.OPENAI_API_KEY;
   if (!apiKey) {
     return NextResponse.json(
       {
         error:
-          'Chat is not configured. Set OPENAI_API_KEY in the environment (e.g. Netlify env vars).',
+          'Chat is not configured. Set Ai_K (or OPENAI_API_KEY) in the environment (e.g. Netlify env vars).',
       },
       { status: 503 }
     );
