@@ -319,39 +319,57 @@ export default function Home() {
 
 const projects = [
   {
-    title: 'Cloud Infrastructure Dashboard',
-    desc: 'Real-time AWS monitoring with cost optimization insights and automated scaling recommendations.',
-    tech: ['Flutter', 'AWS', 'DynamoDB', 'Lambda'],
-    category: 'CLOUD & DEVOPS',
+    title: 'ML Experiment Tracker MCP',
+    desc: 'MCP server for creating runs, logging metrics, hyperparameters, and tags with SQLite persistence—typed tools for Cursor and other LLM clients.',
+    tech: ['Python', 'MCP', 'SQLite', 'FastMCP'],
+    category: 'ML & TOOLING',
     image:
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=center',
-    github: 'https://github.com/ovalles2019',
+      'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=600&fit=crop&crop=center',
+    github: 'https://github.com/ovalles2019/ml-experiment-tracker-mcp',
   },
   {
-    title: 'AI Portfolio Analyzer',
-    desc: 'ML-powered investment analysis with risk assessment and personalized recommendations.',
-    tech: ['Python', 'TensorFlow', 'React', 'PostgreSQL'],
-    category: 'MACHINE LEARNING',
+    title: 'AWS CloudOps MCP',
+    desc: 'MCP server for AWS CloudOps (FastMCP + boto3): read-focused tools for EC2, CloudWatch, ELBv2, Lambda, and S3.',
+    tech: ['Python', 'MCP', 'AWS', 'boto3'],
+    category: 'MCP & CLOUD',
     image:
-      'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=600&fit=crop&crop=center',
-    github: 'https://github.com/ovalles2019',
+      'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&crop=center',
+    github: 'https://github.com/ovalles2019/aws-cloudops-mcp',
   },
   {
-    title: 'Cloud Budgeting Platform',
-    desc: 'Microservices architecture with real-time analytics, anomaly detection, and React dashboard.',
-    tech: ['React', 'Python', 'Kubernetes', 'Terraform'],
-    category: 'CLOUD & DEVOPS',
+    title: 'Small Business Operations MCP',
+    desc: 'Local MCP agent for small business ops: tasks, expenses, customers, inventory, finance CSV analytics, and a web dashboard.',
+    tech: ['Python', 'MCP', 'SQLite', 'Web UI'],
+    category: 'MCP & OPS',
     image:
-      'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop&crop=center',
-    github: 'https://github.com/ovalles2019',
+      'https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&h=600&fit=crop&crop=center',
+    github: 'https://github.com/ovalles2019/small-biz-operations-mcp',
   },
   {
-    title: 'E-commerce Microservices',
-    desc: 'High-performance platform with inventory management, payments, and order fulfillment.',
-    tech: ['Node.js', 'Kubernetes', 'MongoDB', 'Redis'],
-    category: 'FULL-STACK',
+    title: 'Budget Insights Platform',
+    desc: 'Cloud-first personal finance platform with microservices, Kubernetes, and AWS.',
+    tech: ['Kubernetes', 'AWS', 'React', 'Python'],
+    category: 'CLOUD & FINANCE',
     image:
-      'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop&crop=center',
-    github: 'https://github.com/ovalles2019',
+      'https://images.unsplash.com/photo-1579621970561-a9d2f37b04f4?w=800&h=600&fit=crop&crop=center',
+    github: 'https://github.com/ovalles2019/budget-insights-platform',
+  },
+  {
+    title: 'Geofences Platform',
+    desc: 'Geofencing platform with Apple-inspired UI: create and monitor geofences, real-time notifications, track processing, and policy automation.',
+    tech: ['Maps', 'Real-time', 'Notifications', 'Automation'],
+    category: 'PRODUCT',
+    image:
+      'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&h=600&fit=crop&crop=center',
+    github: 'https://github.com/ovalles2019/geofences-platform',
+  },
+  {
+    title: 'pgvector RAG Demo',
+    desc: 'Exploration of vector search and retrieval-augmented generation (RAG) using PostgreSQL pgvector.',
+    tech: ['Python', 'PostgreSQL', 'pgvector', 'RAG'],
+    category: 'ML & DATA',
+    image:
+      'https://images.unsplash.com/photo-1544383831-b04e9981b772?w=800&h=600&fit=crop&crop=center',
+    github: 'https://github.com/ovalles2019/pgvector-rag-demo',
   },
 ];
