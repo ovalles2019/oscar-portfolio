@@ -11,7 +11,7 @@ const MAX_MESSAGES = 20;
 const MAX_CONTENT = 8000;
 
 export async function POST(req: Request) {
-  const apiKey = process.env.Ai_K ?? process.env.OPENAI_API_KEY;
+  const apiKey = (process.env.Ai_K ?? process.env.OPENAI_API_KEY)?.trim();
   if (!apiKey) {
     return NextResponse.json(
       {
@@ -78,8 +78,22 @@ export async function POST(req: Request) {
 
   const text = await upstream.text();
   if (!upstream.ok) {
+    let message = `Request failed (${upstream.status}).`;
+    try {
+      const errBody = JSON.parse(text) as {
+        error?: { message?: string; code?: string; type?: string };
+      };
+      const m = errBody.error?.message;
+      if (m) message = m;
+      else if (typeof errBody.error === 'string') message = errBody.error;
+    } catch {
+      if (text?.trim()) message = text.trim().slice(0, 280);
+    }
     return NextResponse.json(
-      { error: 'Upstream model error', detail: text.slice(0, 500) },
+      {
+        error: message,
+        code: upstream.status,
+      },
       { status: 502 }
     );
   }

@@ -38,9 +38,18 @@ export default function SiteChat() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: next }),
       });
-      const data = (await res.json()) as { reply?: string; error?: string; detail?: string };
+      const data = (await res.json()) as {
+        reply?: string;
+        error?: string;
+        detail?: string;
+        code?: number;
+      };
       if (!res.ok) {
-        throw new Error(data.error || data.detail || `Request failed (${res.status})`);
+        throw new Error(
+          data.error ||
+            data.detail ||
+            (data.code ? `Request failed (${data.code})` : `Request failed (${res.status})`)
+        );
       }
       if (!data.reply) throw new Error('No reply from server');
       setMessages([...next, { role: 'assistant', content: data.reply }]);
