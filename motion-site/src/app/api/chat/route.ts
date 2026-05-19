@@ -10,8 +10,21 @@ type ChatMessage = { role: 'user' | 'assistant' | 'system'; content: string };
 const MAX_MESSAGES = 20;
 const MAX_CONTENT = 8000;
 
+/** Netlify / copy-paste sometimes wraps the value in quotes or adds a BOM. */
+function normalizeApiKey(raw: string | undefined): string | undefined {
+  if (!raw) return;
+  let k = raw.trim().replace(/^\uFEFF/, '');
+  if (
+    (k.startsWith('"') && k.endsWith('"')) ||
+    (k.startsWith("'") && k.endsWith("'"))
+  ) {
+    k = k.slice(1, -1).trim();
+  }
+  return k || undefined;
+}
+
 export async function POST(req: Request) {
-  const apiKey = (process.env.Ai_K ?? process.env.OPENAI_API_KEY)?.trim();
+  const apiKey = normalizeApiKey(process.env.Ai_K ?? process.env.OPENAI_API_KEY);
   if (!apiKey) {
     return NextResponse.json(
       {
