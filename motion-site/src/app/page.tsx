@@ -259,14 +259,26 @@ export default function Home() {
                       </span>
                     ))}
                   </div>
-                  <a
-                    href={p.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors"
-                  >
-                    View Source <ArrowUpRight size={14} />
-                  </a>
+                  <div className="flex flex-wrap gap-x-5 gap-y-2 items-center">
+                    {p.demo ? (
+                      <a
+                        href={p.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
+                      >
+                        Live Demo <ArrowUpRight size={14} />
+                      </a>
+                    ) : null}
+                    <a
+                      href={p.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors"
+                    >
+                      View Source <ArrowUpRight size={14} />
+                    </a>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -317,7 +329,25 @@ export default function Home() {
   );
 }
 
-const projects = [
+const projects: Array<{
+  title: string;
+  desc: string;
+  tech: string[];
+  category: string;
+  image: string;
+  github: string;
+  demo?: string;
+}> = [
+  {
+    title: 'FieldTech Assistant',
+    desc: 'RAG-powered assistant for field technicians: manuals, wiring context, service history, QR asset lookup, offline-first PWA — FastAPI + React on Docker.',
+    tech: ['FastAPI', 'React', 'ChromaDB', 'RAG', 'PWA'],
+    category: 'FULL-STACK / AI',
+    image:
+      'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&h=600&fit=crop&crop=center',
+    github: 'https://github.com/ovalles2019/fieldtech-assistant',
+    demo: 'https://fieldtech-assistant.onrender.com/',
+  },
   {
     title: 'ML Experiment Tracker MCP',
     desc: 'MCP server for creating runs, logging metrics, hyperparameters, and tags with SQLite persistence—typed tools for Cursor and other LLM clients.',
