@@ -350,12 +350,13 @@ const projects: Array<{
   },
   {
     title: 'ML Experiment Tracker MCP',
-    desc: 'MCP server for creating runs, logging metrics, hyperparameters, and tags with SQLite persistence—typed tools for Cursor and other LLM clients.',
-    tech: ['Python', 'MCP', 'SQLite', 'FastMCP'],
+    desc: 'MCP server for experiment runs, metrics, hyperparameters, and tags with SQLite persistence—plus a live dashboard to browse and compare runs.',
+    tech: ['Python', 'MCP', 'SQLite', 'Starlette'],
     category: 'ML & TOOLING',
     image:
       'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=600&fit=crop&crop=center',
     github: 'https://github.com/ovalles2019/ml-experiment-tracker-mcp',
+    demo: 'https://ml-experiment-tracker-demo.onrender.com/',
   },
   {
     title: 'AWS CloudOps MCP',
