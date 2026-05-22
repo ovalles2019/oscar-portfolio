@@ -360,12 +360,13 @@ const projects: Array<{
   },
   {
     title: 'AWS CloudOps MCP',
-    desc: 'MCP server for AWS CloudOps (FastMCP + boto3): read-focused tools for EC2, CloudWatch, ELBv2, Lambda, and S3.',
+    desc: 'Read-focused MCP server for AWS ops (EC2, CloudWatch, ELB, Lambda, S3) via boto3—plus a live dashboard with synthetic inventory for demos.',
     tech: ['Python', 'MCP', 'AWS', 'boto3'],
     category: 'MCP & CLOUD',
     image:
       'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&crop=center',
     github: 'https://github.com/ovalles2019/aws-cloudops-mcp',
+    demo: 'https://aws-cloudops-demo.onrender.com/',
   },
   {
     title: 'Small Business Operations MCP',
