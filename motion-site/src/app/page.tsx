@@ -380,12 +380,13 @@ const projects: Array<{
   },
   {
     title: 'Budget Insights Platform',
-    desc: 'Cloud-first personal finance platform with microservices, Kubernetes, and AWS.',
-    tech: ['Kubernetes', 'AWS', 'React', 'Python'],
+    desc: 'Cloud-first finance platform: Flask transaction + analytics microservices, React dashboard, anomaly detection, and budget insights—live demo on Render.',
+    tech: ['React', 'Flask', 'Docker', 'AWS'],
     category: 'CLOUD & FINANCE',
     image:
       'https://images.unsplash.com/photo-1579621970561-a9d2f37b04f4?w=800&h=600&fit=crop&crop=center',
     github: 'https://github.com/ovalles2019/budget-insights-platform',
+    demo: 'https://budget-insights-demo.onrender.com/',
   },
   {
     title: 'Geofences Platform',
