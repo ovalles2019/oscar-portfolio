@@ -368,12 +368,13 @@ const projects: Array<{
   },
   {
     title: 'Small Business Operations MCP',
-    desc: 'Local MCP agent for small business ops: tasks, expenses, customers, inventory, finance CSV analytics, and a web dashboard.',
-    tech: ['Python', 'MCP', 'SQLite', 'Web UI'],
+    desc: 'MCP server for tasks, expenses, CRM, and inventory with finance CSV analytics (margins, payroll, anomalies) plus a live ops dashboard on Render.',
+    tech: ['Python', 'MCP', 'SQLite', 'Starlette'],
     category: 'MCP & OPS',
     image:
       'https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&h=600&fit=crop&crop=center',
     github: 'https://github.com/ovalles2019/small-biz-operations-mcp',
+    demo: 'https://small-biz-ops-demo.onrender.com/',
   },
   {
     title: 'Budget Insights Platform',
