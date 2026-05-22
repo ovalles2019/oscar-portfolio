@@ -399,11 +399,12 @@ const projects: Array<{
   },
   {
     title: 'pgvector RAG Demo',
-    desc: 'Exploration of vector search and retrieval-augmented generation (RAG) using PostgreSQL pgvector.',
-    tech: ['Python', 'PostgreSQL', 'pgvector', 'RAG'],
+    desc: 'RAG chat app: PostgreSQL pgvector retrieval, sentence-transformers embeddings, and Streamlit UI with source citations.',
+    tech: ['Python', 'PostgreSQL', 'pgvector', 'Streamlit'],
     category: 'ML & DATA',
     image:
       'https://images.unsplash.com/photo-1544383831-b04e9981b772?w=800&h=600&fit=crop&crop=center',
     github: 'https://github.com/ovalles2019/pgvector-rag-demo',
+    demo: 'https://pgvector-rag-demo.onrender.com/',
   },
 ];
