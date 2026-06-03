@@ -339,6 +339,16 @@ const projects: Array<{
   demo?: string;
 }> = [
   {
+    title: 'Agentic AI Governance Harness',
+    desc: 'Reproducible benchmark harness for agentic AI governance — measures guardrail trip rate, policy latency, intervention frequency, and cost per resolved task with a live interactive demo.',
+    tech: ['Python', 'LLM Judge', 'Benchmarks', 'Render'],
+    category: 'AI & GOVERNANCE',
+    image:
+      'https://raw.githubusercontent.com/ovalles2019/agentic-governance-harness/main/docs/screenshots/01-hero.png',
+    github: 'https://github.com/ovalles2019/agentic-governance-harness',
+    demo: 'https://agentic-governance-demo.onrender.com/',
+  },
+  {
     title: 'FieldTech Assistant',
     desc: 'RAG-powered assistant for field technicians: manuals, wiring context, service history, QR asset lookup, offline-first PWA — FastAPI + React on Docker.',
     tech: ['FastAPI', 'React', 'ChromaDB', 'RAG', 'PWA'],
