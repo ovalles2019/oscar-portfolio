@@ -394,7 +394,7 @@ const projects: Array<{
     tech: ['React', 'Flask', 'Docker', 'AWS'],
     category: 'CLOUD & FINANCE',
     image:
-      'https://images.unsplash.com/photo-1579621970561-a9d2f37b04f4?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&crop=center',
     github: 'https://github.com/ovalles2019/budget-insights-platform',
     demo: 'https://budget-insights-demo.onrender.com/',
   },
@@ -413,7 +413,7 @@ const projects: Array<{
     tech: ['Python', 'PostgreSQL', 'pgvector', 'Streamlit'],
     category: 'ML & DATA',
     image:
-      'https://images.unsplash.com/photo-1544383831-b04e9981b772?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop&crop=center',
     github: 'https://github.com/ovalles2019/pgvector-rag-demo',
     demo: 'https://pgvector-rag-demo.onrender.com/',
   },
