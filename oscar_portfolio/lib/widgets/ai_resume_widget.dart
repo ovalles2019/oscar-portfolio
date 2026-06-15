@@ -17,10 +17,10 @@ class AIResumeAssistant {
       'AI/ML: TensorFlow, PyTorch, scikit-learn, data pipelines',
     ],
     'projects': [
-      'Built a cloud-native e-commerce platform serving 10k+ users',
-      'Developed AI-powered chatbot integration using Dialogflow',
-      'Created real-time DevOps monitoring dashboard with Grafana',
-      'Implemented serverless data processing pipeline for ML workflows',
+      'Nexus SRE Agent — Bedrock-powered cloud cost & reliability agent with HITL remediation (cloud-sre-agent.onrender.com)',
+      'Agentic AI Governance Harness — live benchmark for guardrail trip rate and policy latency (agentic-governance-demo.onrender.com)',
+      'AWS CloudOps MCP — read-focused MCP server for EC2, CloudWatch, Lambda, and S3',
+      'pgvector RAG Demo — PostgreSQL vector retrieval with Streamlit chat UI',
     ],
     'education': [
       'Bachelor\'s degree in Computer Science',

@@ -1,24 +1,24 @@
 [
   {
-    "title": "Cloud Infrastructure Dashboard",
-    "description": "A comprehensive AWS cloud monitoring dashboard built with Flutter and serverless architecture. Features real-time metrics, cost optimization insights, and automated scaling recommendations.",
-    "detailedDescription": "This cloud infrastructure dashboard provides real-time monitoring and management of AWS resources. Built with Flutter for cross-platform compatibility, it offers intuitive visualizations of cloud metrics, automated cost optimization recommendations, and intelligent scaling suggestions. The dashboard integrates with AWS CloudWatch, DynamoDB, and Lambda functions to provide comprehensive infrastructure insights.",
-    "technologies": ["Flutter", "AWS", "DynamoDB", "Lambda", "CloudWatch"],
-    "tags": ["Flutter", "AWS", "DynamoDB", "Lambda", "CloudWatch"],
+    "title": "Nexus SRE — Cloud Cost & Reliability Agent",
+    "description": "Autonomous FinOps + SRE agent with Bedrock reasoning over CloudWatch, Cost Explorer, and Trusted Advisor — human-in-the-loop approval before write remediation.",
+    "detailedDescription": "Production-shaped agent platform demonstrating AWS SRE and FinOps patterns at scale. Bedrock Converse correlates multi-signal telemetry (metric anomalies, cost drift, Trusted Advisor flags), drafts RCA and ranked remediation actions, and gates all write operations behind a human approval queue. Includes Lambda action groups, CDK infrastructure, DynamoDB persistence, and a live Nexus command-center UI deployed on Render.",
+    "technologies": ["Python", "FastAPI", "Bedrock", "CloudWatch", "Cost Explorer", "AWS CDK", "Lambda"],
+    "tags": ["Python", "FastAPI", "Bedrock", "CloudWatch", "AWS CDK", "SRE", "FinOps"],
     "features": [
-      "Real-time cloud metrics visualization",
-      "Cost optimization recommendations",
-      "Automated scaling suggestions",
-      "Multi-region resource monitoring",
-      "Custom alert configurations",
-      "Performance analytics dashboard"
+      "Bedrock-powered multi-signal anomaly correlation",
+      "CloudWatch + Cost Explorer + Trusted Advisor integrations",
+      "Human-in-the-loop approval gate for write actions",
+      "Lambda action groups for Bedrock Agent",
+      "Live command-center dashboard with agent trace",
+      "CDK infrastructure and IAM least-privilege policy"
     ],
     "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=center",
     "videoUrl": "",
-    "githubUrl": "https://github.com/ovalles2019",
-    "liveUrl": "",
-    "demoUrl": "",
-    "category": "Cloud & DevOps"
+    "githubUrl": "https://github.com/ovalles2019/cloud-sre-agent",
+    "liveUrl": "https://cloud-sre-agent.onrender.com/",
+    "demoUrl": "https://cloud-sre-agent.onrender.com/",
+    "category": "AI & Cloud Ops"
   },
   {
     "title": "AI-Powered Portfolio Analyzer",

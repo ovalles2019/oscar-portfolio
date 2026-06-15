@@ -349,6 +349,16 @@ const projects: Array<{
     demo: 'https://agentic-governance-demo.onrender.com/',
   },
   {
+    title: 'Nexus SRE — Cloud Cost & Reliability Agent',
+    desc: 'Autonomous FinOps + SRE agent: Bedrock reasoning over CloudWatch, Cost Explorer, and Trusted Advisor — with human-in-the-loop approval before any write remediation. Live command-center UI on Render.',
+    tech: ['Bedrock', 'FastAPI', 'Lambda', 'CloudWatch', 'CDK'],
+    category: 'AI & CLOUD OPS',
+    image:
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=center',
+    github: 'https://github.com/ovalles2019/cloud-sre-agent',
+    demo: 'https://cloud-sre-agent.onrender.com/',
+  },
+  {
     title: 'FieldTech Assistant',
     desc: 'RAG-powered assistant for field technicians: manuals, wiring context, service history, QR asset lookup, offline-first PWA — FastAPI + React on Docker.',
     tech: ['FastAPI', 'React', 'ChromaDB', 'RAG', 'PWA'],
