@@ -13,7 +13,7 @@
       "Key-safe server-side Claude proxy (no API key in the browser)",
       "Always-on demo mode with graceful live-AI fallback"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=800&h=600&fit=crop&crop=center",
+    "imageUrl": "https://raw.githubusercontent.com/ovalles2019/raditriage/main/docs/screenshots/hero.png",
     "videoUrl": "",
     "githubUrl": "https://github.com/ovalles2019/raditriage",
     "liveUrl": "https://raditriage.onrender.com/",

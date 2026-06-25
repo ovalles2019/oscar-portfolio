@@ -344,7 +344,7 @@ const projects: Array<{
     tech: ['React', 'Vite', 'Node', 'Claude', 'RAG', 'RBAC'],
     category: 'AI & HEALTHCARE',
     image:
-      'https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=800&h=600&fit=crop&crop=center',
+      'https://raw.githubusercontent.com/ovalles2019/raditriage/main/docs/screenshots/hero.png',
     github: 'https://github.com/ovalles2019/raditriage',
     demo: 'https://raditriage.onrender.com/',
   },
