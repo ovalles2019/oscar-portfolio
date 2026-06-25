@@ -1,5 +1,26 @@
 [
   {
+    "title": "RadiTriage — AI Radiology Workflow Assistant",
+    "description": "Agentic veterinary radiology pipeline — classify urgency, retrieve similar prior cases (RAG), draft a preliminary report, and route to a specialist queue — with role-based access and an SLA ops dashboard.",
+    "detailedDescription": "A platform-engineering take on an AI radiology report pipeline (not a diagnostic model — the orchestration layer around one). A four-stage agentic flow runs classify → retrieve/RAG → draft → route with a live execution log. Includes RBAC (Vet / Radiologist / Admin) gated the same way an API would enforce server-side, RAG-style addendum Q&A over the generated report, and an SLA / queue / throughput observability dashboard. AI calls run through a key-safe server-side Node proxy to Claude (claude-sonnet-4-6), with a deterministic offline demo mode that always works. React + Vite frontend and an Express server, deployed on Render via a render.yaml Blueprint.",
+    "technologies": ["React", "Vite", "Node", "Express", "Claude", "RAG", "Render"],
+    "tags": ["React", "Vite", "Node", "Claude", "RAG", "RBAC", "Render"],
+    "features": [
+      "Agentic triage pipeline (classify → retrieve → draft → route) with live log",
+      "RBAC: role-gated Vet / Radiologist / Admin views",
+      "RAG addendum Q&A over the generated report",
+      "SLA / queue / throughput operations dashboard",
+      "Key-safe server-side Claude proxy (no API key in the browser)",
+      "Always-on demo mode with graceful live-AI fallback"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=800&h=600&fit=crop&crop=center",
+    "videoUrl": "",
+    "githubUrl": "https://github.com/ovalles2019/raditriage",
+    "liveUrl": "https://raditriage.onrender.com/",
+    "demoUrl": "https://raditriage.onrender.com/",
+    "category": "AI & Healthcare"
+  },
+  {
     "title": "Nexus SRE — Cloud Cost & Reliability Agent",
     "description": "Autonomous FinOps + SRE agent with Bedrock reasoning over CloudWatch, Cost Explorer, and Trusted Advisor — human-in-the-loop approval before write remediation.",
     "detailedDescription": "Production-shaped agent platform demonstrating AWS SRE and FinOps patterns at scale. Bedrock Converse correlates multi-signal telemetry (metric anomalies, cost drift, Trusted Advisor flags), drafts RCA and ranked remediation actions, and gates all write operations behind a human approval queue. Includes Lambda action groups, CDK infrastructure, DynamoDB persistence, and a live Nexus command-center UI deployed on Render.",

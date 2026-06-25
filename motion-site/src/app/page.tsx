@@ -339,6 +339,16 @@ const projects: Array<{
   demo?: string;
 }> = [
   {
+    title: 'RadiTriage — AI Radiology Workflow Assistant',
+    desc: 'Agentic veterinary radiology pipeline: classify urgency → RAG over prior cases → draft a preliminary report → route to a specialist queue. Role-based access (Vet/Radiologist/Admin), an SLA ops dashboard, and a key-safe Node proxy to Claude — with an always-works demo fallback.',
+    tech: ['React', 'Vite', 'Node', 'Claude', 'RAG', 'RBAC'],
+    category: 'AI & HEALTHCARE',
+    image:
+      'https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=800&h=600&fit=crop&crop=center',
+    github: 'https://github.com/ovalles2019/raditriage',
+    demo: 'https://raditriage.onrender.com/',
+  },
+  {
     title: 'Agentic AI Governance Harness',
     desc: 'Reproducible benchmark harness for agentic AI governance — measures guardrail trip rate, policy latency, intervention frequency, and cost per resolved task with a live interactive demo.',
     tech: ['Python', 'LLM Judge', 'Benchmarks', 'Render'],
