@@ -1,0 +1,189 @@
+[
+  {
+    "title": "EvalForge — Multi-Dimensional AI Eval Harness",
+    "description": "Standalone harness that scores any LLM/agent on RAG groundedness, tool-use reliability, and guardrail robustness — with versioned YAML suites, a CI regression gate, and a live dashboard.",
+    "detailedDescription": "EvalForge runs versioned test suites from git against any LLM or agent endpoint and scores three dimensions: RAG groundedness (LLM/heuristic judge + citation F1), agentic tool-use (selection accuracy + argument F1), and guardrail robustness (block-rate + false-refusal-rate). Results persist to Postgres, export to Prometheus/Grafana, and feed a CI gate that fails on threshold breaches or metric regression. Pluggable adapters support mock (offline) or OpenAI-compatible targets; includes JUnit XML for GitHub Actions and a showcase dashboard deployed on Render.",
+    "technologies": ["Python", "FastAPI", "RAG", "CI/CD", "Render"],
+    "features": [
+      "Three-dimensional scoring: RAG, tool-use, guardrails",
+      "Versioned YAML test suites in git",
+      "CI gate with floors, ceilings, and regression checks",
+      "Pluggable target adapters (mock + OpenAI-compatible)",
+      "Live dashboard with per-case drill-down and trends",
+      "Postgres history, Prometheus metrics, GitHub Actions"
+    ],
+    "imageUrl": "/projects/evalforge-dashboard.png",
+    "githubUrl": "https://github.com/ovalles2019/evalforge",
+    "demoUrl": "https://evalforge-235p.onrender.com/",
+    "category": "AI & Eval"
+  },
+  {
+    "title": "RadiTriage — AI Radiology Workflow Assistant",
+    "description": "Agentic veterinary radiology pipeline: classify urgency → RAG over prior cases → draft a preliminary report → route to a specialist queue. Role-based access, SLA ops dashboard, and key-safe Claude proxy with demo fallback.",
+    "detailedDescription": "Agentic veterinary radiology pipeline: classify urgency → RAG over prior cases → draft a preliminary report → route to a specialist queue. Role-based access (Vet/Radiologist/Admin), an SLA ops dashboard, and a key-safe Node proxy to Claude — with an always-works demo fallback.",
+    "technologies": ["React", "Vite", "Node", "Claude", "RAG", "RBAC"],
+    "features": [
+      "Agentic triage pipeline with live execution log",
+      "RBAC: Vet / Radiologist / Admin views",
+      "RAG addendum Q&A over generated reports",
+      "SLA / queue / throughput dashboard",
+      "Key-safe server-side Claude proxy"
+    ],
+    "imageUrl": "https://raw.githubusercontent.com/ovalles2019/raditriage/main/docs/screenshots/hero.png",
+    "githubUrl": "https://github.com/ovalles2019/raditriage",
+    "demoUrl": "https://raditriage.onrender.com/",
+    "category": "AI & Healthcare"
+  },
+  {
+    "title": "Agentic AI Governance Harness",
+    "description": "Reproducible benchmark harness for agentic AI governance — measures guardrail trip rate, policy latency, intervention frequency, and cost per resolved task.",
+    "detailedDescription": "A reproducible benchmark harness for agentic AI governance that measures guardrail trip rate, policy latency, intervention frequency, and cost per resolved task. Includes a live interactive demo for exploring policy outcomes and comparing model behavior under governance constraints.",
+    "technologies": ["Python", "LLM Judge", "Benchmarks", "Render"],
+    "features": [
+      "Guardrail trip rate benchmarking",
+      "Policy latency measurement",
+      "Intervention frequency tracking",
+      "Cost-per-resolved-task analytics",
+      "Live interactive demo"
+    ],
+    "imageUrl": "https://raw.githubusercontent.com/ovalles2019/agentic-governance-harness/main/docs/screenshots/01-hero.png",
+    "githubUrl": "https://github.com/ovalles2019/agentic-governance-harness",
+    "demoUrl": "https://agentic-governance-demo.onrender.com/",
+    "category": "AI & Governance"
+  },
+  {
+    "title": "Nexus SRE — Cloud Cost & Reliability Agent",
+    "description": "Autonomous FinOps + SRE agent: Bedrock reasoning over CloudWatch, Cost Explorer, and Trusted Advisor — with human-in-the-loop approval before any write remediation.",
+    "detailedDescription": "Autonomous FinOps + SRE agent: Bedrock reasoning over CloudWatch, Cost Explorer, and Trusted Advisor — with human-in-the-loop approval before any write remediation. Live command-center UI on Render.",
+    "technologies": ["Bedrock", "FastAPI", "Lambda", "CloudWatch", "CDK"],
+    "features": [
+      "Bedrock-powered multi-signal anomaly correlation",
+      "CloudWatch + Cost Explorer + Trusted Advisor integrations",
+      "Human-in-the-loop approval gate for write actions",
+      "Live command-center dashboard",
+      "CDK infrastructure"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=center",
+    "githubUrl": "https://github.com/ovalles2019/cloud-sre-agent",
+    "demoUrl": "https://cloud-sre-agent.onrender.com/",
+    "category": "AI & Cloud Ops"
+  },
+  {
+    "title": "FieldTech Assistant",
+    "description": "RAG-powered assistant for field technicians with manuals, wiring context, service history, and offline-first PWA.",
+    "detailedDescription": "RAG-powered assistant for field technicians: manuals, wiring context, service history, QR asset lookup, and offline-first PWA. Built with FastAPI and React on Docker for deployable, production-style field workflows.",
+    "technologies": ["FastAPI", "React", "ChromaDB", "RAG", "PWA"],
+    "features": [
+      "RAG over manuals and service history",
+      "QR asset lookup",
+      "Offline-first PWA",
+      "Wiring and field context retrieval",
+      "Dockerized FastAPI + React stack"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&h=600&fit=crop&crop=center",
+    "githubUrl": "https://github.com/ovalles2019/fieldtech-assistant",
+    "demoUrl": "https://fieldtech-assistant.onrender.com/",
+    "category": "Full-Stack / AI"
+  },
+  {
+    "title": "ML Experiment Tracker MCP",
+    "description": "MCP server for experiment runs, metrics, hyperparameters, and tags with SQLite persistence and a live dashboard.",
+    "detailedDescription": "MCP server for experiment runs, metrics, hyperparameters, and tags with SQLite persistence—plus a live dashboard to browse and compare runs. Designed for agent workflows that need structured experiment history.",
+    "technologies": ["Python", "MCP", "SQLite", "Starlette"],
+    "features": [
+      "Experiment run tracking",
+      "Metrics and hyperparameter storage",
+      "SQLite persistence",
+      "Live comparison dashboard",
+      "MCP tool surface for agents"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=600&fit=crop&crop=center",
+    "githubUrl": "https://github.com/ovalles2019/ml-experiment-tracker-mcp",
+    "demoUrl": "https://ml-experiment-tracker-demo.onrender.com/",
+    "category": "ML & Tooling"
+  },
+  {
+    "title": "AWS CloudOps MCP",
+    "description": "Read-focused MCP server for AWS ops with a live dashboard and synthetic inventory for demos.",
+    "detailedDescription": "Read-focused MCP server for AWS ops (EC2, CloudWatch, ELB, Lambda, S3) via boto3—plus a live dashboard with synthetic inventory for demos. Useful for agent-driven cloud inspection and operational visibility.",
+    "technologies": ["Python", "MCP", "AWS", "boto3"],
+    "features": [
+      "EC2, CloudWatch, ELB, Lambda, S3 tools",
+      "Read-focused AWS operations",
+      "Synthetic inventory dashboard",
+      "boto3-backed MCP server",
+      "Demo-ready cloud ops surface"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&crop=center",
+    "githubUrl": "https://github.com/ovalles2019/aws-cloudops-mcp",
+    "demoUrl": "https://aws-cloudops-demo.onrender.com/",
+    "category": "MCP & Cloud"
+  },
+  {
+    "title": "Small Business Operations MCP",
+    "description": "MCP server for tasks, expenses, CRM, and inventory with finance CSV analytics and a live ops dashboard.",
+    "detailedDescription": "MCP server for tasks, expenses, CRM, and inventory with finance CSV analytics (margins, payroll, anomalies) plus a live ops dashboard on Render. Built for small-business operational workflows exposed to agents.",
+    "technologies": ["Python", "MCP", "SQLite", "Starlette"],
+    "features": [
+      "Tasks, expenses, CRM, and inventory tools",
+      "Finance CSV analytics",
+      "Margin and payroll insights",
+      "Anomaly detection hooks",
+      "Live ops dashboard on Render"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&h=600&fit=crop&crop=center",
+    "githubUrl": "https://github.com/ovalles2019/small-biz-operations-mcp",
+    "demoUrl": "https://small-biz-ops-demo.onrender.com/",
+    "category": "MCP & Ops"
+  },
+  {
+    "title": "Budget Insights Platform",
+    "description": "Cloud-first finance platform with Flask microservices, React dashboard, and anomaly detection.",
+    "detailedDescription": "Cloud-first finance platform: Flask transaction + analytics microservices, React dashboard, anomaly detection, and budget insights—live demo on Render. Demonstrates production-style service boundaries and analytics UX.",
+    "technologies": ["React", "Flask", "Docker", "AWS"],
+    "features": [
+      "Transaction and analytics microservices",
+      "React insights dashboard",
+      "Anomaly detection",
+      "Budget status views",
+      "Live demo on Render"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&crop=center",
+    "githubUrl": "https://github.com/ovalles2019/budget-insights-platform",
+    "demoUrl": "https://budget-insights-demo.onrender.com/",
+    "category": "Cloud & Finance"
+  },
+  {
+    "title": "Geofences Platform",
+    "description": "Geofencing platform with Apple-inspired UI, real-time notifications, and policy automation.",
+    "detailedDescription": "Geofencing platform with Apple-inspired UI: create and monitor geofences, real-time notifications, track processing, and policy automation. Focused on clean product UX around location-based workflows.",
+    "technologies": ["Maps", "Real-time", "Notifications", "Automation"],
+    "features": [
+      "Geofence creation and monitoring",
+      "Real-time notifications",
+      "Track processing",
+      "Policy automation",
+      "Apple-inspired product UI"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&h=600&fit=crop&crop=center",
+    "githubUrl": "https://github.com/ovalles2019/geofences-platform",
+    "category": "Product"
+  },
+  {
+    "title": "pgvector RAG Demo",
+    "description": "RAG chat app with PostgreSQL pgvector retrieval, embeddings, and Streamlit UI with citations.",
+    "detailedDescription": "RAG chat app: PostgreSQL pgvector retrieval, sentence-transformers embeddings, and Streamlit UI with source citations. Demonstrates vector search and grounded answers in a compact deployable demo.",
+    "technologies": ["Python", "PostgreSQL", "pgvector", "Streamlit"],
+    "features": [
+      "PostgreSQL pgvector retrieval",
+      "Sentence-transformer embeddings",
+      "Streamlit chat UI",
+      "Source citations",
+      "Deployable RAG demo"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop&crop=center",
+    "githubUrl": "https://github.com/ovalles2019/pgvector-rag-demo",
+    "demoUrl": "https://pgvector-rag-demo.onrender.com/",
+    "category": "ML & Data"
+  }
+]

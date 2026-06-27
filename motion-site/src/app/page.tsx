@@ -13,6 +13,7 @@ import {
   Download,
   ArrowUpRight,
 } from 'lucide-react';
+import projectData from '@/data/projects.json';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -329,112 +330,12 @@ export default function Home() {
   );
 }
 
-const projects: Array<{
-  title: string;
-  desc: string;
-  tech: string[];
-  category: string;
-  image: string;
-  github: string;
-  demo?: string;
-}> = [
-  {
-    title: 'RadiTriage — AI Radiology Workflow Assistant',
-    desc: 'Agentic veterinary radiology pipeline: classify urgency → RAG over prior cases → draft a preliminary report → route to a specialist queue. Role-based access (Vet/Radiologist/Admin), an SLA ops dashboard, and a key-safe Node proxy to Claude — with an always-works demo fallback.',
-    tech: ['React', 'Vite', 'Node', 'Claude', 'RAG', 'RBAC'],
-    category: 'AI & HEALTHCARE',
-    image:
-      'https://raw.githubusercontent.com/ovalles2019/raditriage/main/docs/screenshots/hero.png',
-    github: 'https://github.com/ovalles2019/raditriage',
-    demo: 'https://raditriage.onrender.com/',
-  },
-  {
-    title: 'Agentic AI Governance Harness',
-    desc: 'Reproducible benchmark harness for agentic AI governance — measures guardrail trip rate, policy latency, intervention frequency, and cost per resolved task with a live interactive demo.',
-    tech: ['Python', 'LLM Judge', 'Benchmarks', 'Render'],
-    category: 'AI & GOVERNANCE',
-    image:
-      'https://raw.githubusercontent.com/ovalles2019/agentic-governance-harness/main/docs/screenshots/01-hero.png',
-    github: 'https://github.com/ovalles2019/agentic-governance-harness',
-    demo: 'https://agentic-governance-demo.onrender.com/',
-  },
-  {
-    title: 'Nexus SRE — Cloud Cost & Reliability Agent',
-    desc: 'Autonomous FinOps + SRE agent: Bedrock reasoning over CloudWatch, Cost Explorer, and Trusted Advisor — with human-in-the-loop approval before any write remediation. Live command-center UI on Render.',
-    tech: ['Bedrock', 'FastAPI', 'Lambda', 'CloudWatch', 'CDK'],
-    category: 'AI & CLOUD OPS',
-    image:
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=center',
-    github: 'https://github.com/ovalles2019/cloud-sre-agent',
-    demo: 'https://cloud-sre-agent.onrender.com/',
-  },
-  {
-    title: 'FieldTech Assistant',
-    desc: 'RAG-powered assistant for field technicians: manuals, wiring context, service history, QR asset lookup, offline-first PWA — FastAPI + React on Docker.',
-    tech: ['FastAPI', 'React', 'ChromaDB', 'RAG', 'PWA'],
-    category: 'FULL-STACK / AI',
-    image:
-      'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&h=600&fit=crop&crop=center',
-    github: 'https://github.com/ovalles2019/fieldtech-assistant',
-    demo: 'https://fieldtech-assistant.onrender.com/',
-  },
-  {
-    title: 'ML Experiment Tracker MCP',
-    desc: 'MCP server for experiment runs, metrics, hyperparameters, and tags with SQLite persistence—plus a live dashboard to browse and compare runs.',
-    tech: ['Python', 'MCP', 'SQLite', 'Starlette'],
-    category: 'ML & TOOLING',
-    image:
-      'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=600&fit=crop&crop=center',
-    github: 'https://github.com/ovalles2019/ml-experiment-tracker-mcp',
-    demo: 'https://ml-experiment-tracker-demo.onrender.com/',
-  },
-  {
-    title: 'AWS CloudOps MCP',
-    desc: 'Read-focused MCP server for AWS ops (EC2, CloudWatch, ELB, Lambda, S3) via boto3—plus a live dashboard with synthetic inventory for demos.',
-    tech: ['Python', 'MCP', 'AWS', 'boto3'],
-    category: 'MCP & CLOUD',
-    image:
-      'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&crop=center',
-    github: 'https://github.com/ovalles2019/aws-cloudops-mcp',
-    demo: 'https://aws-cloudops-demo.onrender.com/',
-  },
-  {
-    title: 'Small Business Operations MCP',
-    desc: 'MCP server for tasks, expenses, CRM, and inventory with finance CSV analytics (margins, payroll, anomalies) plus a live ops dashboard on Render.',
-    tech: ['Python', 'MCP', 'SQLite', 'Starlette'],
-    category: 'MCP & OPS',
-    image:
-      'https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&h=600&fit=crop&crop=center',
-    github: 'https://github.com/ovalles2019/small-biz-operations-mcp',
-    demo: 'https://small-biz-ops-demo.onrender.com/',
-  },
-  {
-    title: 'Budget Insights Platform',
-    desc: 'Cloud-first finance platform: Flask transaction + analytics microservices, React dashboard, anomaly detection, and budget insights—live demo on Render.',
-    tech: ['React', 'Flask', 'Docker', 'AWS'],
-    category: 'CLOUD & FINANCE',
-    image:
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&crop=center',
-    github: 'https://github.com/ovalles2019/budget-insights-platform',
-    demo: 'https://budget-insights-demo.onrender.com/',
-  },
-  {
-    title: 'Geofences Platform',
-    desc: 'Geofencing platform with Apple-inspired UI: create and monitor geofences, real-time notifications, track processing, and policy automation.',
-    tech: ['Maps', 'Real-time', 'Notifications', 'Automation'],
-    category: 'PRODUCT',
-    image:
-      'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&h=600&fit=crop&crop=center',
-    github: 'https://github.com/ovalles2019/geofences-platform',
-  },
-  {
-    title: 'pgvector RAG Demo',
-    desc: 'RAG chat app: PostgreSQL pgvector retrieval, sentence-transformers embeddings, and Streamlit UI with source citations.',
-    tech: ['Python', 'PostgreSQL', 'pgvector', 'Streamlit'],
-    category: 'ML & DATA',
-    image:
-      'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop&crop=center',
-    github: 'https://github.com/ovalles2019/pgvector-rag-demo',
-    demo: 'https://pgvector-rag-demo.onrender.com/',
-  },
-];
+const projects = projectData.map((p) => ({
+  title: p.title,
+  desc: p.description,
+  tech: p.technologies,
+  category: p.category.toUpperCase(),
+  image: p.imageUrl,
+  github: p.githubUrl,
+  demo: p.demoUrl,
+}));
