@@ -1,5 +1,23 @@
 [
   {
+    "title": "SentinelCV — Live CV Operator Console",
+    "description": "Realtime computer-vision operator console: multi-feed traffic cameras, AWS Rekognition detection, feed-health degradation, and TxDOT corridor speeds — shipped end-to-end on Render.",
+    "detailedDescription": "SentinelCV is a deployable CV operator console. An asyncio poller ingests public traffic cameras (NYC DOT JPEGs + TxDOT Dallas ITS stills), runs frames through a pluggable VisionClient (mock / Azure / AWS Rekognition), and pushes results over WebSockets. Feeds degrade independently (Up → Stale → Down) with data age always visible. Dallas tiles also show TxDOT travel-time corridor mph (US-75 / IH-635). Includes a GO LIVE device-camera path, OpenAPI docs, pytest CI, and a live Render deploy.",
+    "technologies": ["Python", "FastAPI", "AWS Rekognition", "WebSockets", "Render", "CI/CD"],
+    "features": [
+      "Multi-feed polling with independent Up / Stale / Down health",
+      "Pluggable vision: mock, Azure Vision, AWS Rekognition",
+      "TxDOT Dallas stills + corridor average-speed pills",
+      "Realtime WebSocket dashboard with polling fallback",
+      "GO LIVE device-camera self-test (analyze & discard)",
+      "Live on Render with GitHub Actions pytest"
+    ],
+    "imageUrl": "/projects/sentinelcv-dashboard.png",
+    "githubUrl": "https://github.com/ovalles2019/sentinelcv",
+    "demoUrl": "https://sentinelcv-api.onrender.com/",
+    "category": "Full-Stack / Cloud"
+  },
+  {
     "title": "EvalForge — Multi-Dimensional AI Eval Harness",
     "description": "Standalone harness that scores any LLM/agent on RAG groundedness, tool-use reliability, and guardrail robustness — with versioned YAML suites, a CI regression gate, and a live dashboard.",
     "detailedDescription": "EvalForge runs versioned test suites from git against any LLM or agent endpoint and scores three dimensions: RAG groundedness (LLM/heuristic judge + citation F1), agentic tool-use (selection accuracy + argument F1), and guardrail robustness (block-rate + false-refusal-rate). Results persist to Postgres, export to Prometheus/Grafana, and feed a CI gate that fails on threshold breaches or metric regression. Pluggable adapters support mock (offline) or OpenAI-compatible targets; includes JUnit XML for GitHub Actions and a showcase dashboard deployed on Render.",
