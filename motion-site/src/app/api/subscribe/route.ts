@@ -32,7 +32,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 400 });
   }
 
-  const resendKey = normalizeEnv(process.env.RESEND_API_KEY);
+  const resendKey = normalizeEnv(
+    process.env.RESEND_API_KEY ?? process.env.RESEND_KEY
+  );
   const segmentId = normalizeEnv(
     process.env.RESEND_SEGMENT_ID ?? process.env.RESEND_AUDIENCE_ID
   );
@@ -159,7 +161,7 @@ export async function POST(req: Request) {
   return NextResponse.json(
     {
       error:
-        'Subscriptions are not configured yet. Set RESEND_API_KEY in Netlify env (optional: RESEND_SEGMENT_ID).',
+        'Subscriptions are not configured yet. Set RESEND_API_KEY (or RESEND_KEY) in Netlify env (optional: RESEND_SEGMENT_ID).',
     },
     { status: 503 }
   );
