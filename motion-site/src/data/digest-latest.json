@@ -1,0 +1,20 @@
+{
+  "weekOf": "2026-07-20",
+  "title": "AI / Automation Weekly Digest",
+  "takeaways": [
+    "YouTube updated monetization rules to restrict ad revenue for certain AI-generated, low-quality, and “upsetting” videos — clearer lines for creators using synthetic media.",
+    "Nvidia CEO Jensen Huang secured deals across Japan’s tech ecosystem; coverage framed it as supply-chain and partnership momentum more than a single product launch.",
+    "China’s Moonshot AI released a new Kimi model version, with commentary around geopolitics and open competition in frontier models.",
+    "TechCrunch’s Equity podcast asked whether Apple’s lawsuit could affect OpenAI’s hardware plans and IPO timeline — legal overhang worth monitoring."
+  ],
+  "watchNext": "Follow developments in Apple’s lawsuit against OpenAI and any hardware-roadmap fallout.",
+  "sources": [
+    {
+      "title": "YouTube clarifies policies around AI slop and upsetting videos",
+      "outlet": "TechCrunch",
+      "url": "https://techcrunch.com/2026/07/20/youtube-clarifies-policies-around-ai-slop-and-upsetting-videos/"
+    }
+  ],
+  "projectUrl": "https://github.com/ovalles2019/n8n-competitor-news-digest",
+  "updatedAt": "2026-07-20T18:00:00.000Z"
+}

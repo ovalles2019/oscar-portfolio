@@ -14,6 +14,9 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 import projectData from '@/data/projects.json';
+import digestLatest from '@/data/digest-latest.json';
+import WeeklyDigest from '@/components/weekly-digest';
+import type { DigestLatest } from '@/lib/digest';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -285,6 +288,9 @@ export default function Home() {
             ))}
           </div>
         </section>
+
+        {/* ── Weekly AI Digest ──────────────────────────── */}
+        <WeeklyDigest digest={digestLatest as DigestLatest} />
 
         {/* ── Contact CTA ───────────────────────────────── */}
         <section className="max-w-5xl mx-auto mb-20">

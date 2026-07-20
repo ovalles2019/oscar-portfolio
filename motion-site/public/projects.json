@@ -1,9 +1,16 @@
 [
   {
-    "title": "SentinelCV — Live CV Operator Console",
-    "description": "Realtime computer-vision operator console: multi-feed traffic cameras, AWS Rekognition detection, feed-health degradation, and TxDOT corridor speeds — shipped end-to-end on Render.",
-    "detailedDescription": "SentinelCV is a deployable CV operator console. An asyncio poller ingests public traffic cameras (NYC DOT JPEGs + TxDOT Dallas ITS stills), runs frames through a pluggable VisionClient (mock / Azure / AWS Rekognition), and pushes results over WebSockets. Feeds degrade independently (Up → Stale → Down) with data age always visible. Dallas tiles also show TxDOT travel-time corridor mph (US-75 / IH-635). Includes a GO LIVE device-camera path, OpenAPI docs, pytest CI, and a live Render deploy.",
-    "technologies": ["Python", "FastAPI", "AWS Rekognition", "WebSockets", "Render", "CI/CD"],
+    "title": "SentinelCV \u2014 Live CV Operator Console",
+    "description": "Realtime computer-vision operator console: multi-feed traffic cameras, AWS Rekognition detection, feed-health degradation, and TxDOT corridor speeds \u2014 shipped end-to-end on Render.",
+    "detailedDescription": "SentinelCV is a deployable CV operator console. An asyncio poller ingests public traffic cameras (NYC DOT JPEGs + TxDOT Dallas ITS stills), runs frames through a pluggable VisionClient (mock / Azure / AWS Rekognition), and pushes results over WebSockets. Feeds degrade independently (Up \u2192 Stale \u2192 Down) with data age always visible. Dallas tiles also show TxDOT travel-time corridor mph (US-75 / IH-635). Includes a GO LIVE device-camera path, OpenAPI docs, pytest CI, and a live Render deploy.",
+    "technologies": [
+      "Python",
+      "FastAPI",
+      "AWS Rekognition",
+      "WebSockets",
+      "Render",
+      "CI/CD"
+    ],
     "features": [
       "Multi-feed polling with independent Up / Stale / Down health",
       "Pluggable vision: mock, Azure Vision, AWS Rekognition",
@@ -18,10 +25,40 @@
     "category": "Full-Stack / Cloud"
   },
   {
-    "title": "EvalForge — Multi-Dimensional AI Eval Harness",
-    "description": "Standalone harness that scores any LLM/agent on RAG groundedness, tool-use reliability, and guardrail robustness — with versioned YAML suites, a CI regression gate, and a live dashboard.",
+    "title": "AI Competitor News Weekly Digest",
+    "description": "n8n Cloud automation: Monday RSS monitor across AI feeds, GPT-4o-mini takeaways, and dual delivery to Slack + Gmail \u2014 now surfaced on this site with a subscribe path.",
+    "detailedDescription": "Automated weekly digest built in n8n: Schedule Trigger \u2192 HTTP RSS (The Verge + TechCrunch) \u2192 extract/clean \u2192 OpenAI summarization \u2192 format \u2192 Slack Incoming Webhook + Gmail. Portfolio section displays the latest brief and collects subscribers via /api/subscribe (Resend audience or n8n webhook).",
+    "technologies": [
+      "n8n",
+      "OpenAI",
+      "RSS",
+      "Slack",
+      "Gmail",
+      "Next.js"
+    ],
+    "features": [
+      "Monday 9 AM schedule (America/Chicago)",
+      "Multi-source AI RSS \u2192 structured headlines",
+      "GPT-4o-mini analyst prompt with grounded takeaways",
+      "Parallel Slack + Gmail delivery",
+      "Portfolio display + email subscribe API"
+    ],
+    "imageUrl": "/projects/n8n-digest.png",
+    "githubUrl": "https://github.com/ovalles2019/n8n-competitor-news-digest",
+    "demoUrl": "/#weekly-digest",
+    "category": "Automation / AI"
+  },
+  {
+    "title": "EvalForge \u2014 Multi-Dimensional AI Eval Harness",
+    "description": "Standalone harness that scores any LLM/agent on RAG groundedness, tool-use reliability, and guardrail robustness \u2014 with versioned YAML suites, a CI regression gate, and a live dashboard.",
     "detailedDescription": "EvalForge runs versioned test suites from git against any LLM or agent endpoint and scores three dimensions: RAG groundedness (LLM/heuristic judge + citation F1), agentic tool-use (selection accuracy + argument F1), and guardrail robustness (block-rate + false-refusal-rate). Results persist to Postgres, export to Prometheus/Grafana, and feed a CI gate that fails on threshold breaches or metric regression. Pluggable adapters support mock (offline) or OpenAI-compatible targets; includes JUnit XML for GitHub Actions and a showcase dashboard deployed on Render.",
-    "technologies": ["Python", "FastAPI", "RAG", "CI/CD", "Render"],
+    "technologies": [
+      "Python",
+      "FastAPI",
+      "RAG",
+      "CI/CD",
+      "Render"
+    ],
     "features": [
       "Three-dimensional scoring: RAG, tool-use, guardrails",
       "Versioned YAML test suites in git",
@@ -36,10 +73,17 @@
     "category": "AI & Eval"
   },
   {
-    "title": "RadiTriage — AI Radiology Workflow Assistant",
-    "description": "Agentic veterinary radiology pipeline: classify urgency → RAG over prior cases → draft a preliminary report → route to a specialist queue. Role-based access, SLA ops dashboard, and key-safe Claude proxy with demo fallback.",
-    "detailedDescription": "Agentic veterinary radiology pipeline: classify urgency → RAG over prior cases → draft a preliminary report → route to a specialist queue. Role-based access (Vet/Radiologist/Admin), an SLA ops dashboard, and a key-safe Node proxy to Claude — with an always-works demo fallback.",
-    "technologies": ["React", "Vite", "Node", "Claude", "RAG", "RBAC"],
+    "title": "RadiTriage \u2014 AI Radiology Workflow Assistant",
+    "description": "Agentic veterinary radiology pipeline: classify urgency \u2192 RAG over prior cases \u2192 draft a preliminary report \u2192 route to a specialist queue. Role-based access, SLA ops dashboard, and key-safe Claude proxy with demo fallback.",
+    "detailedDescription": "Agentic veterinary radiology pipeline: classify urgency \u2192 RAG over prior cases \u2192 draft a preliminary report \u2192 route to a specialist queue. Role-based access (Vet/Radiologist/Admin), an SLA ops dashboard, and a key-safe Node proxy to Claude \u2014 with an always-works demo fallback.",
+    "technologies": [
+      "React",
+      "Vite",
+      "Node",
+      "Claude",
+      "RAG",
+      "RBAC"
+    ],
     "features": [
       "Agentic triage pipeline with live execution log",
       "RBAC: Vet / Radiologist / Admin views",
@@ -54,9 +98,14 @@
   },
   {
     "title": "Agentic AI Governance Harness",
-    "description": "Reproducible benchmark harness for agentic AI governance — measures guardrail trip rate, policy latency, intervention frequency, and cost per resolved task.",
+    "description": "Reproducible benchmark harness for agentic AI governance \u2014 measures guardrail trip rate, policy latency, intervention frequency, and cost per resolved task.",
     "detailedDescription": "A reproducible benchmark harness for agentic AI governance that measures guardrail trip rate, policy latency, intervention frequency, and cost per resolved task. Includes a live interactive demo for exploring policy outcomes and comparing model behavior under governance constraints.",
-    "technologies": ["Python", "LLM Judge", "Benchmarks", "Render"],
+    "technologies": [
+      "Python",
+      "LLM Judge",
+      "Benchmarks",
+      "Render"
+    ],
     "features": [
       "Guardrail trip rate benchmarking",
       "Policy latency measurement",
@@ -70,10 +119,16 @@
     "category": "AI & Governance"
   },
   {
-    "title": "Nexus SRE — Cloud Cost & Reliability Agent",
-    "description": "Autonomous FinOps + SRE agent: Bedrock reasoning over CloudWatch, Cost Explorer, and Trusted Advisor — with human-in-the-loop approval before any write remediation.",
-    "detailedDescription": "Autonomous FinOps + SRE agent: Bedrock reasoning over CloudWatch, Cost Explorer, and Trusted Advisor — with human-in-the-loop approval before any write remediation. Live command-center UI on Render.",
-    "technologies": ["Bedrock", "FastAPI", "Lambda", "CloudWatch", "CDK"],
+    "title": "Nexus SRE \u2014 Cloud Cost & Reliability Agent",
+    "description": "Autonomous FinOps + SRE agent: Bedrock reasoning over CloudWatch, Cost Explorer, and Trusted Advisor \u2014 with human-in-the-loop approval before any write remediation.",
+    "detailedDescription": "Autonomous FinOps + SRE agent: Bedrock reasoning over CloudWatch, Cost Explorer, and Trusted Advisor \u2014 with human-in-the-loop approval before any write remediation. Live command-center UI on Render.",
+    "technologies": [
+      "Bedrock",
+      "FastAPI",
+      "Lambda",
+      "CloudWatch",
+      "CDK"
+    ],
     "features": [
       "Bedrock-powered multi-signal anomaly correlation",
       "CloudWatch + Cost Explorer + Trusted Advisor integrations",
@@ -90,7 +145,13 @@
     "title": "FieldTech Assistant",
     "description": "RAG-powered assistant for field technicians with manuals, wiring context, service history, and offline-first PWA.",
     "detailedDescription": "RAG-powered assistant for field technicians: manuals, wiring context, service history, QR asset lookup, and offline-first PWA. Built with FastAPI and React on Docker for deployable, production-style field workflows.",
-    "technologies": ["FastAPI", "React", "ChromaDB", "RAG", "PWA"],
+    "technologies": [
+      "FastAPI",
+      "React",
+      "ChromaDB",
+      "RAG",
+      "PWA"
+    ],
     "features": [
       "RAG over manuals and service history",
       "QR asset lookup",
@@ -106,8 +167,13 @@
   {
     "title": "ML Experiment Tracker MCP",
     "description": "MCP server for experiment runs, metrics, hyperparameters, and tags with SQLite persistence and a live dashboard.",
-    "detailedDescription": "MCP server for experiment runs, metrics, hyperparameters, and tags with SQLite persistence—plus a live dashboard to browse and compare runs. Designed for agent workflows that need structured experiment history.",
-    "technologies": ["Python", "MCP", "SQLite", "Starlette"],
+    "detailedDescription": "MCP server for experiment runs, metrics, hyperparameters, and tags with SQLite persistence\u2014plus a live dashboard to browse and compare runs. Designed for agent workflows that need structured experiment history.",
+    "technologies": [
+      "Python",
+      "MCP",
+      "SQLite",
+      "Starlette"
+    ],
     "features": [
       "Experiment run tracking",
       "Metrics and hyperparameter storage",
@@ -123,8 +189,13 @@
   {
     "title": "AWS CloudOps MCP",
     "description": "Read-focused MCP server for AWS ops with a live dashboard and synthetic inventory for demos.",
-    "detailedDescription": "Read-focused MCP server for AWS ops (EC2, CloudWatch, ELB, Lambda, S3) via boto3—plus a live dashboard with synthetic inventory for demos. Useful for agent-driven cloud inspection and operational visibility.",
-    "technologies": ["Python", "MCP", "AWS", "boto3"],
+    "detailedDescription": "Read-focused MCP server for AWS ops (EC2, CloudWatch, ELB, Lambda, S3) via boto3\u2014plus a live dashboard with synthetic inventory for demos. Useful for agent-driven cloud inspection and operational visibility.",
+    "technologies": [
+      "Python",
+      "MCP",
+      "AWS",
+      "boto3"
+    ],
     "features": [
       "EC2, CloudWatch, ELB, Lambda, S3 tools",
       "Read-focused AWS operations",
@@ -141,7 +212,12 @@
     "title": "Small Business Operations MCP",
     "description": "MCP server for tasks, expenses, CRM, and inventory with finance CSV analytics and a live ops dashboard.",
     "detailedDescription": "MCP server for tasks, expenses, CRM, and inventory with finance CSV analytics (margins, payroll, anomalies) plus a live ops dashboard on Render. Built for small-business operational workflows exposed to agents.",
-    "technologies": ["Python", "MCP", "SQLite", "Starlette"],
+    "technologies": [
+      "Python",
+      "MCP",
+      "SQLite",
+      "Starlette"
+    ],
     "features": [
       "Tasks, expenses, CRM, and inventory tools",
       "Finance CSV analytics",
@@ -157,8 +233,13 @@
   {
     "title": "Budget Insights Platform",
     "description": "Cloud-first finance platform with Flask microservices, React dashboard, and anomaly detection.",
-    "detailedDescription": "Cloud-first finance platform: Flask transaction + analytics microservices, React dashboard, anomaly detection, and budget insights—live demo on Render. Demonstrates production-style service boundaries and analytics UX.",
-    "technologies": ["React", "Flask", "Docker", "AWS"],
+    "detailedDescription": "Cloud-first finance platform: Flask transaction + analytics microservices, React dashboard, anomaly detection, and budget insights\u2014live demo on Render. Demonstrates production-style service boundaries and analytics UX.",
+    "technologies": [
+      "React",
+      "Flask",
+      "Docker",
+      "AWS"
+    ],
     "features": [
       "Transaction and analytics microservices",
       "React insights dashboard",
@@ -175,7 +256,12 @@
     "title": "Geofences Platform",
     "description": "Geofencing platform with Apple-inspired UI, real-time notifications, and policy automation.",
     "detailedDescription": "Geofencing platform with Apple-inspired UI: create and monitor geofences, real-time notifications, track processing, and policy automation. Focused on clean product UX around location-based workflows.",
-    "technologies": ["Maps", "Real-time", "Notifications", "Automation"],
+    "technologies": [
+      "Maps",
+      "Real-time",
+      "Notifications",
+      "Automation"
+    ],
     "features": [
       "Geofence creation and monitoring",
       "Real-time notifications",
@@ -191,7 +277,12 @@
     "title": "pgvector RAG Demo",
     "description": "RAG chat app with PostgreSQL pgvector retrieval, embeddings, and Streamlit UI with citations.",
     "detailedDescription": "RAG chat app: PostgreSQL pgvector retrieval, sentence-transformers embeddings, and Streamlit UI with source citations. Demonstrates vector search and grounded answers in a compact deployable demo.",
-    "technologies": ["Python", "PostgreSQL", "pgvector", "Streamlit"],
+    "technologies": [
+      "Python",
+      "PostgreSQL",
+      "pgvector",
+      "Streamlit"
+    ],
     "features": [
       "PostgreSQL pgvector retrieval",
       "Sentence-transformer embeddings",
