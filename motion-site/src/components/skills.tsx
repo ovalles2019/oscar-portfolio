@@ -2,6 +2,7 @@
 
 import { Cloud, Code2, Layers, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
+import IconSphere from '@/components/icon-sphere';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -98,30 +99,7 @@ export default function Skills() {
           </motion.div>
         </div>
 
-        <div className="relative mx-auto grid h-[320px] w-full max-w-[520px] place-items-center sm:h-[420px] lg:h-[520px] lg:flex-1">
-          {ICONS.map((icon, i) => {
-            const angle = (i / ICONS.length) * Math.PI * 2 - Math.PI / 2;
-            const radius = i % 3 === 0 ? 38 : i % 3 === 1 ? 28 : 18;
-            return (
-              <div
-                key={icon.name}
-                title={icon.name}
-                className="absolute flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] sm:h-14 sm:w-14"
-                style={{
-                  left: `${50 + Math.cos(angle) * radius}%`,
-                  top: `${50 + Math.sin(angle) * radius}%`,
-                  transform: 'translate(-50%, -50%)',
-                }}
-              >
-                <img
-                  src={`https://cdn.simpleicons.org/${icon.slug}/${icon.color}`}
-                  alt={icon.name}
-                  className="h-6 w-6 sm:h-7 sm:w-7"
-                />
-              </div>
-            );
-          })}
-        </div>
+        <IconSphere icons={ICONS} />
       </div>
 
       <div className="mx-auto grid max-w-[1400px] gap-4 px-5 pb-20 md:grid-cols-2 md:px-10 lg:px-[80px] xl:px-[150px]">

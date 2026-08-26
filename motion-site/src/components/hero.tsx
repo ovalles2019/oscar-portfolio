@@ -1,3 +1,5 @@
+import { TechIcon } from '@/components/tech-icon';
+
 const TECH = [
   { name: 'AWS', slug: 'amazonaws', color: 'FF9900' },
   { name: 'Kubernetes', slug: 'kubernetes', color: '326CE5' },
@@ -88,16 +90,17 @@ export default function Hero() {
         </div>
 
         <div className="w-full max-w-[400px] overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]">
-          <div className="hero-marquee flex w-max items-center gap-3.5">
+          <div className="hero-marquee flex w-max items-center gap-3.5 px-[72px]">
             {loop.map((tech, i) => (
               <div
                 key={`${tech.slug}-${i}`}
                 title={tech.name}
                 className="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-[14px] border border-[var(--border-subtle)] bg-[var(--bg-elevated)]"
               >
-                <img
-                  src={`https://cdn.simpleicons.org/${tech.slug}/${tech.color}`}
-                  alt={tech.name}
+                <TechIcon
+                  name={tech.name}
+                  slug={tech.slug}
+                  color={tech.color}
                   className="h-[30px] w-[30px]"
                 />
               </div>
