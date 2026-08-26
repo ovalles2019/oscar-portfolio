@@ -50,78 +50,71 @@ export default function WeeklyDigest({ digest }: Props) {
   }
 
   return (
-    <section id="weekly-digest" className="max-w-5xl mx-auto mb-32">
-      <motion.p
-        className="text-indigo-400 font-bold text-sm tracking-[0.2em] uppercase mb-4"
+    <section
+      id="weekly-digest"
+      className="mx-auto max-w-[1400px] px-5 py-20 md:px-10 lg:px-[80px] xl:px-[150px]"
+    >
+      <motion.h2
+        className="mb-3 text-4xl font-extrabold text-[var(--text-primary)] md:text-[44px]"
         variants={fadeUp}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
         custom={0}
       >
-        WEEKLY AI DIGEST
-      </motion.p>
-      <motion.h2
-        className="text-3xl md:text-4xl font-bold mb-4 text-white"
+        Weekly AI Digest
+      </motion.h2>
+      <motion.p
+        className="mb-10 max-w-2xl text-[15px] leading-[1.75] text-[var(--text-muted)]"
         variants={fadeUp}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
         custom={1}
       >
-        Tech news, distilled — every Monday.
-      </motion.h2>
-      <motion.p
-        className="text-gray-400 text-lg max-w-2xl mb-10 leading-relaxed"
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        custom={2}
-      >
         An n8n automation pulls AI coverage from public feeds, summarizes it with
         GPT-4o-mini, and delivers a short brief. Read this week below — or
         subscribe and get it in your inbox.
       </motion.p>
 
-      <div className="grid lg:grid-cols-[1.4fr_1fr] gap-6 items-start">
+      <div className="grid items-start gap-6 lg:grid-cols-[1.4fr_1fr]">
         <motion.div
-          className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-6 md:p-8"
+          className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] p-6 md:p-8"
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          custom={3}
+          custom={2}
         >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center">
-              <Newspaper size={18} className="text-indigo-400" />
+          <div className="mb-6 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--border-subtle)] bg-[var(--bg)]">
+              <Newspaper size={18} className="text-[var(--text-primary)]" />
             </div>
             <div>
-              <p className="text-white font-bold">{digest.title}</p>
-              <p className="text-sm text-gray-500">Week of {digest.weekOf}</p>
+              <p className="font-bold text-[var(--text-primary)]">{digest.title}</p>
+              <p className="text-sm text-[var(--text-muted)]">Week of {digest.weekOf}</p>
             </div>
           </div>
 
-          <ol className="space-y-4 mb-6">
+          <ol className="mb-6 space-y-4">
             {digest.takeaways.map((t, i) => (
-              <li key={i} className="flex gap-3 text-sm text-gray-300 leading-relaxed">
-                <span className="shrink-0 mt-0.5 w-6 h-6 rounded-md bg-indigo-500/15 text-indigo-300 text-xs font-bold flex items-center justify-center">
+              <li key={i} className="flex gap-3 text-sm leading-relaxed text-[var(--text-primary)]">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-[var(--border-subtle)] bg-[var(--bg)] text-xs font-bold">
                   {i + 1}
                 </span>
-                <span>{t}</span>
+                <span className="text-[var(--text-muted)]">{t}</span>
               </li>
             ))}
           </ol>
 
-          <p className="text-sm text-indigo-200/90 border-t border-white/[0.06] pt-4 mb-5">
-            <span className="font-semibold text-indigo-300">Watch next week: </span>
+          <p className="mb-5 border-t border-[var(--border-subtle)] pt-4 text-sm text-[var(--text-muted)]">
+            <span className="font-semibold text-[var(--text-primary)]">Watch next week: </span>
             {digest.watchNext}
           </p>
 
           {digest.sources?.length ? (
-            <div className="space-y-2 mb-5">
-              <p className="text-xs font-bold tracking-wider uppercase text-gray-500">
+            <div className="mb-5 space-y-2">
+              <p className="text-xs font-bold tracking-wider uppercase text-[var(--text-muted)]">
                 Sources
               </p>
               {digest.sources.slice(0, 4).map((s) => (
@@ -130,10 +123,10 @@ export default function WeeklyDigest({ digest }: Props) {
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block text-sm text-gray-400 hover:text-indigo-300 transition-colors"
+                  className="block text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                 >
                   {s.title}{' '}
-                  <span className="text-gray-600">({s.outlet})</span>
+                  <span className="text-[var(--text-faint)]">({s.outlet})</span>
                 </a>
               ))}
             </div>
@@ -143,29 +136,29 @@ export default function WeeklyDigest({ digest }: Props) {
             href={digest.projectUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-green hover:opacity-80"
           >
             How this is automated <ArrowUpRight size={14} />
           </a>
         </motion.div>
 
         <motion.div
-          className="rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-indigo-500/[0.08] to-purple-500/[0.04] p-6 md:p-8"
+          className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] p-6 md:p-8"
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          custom={4}
+          custom={3}
         >
-          <h3 className="text-xl font-bold text-white mb-2">Get it weekly</h3>
-          <p className="text-sm text-gray-400 mb-6 leading-relaxed">
+          <h3 className="mb-2 text-xl font-bold text-[var(--text-primary)]">Get it weekly</h3>
+          <p className="mb-6 text-sm leading-relaxed text-[var(--text-muted)]">
             Free Monday brief on AI and automation. Unsubscribe anytime. No spam —
             just the digest.
           </p>
 
           {status === 'ok' ? (
-            <div className="flex items-start gap-3 text-emerald-300 text-sm">
-              <CheckCircle2 size={18} className="shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 text-sm text-accent-green">
+              <CheckCircle2 size={18} className="mt-0.5 shrink-0" />
               <p>{message}</p>
             </div>
           ) : (
@@ -184,12 +177,12 @@ export default function WeeklyDigest({ digest }: Props) {
                   setEmail(e.target.value);
                   if (status === 'error') setStatus('idle');
                 }}
-                className="w-full rounded-xl bg-black/40 border border-white/10 px-4 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30"
+                className="w-full rounded-full border border-[var(--border-subtle)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-faint)] outline-none focus:border-[var(--border-hover)]"
               />
               <button
                 type="submit"
                 disabled={status === 'loading'}
-                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold text-sm hover:shadow-lg hover:shadow-indigo-500/25 transition-all disabled:opacity-60"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[var(--pill-white)] px-5 py-3 text-sm font-semibold text-[var(--pill-text)] transition-transform hover:-translate-y-px disabled:opacity-60"
               >
                 {status === 'loading' ? (
                   <>
@@ -202,9 +195,9 @@ export default function WeeklyDigest({ digest }: Props) {
                 )}
               </button>
               {status === 'error' ? (
-                <p className="text-sm text-red-300">{message}</p>
+                <p className="text-sm text-red-400">{message}</p>
               ) : null}
-              <p className="text-[11px] text-gray-600 leading-relaxed">
+              <p className="text-[11px] leading-relaxed text-[var(--text-muted)]">
                 By subscribing you agree to receive the weekly digest. Your email
                 is only used for this newsletter.
               </p>

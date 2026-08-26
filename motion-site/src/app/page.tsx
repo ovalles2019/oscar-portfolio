@@ -1,338 +1,174 @@
 'use client';
 
-import { useEffect } from 'react';
-import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero';
 import { motion } from 'framer-motion';
-import {
-  Cloud,
-  Layers,
-  Code2,
-  ShieldCheck,
-  ExternalLink,
-  Mail,
-  Download,
-  ArrowUpRight,
-} from 'lucide-react';
+import { ArrowUpRight, Mail } from 'lucide-react';
 import projectData from '@/data/projects.json';
 import digestLatest from '@/data/digest-latest.json';
 import WeeklyDigest from '@/components/weekly-digest';
+import Hero from '@/components/hero';
+import Skills from '@/components/skills';
 import type { DigestLatest } from '@/lib/digest';
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.1, duration: 0.6, ease: 'easeOut' as const },
+    transition: { delay: i * 0.08, duration: 0.5, ease: 'easeOut' as const },
   }),
 };
 
 export default function Home() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
-    <div className="min-h-screen bg-black">
-      <ScrollExpandMedia
-        mediaType="image"
-        mediaSrc="/hero-card.png"
-        bgImageSrc="/bg-poster.jpg"
-        bgVideoSrc="/bg-video.mp4"
-        scrollToExpand="↓ Scroll to Explore"
+    <main>
+      <Hero />
+      <Skills />
+
+      <section
+        id="projects"
+        className="mx-auto max-w-[1400px] px-5 py-20 md:px-10 lg:px-[80px] lg:py-[100px] xl:px-[150px]"
       >
-        {/* ── About ─────────────────────────────────────── */}
-        <section className="max-w-5xl mx-auto mb-32">
-          <motion.p
-            className="text-indigo-400 font-bold text-sm tracking-[0.2em] uppercase mb-4"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={0}
-          >
-            ABOUT
-          </motion.p>
-          <motion.h2
-            className="text-3xl md:text-5xl font-bold mb-6 text-white"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={1}
-          >
-            Building Cloud, AI, and Scalable Systems
-          </motion.h2>
-          <motion.p
-            className="text-lg text-gray-400 max-w-3xl leading-relaxed"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={2}
-          >
-            I&apos;m a Master&apos;s student in Computer Engineering at UTD,
-            focused on ML-powered and automated systems. I architect
-            production-grade cloud infrastructure, build full-stack
-            applications, and design interfaces that turn complex systems into
-            something people can actually use.
-          </motion.p>
+        <motion.h2
+          className="mb-3 text-4xl font-extrabold text-[var(--text-primary)] md:text-[44px]"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          custom={0}
+        >
+          My Projects
+        </motion.h2>
+        <motion.p
+          className="mb-10 max-w-2xl text-[15px] leading-[1.75] text-[var(--text-muted)]"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          custom={1}
+        >
+          A selection of projects I&apos;ve built, spanning cloud
+          infrastructure, AI systems, and full-stack applications.
+        </motion.p>
 
-          <motion.div
-            className="flex flex-wrap gap-3 mt-8"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={3}
-          >
-            {['AWS', 'Kubernetes', 'Terraform', 'Python', 'React', 'Flutter', 'Docker', 'CI/CD'].map(
-              (t) => (
-                <span
-                  key={t}
-                  className="px-4 py-1.5 text-sm font-semibold rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20"
-                >
-                  {t}
-                </span>
-              )
-            )}
-          </motion.div>
-
-          <motion.div
-            className="flex flex-wrap gap-4 mt-10"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={4}
-          >
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold text-sm hover:shadow-lg hover:shadow-indigo-500/25 transition-all"
+        <div className="grid gap-6 md:grid-cols-2">
+          {projects.map((p, i) => (
+            <motion.article
+              key={p.title}
+              className="group overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] transition-colors hover:border-[var(--border-hover)]"
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              custom={i + 2}
             >
-              <Download size={16} /> Download Resume
+              <div className="relative h-48 overflow-hidden">
+                <img
+                  src={p.image}
+                  alt={p.title}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span className="absolute top-3 left-3 rounded-md border border-[var(--border-subtle)] bg-black/60 px-3 py-1 text-[10px] font-bold tracking-wider text-white">
+                  {p.category}
+                </span>
+              </div>
+              <div className="p-5">
+                <h3 className="mb-2 text-lg font-bold text-[var(--text-primary)]">
+                  {p.title}
+                </h3>
+                <p className="mb-4 line-clamp-2 text-sm text-[var(--text-muted)]">
+                  {p.desc}
+                </p>
+                <div className="mb-4 flex flex-wrap gap-1.5">
+                  {p.tech.map((t) => (
+                    <span
+                      key={t}
+                      className="rounded-full border border-[var(--border-subtle)] bg-[var(--bg)] px-2.5 py-1 text-[11px] font-semibold text-[var(--text-primary)]"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                  {p.demo ? (
+                    <a
+                      href={p.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-green hover:opacity-80"
+                    >
+                      Live Demo <ArrowUpRight size={14} />
+                    </a>
+                  ) : null}
+                  <a
+                    href={p.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-primary)] hover:opacity-80"
+                  >
+                    Source Code <ArrowUpRight size={14} />
+                  </a>
+                </div>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </section>
+
+      <WeeklyDigest digest={digestLatest as DigestLatest} />
+
+      <section
+        id="contact"
+        className="mx-auto max-w-[1400px] px-5 pb-20 md:px-10 lg:px-[80px] xl:px-[150px]"
+      >
+        <motion.div
+          className="rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] p-10 md:p-16"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          custom={0}
+        >
+          <span className="mb-4 inline-block rounded-full border border-[var(--border-subtle)] bg-[var(--bg)] px-3.5 py-1.5 text-[11px] font-bold tracking-[0.1em] uppercase text-[var(--text-primary)]">
+            Get In Touch
+          </span>
+          <h2 className="mb-4 text-3xl font-extrabold text-[var(--text-primary)] md:text-4xl">
+            Let&apos;s Work Together
+          </h2>
+          <p className="mb-8 max-w-xl text-[15px] leading-relaxed text-[var(--text-muted)]">
+            Open to full-time roles, contract work, and collaborations in cloud
+            engineering and product development.
+          </p>
+          <div className="flex flex-wrap gap-3.5">
+            <a
+              href="mailto:ovalles6845@gmail.com"
+              className="inline-flex items-center gap-2 rounded-full bg-[var(--pill-white)] px-[22px] py-3 text-sm font-semibold text-[var(--pill-text)] transition-transform hover:-translate-y-px"
+            >
+              <Mail size={16} /> Contact Me
             </a>
             <a
               href="https://github.com/ovalles2019"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 text-white font-bold text-sm hover:bg-white/5 transition-all"
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] px-[22px] py-3 text-sm font-semibold text-[var(--text-primary)] transition-transform hover:-translate-y-px"
             >
-              <Code2 size={16} /> GitHub
+              GitHub
             </a>
             <a
               href="https://www.linkedin.com/in/oscarvalles87/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 text-white font-bold text-sm hover:bg-white/5 transition-all"
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] px-[22px] py-3 text-sm font-semibold text-[var(--text-primary)] transition-transform hover:-translate-y-px"
             >
-              <ExternalLink size={16} /> LinkedIn
+              LinkedIn
             </a>
-          </motion.div>
-        </section>
-
-        {/* ── Capabilities ──────────────────────────────── */}
-        <section className="max-w-5xl mx-auto mb-32">
-          <motion.p
-            className="text-indigo-400 font-bold text-sm tracking-[0.2em] uppercase mb-4"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={0}
-          >
-            CAPABILITIES
-          </motion.p>
-          <motion.h2
-            className="text-3xl md:text-4xl font-bold mb-10 text-white"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={1}
-          >
-            Full-stack. Cloud-native. Production-ready.
-          </motion.h2>
-
-          <div className="grid md:grid-cols-2 gap-5">
-            {[
-              {
-                icon: Cloud,
-                title: 'Cloud Architecture',
-                desc: 'AWS, Terraform, K8s, CI/CD pipelines, and observability at scale.',
-              },
-              {
-                icon: Layers,
-                title: 'Product Engineering',
-                desc: 'Full-stack systems that turn complex workflows into usable interfaces.',
-              },
-              {
-                icon: Code2,
-                title: 'Backend & APIs',
-                desc: 'Service design, data modeling, and integrations across modern stacks.',
-              },
-              {
-                icon: ShieldCheck,
-                title: 'Execution Quality',
-                desc: 'Refactoring discipline and code that stays maintainable after launch.',
-              },
-            ].map((cap, i) => (
-              <motion.div
-                key={cap.title}
-                className="group p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:border-indigo-500/20 hover:bg-white/[0.05] transition-all duration-300"
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={i + 2}
-              >
-                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center mb-4 group-hover:bg-indigo-500/15 transition-colors">
-                  <cap.icon size={20} className="text-indigo-400" />
-                </div>
-                <h3 className="text-lg font-bold text-white mb-2">
-                  {cap.title}
-                </h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  {cap.desc}
-                </p>
-              </motion.div>
-            ))}
           </div>
-        </section>
+        </motion.div>
 
-        {/* ── Projects ──────────────────────────────────── */}
-        <section className="max-w-5xl mx-auto mb-32">
-          <motion.p
-            className="text-indigo-400 font-bold text-sm tracking-[0.2em] uppercase mb-4"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={0}
-          >
-            SELECTED WORK
-          </motion.p>
-          <motion.h2
-            className="text-3xl md:text-4xl font-bold mb-10 text-white"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={1}
-          >
-            Projects built for production.
-          </motion.h2>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {projects.map((p, i) => (
-              <motion.div
-                key={p.title}
-                className="group rounded-2xl overflow-hidden bg-white/[0.03] border border-white/[0.06] hover:border-indigo-500/20 transition-all duration-300"
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={i + 2}
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={p.image}
-                    alt={p.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <span className="absolute top-3 left-3 px-3 py-1 text-[10px] font-bold tracking-wider text-indigo-300 bg-black/60 rounded-md border border-indigo-500/20">
-                    {p.category}
-                  </span>
-                </div>
-                <div className="p-5">
-                  <h3 className="text-lg font-bold text-white mb-2">
-                    {p.title}
-                  </h3>
-                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">
-                    {p.desc}
-                  </p>
-                  <div className="flex flex-wrap gap-1.5 mb-4">
-                    {p.tech.map((t) => (
-                      <span
-                        key={t}
-                        className="px-2.5 py-1 text-[11px] font-semibold rounded-md bg-indigo-500/10 text-indigo-300 border border-indigo-500/15"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex flex-wrap gap-x-5 gap-y-2 items-center">
-                    {p.demo ? (
-                      <a
-                        href={p.demo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
-                      >
-                        Live Demo <ArrowUpRight size={14} />
-                      </a>
-                    ) : null}
-                    <a
-                      href={p.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors"
-                    >
-                      View Source <ArrowUpRight size={14} />
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── Weekly AI Digest ──────────────────────────── */}
-        <WeeklyDigest digest={digestLatest as DigestLatest} />
-
-        {/* ── Contact CTA ───────────────────────────────── */}
-        <section className="max-w-5xl mx-auto mb-20">
-          <motion.div
-            className="p-10 md:p-16 rounded-3xl bg-gradient-to-br from-indigo-500/[0.06] to-purple-500/[0.04] border border-indigo-500/10"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={0}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Let&apos;s build something together.
-            </h2>
-            <p className="text-gray-400 text-lg mb-8 max-w-xl">
-              I&apos;m open to full-time roles, contract work, and
-              collaborations in cloud engineering and product development.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <a
-                href="mailto:ovalles6845@gmail.com"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold text-sm hover:shadow-lg hover:shadow-indigo-500/25 transition-all"
-              >
-                <Mail size={16} /> Get in Touch
-              </a>
-              <a
-                href="https://github.com/ovalles2019"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-white/10 text-white font-bold text-sm hover:bg-white/5 transition-all"
-              >
-                <Code2 size={16} /> GitHub
-              </a>
-            </div>
-          </motion.div>
-
-          <p className="text-center text-gray-600 text-sm mt-16">
-            © {new Date().getFullYear()} Oscar Valles
-          </p>
-        </section>
-      </ScrollExpandMedia>
-    </div>
+        <p className="mt-16 text-center text-sm text-[var(--text-muted)]">
+          © {new Date().getFullYear()} Oscar Valles
+        </p>
+      </section>
+    </main>
   );
 }
 

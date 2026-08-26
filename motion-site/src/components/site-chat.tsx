@@ -68,19 +68,19 @@ export default function SiteChat() {
   };
 
   return (
-    <div className='fixed bottom-5 right-5 z-[100] flex flex-col items-end gap-3'>
+    <div className='fixed right-5 bottom-5 z-[100] flex flex-col items-end gap-3'>
       {open && (
         <div
-          className='flex w-[min(100vw-2.5rem,400px)] flex-col overflow-hidden rounded-2xl border border-white/10 bg-zinc-950/95 shadow-[0_24px_80px_-20px_rgba(0,0,0,0.85)] backdrop-blur-xl'
+          className='flex w-[min(100vw-2.5rem,400px)] flex-col overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)]'
           role='dialog'
           aria-label='Chat with portfolio assistant'
         >
-          <div className='flex items-center justify-between border-b border-white/10 px-4 py-3'>
-            <span className='text-sm font-semibold text-white'>Ask about Oscar</span>
+          <div className='flex items-center justify-between border-b border-[var(--border-subtle)] px-4 py-3'>
+            <span className='text-sm font-semibold text-[var(--text-primary)]'>Ask about Oscar</span>
             <button
               type='button'
               onClick={() => setOpen(false)}
-              className='rounded-lg p-1.5 text-white/60 hover:bg-white/10 hover:text-white'
+              className='rounded-lg p-1.5 text-[var(--text-muted)] hover:bg-[var(--hover-overlay)] hover:text-[var(--text-primary)]'
               aria-label='Close chat'
             >
               <X size={18} />
@@ -95,26 +95,26 @@ export default function SiteChat() {
                 key={`${i}-${m.role}`}
                 className={`rounded-xl px-3 py-2 text-sm leading-relaxed ${
                   m.role === 'user'
-                    ? 'ml-6 bg-indigo-500/20 text-indigo-50'
-                    : 'mr-4 bg-white/[0.06] text-gray-200'
+                    ? 'ml-6 bg-[var(--pill-white)] text-[var(--pill-text)]'
+                    : 'mr-4 border border-[var(--border-subtle)] bg-[var(--bg)] text-[var(--text-primary)]'
                 }`}
               >
                 {m.content}
               </div>
             ))}
             {pending && (
-              <div className='mr-4 flex items-center gap-2 rounded-xl bg-white/[0.06] px-3 py-2 text-sm text-gray-400'>
+              <div className='mr-4 flex items-center gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg)] px-3 py-2 text-sm text-[var(--text-muted)]'>
                 <Loader2 className='h-4 w-4 animate-spin' aria-hidden />
                 Thinking…
               </div>
             )}
           </div>
           {error && (
-            <div className='border-t border-red-500/20 bg-red-500/10 px-4 py-2 text-xs text-red-200'>
+            <div className='border-t border-red-500/20 bg-red-500/10 px-4 py-2 text-xs text-red-300'>
               {error}
             </div>
           )}
-          <div className='flex gap-2 border-t border-white/10 p-3'>
+          <div className='flex gap-2 border-t border-[var(--border-subtle)] p-3'>
             <input
               type='text'
               value={input}
@@ -126,7 +126,7 @@ export default function SiteChat() {
                 }
               }}
               placeholder='Ask a question…'
-              className='min-w-0 flex-1 rounded-xl border border-white/10 bg-black/40 px-3 py-2 text-sm text-white placeholder:text-white/35 outline-none focus:border-indigo-500/40'
+              className='min-w-0 flex-1 rounded-full border border-[var(--border-subtle)] bg-[var(--bg)] px-3 py-2 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-faint)] outline-none focus:border-[var(--border-hover)]'
               disabled={pending}
               maxLength={2000}
               aria-label='Message'
@@ -135,10 +135,10 @@ export default function SiteChat() {
               type='button'
               onClick={() => void send()}
               disabled={pending || !input.trim()}
-              className='inline-flex shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 px-3 py-2 text-white shadow-lg shadow-indigo-500/20 disabled:opacity-40'
+              className='inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--pill-white)] text-[var(--pill-text)] disabled:opacity-40'
               aria-label='Send'
             >
-              <Send size={18} />
+              <Send size={16} />
             </button>
           </div>
         </div>
@@ -146,7 +146,7 @@ export default function SiteChat() {
       <button
         type='button'
         onClick={() => setOpen((o) => !o)}
-        className='flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/30 ring-2 ring-white/10 transition hover:scale-105 hover:shadow-indigo-500/40'
+        className='flex h-14 w-14 items-center justify-center rounded-full bg-[var(--pill-white)] text-[var(--pill-text)] transition-transform hover:-translate-y-px'
         aria-expanded={open}
         aria-label={open ? 'Close chat' : 'Open chat'}
       >
